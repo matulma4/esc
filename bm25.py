@@ -92,7 +92,7 @@ if __name__ == "__main__":
     idf_data = get_idf(corpus)   
     
     mybm25 = my_bm25(corpus, avg, idf_data)
-    query = input('Enter query: ')
+    query = raw_input('Enter query: ')
     porter = PorterStemmer()
     query = [porter.stem(word) for word in query.lower().split()]
     new_vec = dictionary.doc2bow(query)    
@@ -104,6 +104,8 @@ if __name__ == "__main__":
     for key,value in sorted_weights:
         if (value == 0) or (i == 5):
             break
-        print(dataset[key])
+        for doc in dataset[key]:
+            print(unicode(doc)),
+        print('')
         i += 1
     print('End of output ')    

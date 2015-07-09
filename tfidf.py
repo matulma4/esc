@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gensim import corpora, models, similarities
 from collections import defaultdict
 from nltk.stem.porter import PorterStemmer
@@ -11,11 +12,11 @@ def get_key(value,dic):
             return key
     return -1
 
-def load_data(datafile):
-    return #[line for line in open(datafile)]
+# def load_data(datafile):
+#     return # [line for line in open(datafile)]
 
 def edit_data(edited):
-    #[line.lower().split() for line in dataset]
+    # [line.lower().split() for line in dataset]
     ed = []
     for doc in edited:
         ed.append([term.lower() for term in doc])
@@ -108,7 +109,7 @@ def get_idf(corpus):
     return result
 
 def compute_idf(D,N):
-    #print(math.log2(N/D))
+    # print(math.log2(N/D))
     return math.log2(N/D)
 
 def my_tfidf(idf_data,tf_data):
@@ -126,7 +127,6 @@ def proc_query(query,dictionary):
         else:
             result[term] = 1
     return [(key,result[key]) for key in result.keys()]
-            
 def compute_norm(vec):
     result = 0
     for key,elem in vec:
@@ -134,54 +134,50 @@ def compute_norm(vec):
     return math.sqrt(result)
 
 if __name__ == "__main__":
-    #dataset = load_data('mycorpus.txt')
+    # dataset = load_data('mycorpus.txt')
     dataset = gutenberg.sents('carroll-alice.txt')
     edited_data = edit_data(dataset)
-    #for doc in edited_data:
-        #print(doc)
+    # for doc in edited_data:
+    # print(doc)
     dictionary = make_dict(edited_data)
-    dic = my_make_dict(edited_data)
-    corpus = my_corpus(dic, edited_data)
-    #tf_data = get_freq(corpus,edited_data)
-    idf_data = get_idf(corpus)    
-    mytfidf = my_tfidf(idf_data, corpus);    
-  
-    
-    
+    # dic = my_make_dict(edited_data)
+    # corpus = my_corpus(dic, edited_data)
+    # #tf_data = get_freq(corpus,edited_data)
+    # idf_data = get_idf(corpus)
+    # mytfidf = my_tfidf(idf_data, corpus);
     corpus = [dictionary.doc2bow(text) for text in edited_data]
     tfidf = models.TfidfModel(corpus,normalize=False)
     corpus_tfidf = tfidf[corpus] 
-    
-    
     index = similarities.MatrixSimilarity(corpus_tfidf)
-    query = input('Enter query: ')
+    query = raw_input('Enter query: ')
     porter = PorterStemmer()
     query = [porter.stem(word) for word in query.lower().split()]
     new_vec = dictionary.doc2bow(query)
     sims = index[new_vec]
     sims = sorted(enumerate(sims), key=lambda item: - item[1])
     
-    my_query = proc_query(query, dic)#[(get_key(value, dic),1) for value in query]
+    # my_query = proc_query(query, dic)#[(get_key(value, dic),1) for value in query]
     
     i = 0
     for key,value in sims:
         if (value == 0) or (i == 5):
             break
-        print(str(value))
+        for doc in dataset[key]:
+            print(unicode(doc)),
+        print('\n')
         i += 1
         
-    print('End of output A')
+    print('End of output')
     
-    weights = get_weights(my_query, mytfidf)
-    #print(weights)    
-    sorted_weights = sorted(weights, key=lambda x : x[1],reverse=True)
-    i = 0
-    
-    for key,value in sorted_weights:
-        if (value == 0) or (i == 5):
-            break
-        print(str(dataset[key])+' '+str(value))
-        i += 1
-            
-    print('End of output B')    
-    
+    # weights = get_weights(my_query, mytfidf)
+    # #print(weights)
+    # sorted_weights = sorted(weights, key=lambda x : x[1],reverse=True)
+    # i = 0
+    #
+    # for key,value in sorted_weights:
+    #     if (value == 0) or (i == 5):
+    #         break
+    #     print(str(dataset[key])+' '+str(value))
+    #     i += 1
+    #
+    # print('End of output B')
