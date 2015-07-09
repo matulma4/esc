@@ -28,7 +28,7 @@ def make_dict(lines):
     once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.items() if docfreq == 1]
     dictionary.filter_tokens(stop_ids + once_ids) 
     dictionary.compactify() 
-    return dictionary  
+    return dictionary
 
 def get_idf(corpus):
     result = {}
@@ -44,7 +44,8 @@ def get_idf(corpus):
     return result
 
 def compute_idf(D,N):
-    return math.log10((N-D+0.5)/(D+0.5))
+    # return math.log10((N-D+0.5)/(D+0.5))
+    return math.log(N/D,2)
 
 def get_weights(query,tfidf_corp):
     result = []
@@ -55,7 +56,7 @@ def get_weights(query,tfidf_corp):
             for q_id,count in query:
                 if t_id == q_id:    
                     dot += weight*count
-        result.append((i,(dot/(compute_norm(query)*compute_norm(doc)))))
+        result.append((i, (dot/(compute_norm(query)*compute_norm(doc)))))
         dot = 0
         i += 1
     return result
@@ -74,13 +75,13 @@ def my_bm25(corpus,avglen,idf_data):
 
 def compute_bm25(idf,tf,avglen,length):
     b = 0.75
-    k1 = 1.6    
+    k1 = 1.2
     return idf*(tf*(k1+1))/(tf+k1*(1 - b + b * (length/avglen)))
 
 if __name__ == "__main__":
-    #dataset = load_data('mycorpus.txt')
-    #edited_data = edit_data(dataset)
-    dataset = gutenberg.sents('carroll-alice.txt')
+    # dataset = load_data('mycorpus.txt')
+    # edited_data = edit_data(dataset)
+    dataset = gutenberg.sents('milton-paradise.txt')
     edited_data = edit_data(dataset)    
     avg = 0
     for doc in edited_data:
@@ -99,7 +100,10 @@ if __name__ == "__main__":
     
     weights = get_weights(new_vec, mybm25)
     sorted_weights = sorted(weights, key=operator.itemgetter(1),reverse=True)    
-    
+    # for doc in sorted_weights:
+    #     for term in doc:
+    #         print(unicode(term)),
+    #     print('')
     i = 0
     for key,value in sorted_weights:
         if (value == 0) or (i == 5):

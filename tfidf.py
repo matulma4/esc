@@ -135,7 +135,7 @@ def compute_norm(vec):
 
 if __name__ == "__main__":
     # dataset = load_data('mycorpus.txt')
-    dataset = gutenberg.sents('carroll-alice.txt')
+    dataset = gutenberg.sents('milton-paradise.txt')
     edited_data = edit_data(dataset)
     # for doc in edited_data:
     # print(doc)
@@ -164,7 +164,7 @@ if __name__ == "__main__":
             break
         for doc in dataset[key]:
             print(unicode(doc)),
-        print('\n')
+        print('')
         i += 1
         
     print('End of output')
