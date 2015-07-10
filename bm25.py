@@ -1,7 +1,7 @@
 from gensim import corpora, models, similarities
 from collections import defaultdict
 from nltk.stem.porter import PorterStemmer
-from nltk.corpus import gutenberg
+from nltk.corpus import gutenberg, stopwords
 import operator
 import math
 
@@ -20,7 +20,7 @@ def edit_data(edited):
     return result
 
 def make_dict(lines):
-    stoplist = set('for a of the and to in by an as at'.split())
+    stoplist = stopwords.words('english')# set('for a of the and to in by an as at'.split())
     dictionary = corpora.Dictionary(lines)
     
     stop_ids = [dictionary.token2id[stopword] for stopword in stoplist
@@ -98,7 +98,9 @@ def compute_bm25(idf,tf,avglen,length):
 if __name__ == "__main__":
     # dataset = load_data('mycorpus.txt')
     # edited_data = edit_data(dataset)
-    dataset = gutenberg.sents('milton-paradise.txt')
+    # dataset = gutenberg.sents('carroll-alice.txt')
+    # dataset = gutenberg.sents('milton-paradise.txt')
+    dataset = gutenberg.sents('bible-kjv.txt')
     edited_data = edit_data(dataset)    
     avg = 0
     for doc in edited_data:
