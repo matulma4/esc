@@ -2,7 +2,7 @@
 from gensim import corpora, models, similarities
 from collections import defaultdict
 from nltk.stem.porter import PorterStemmer
-from nltk.corpus import gutenberg
+from nltk.corpus import gutenberg,stopwords
 import operator
 import math
 
@@ -27,7 +27,7 @@ def edit_data(edited):
     return result
 
 def make_dict(lines):
-    stoplist = set('for a of the and to in by an as at'.split())
+    stoplist = stopwords.words('english')# set('for a of the and to in by an as at'.split())
     dictionary = corpora.Dictionary(lines)
     
     stop_ids = [dictionary.token2id[stopword] for stopword in stoplist
@@ -41,7 +41,7 @@ def my_make_dict(lines):
     result = {}
     freq = {}
     i = 0
-    stoplist = set('for a of the and to in by an as at'.split())
+    stoplist = stopwords.words('english')#set('for a of the and to in by an as at'.split())
     for line in lines:
         for term in line:   
             if not(term in stoplist):
@@ -135,7 +135,7 @@ def compute_norm(vec):
 
 if __name__ == "__main__":
     # dataset = load_data('mycorpus.txt')
-    dataset = gutenberg.sents('milton-paradise.txt')
+    dataset = gutenberg.sents('carroll-alice.txt')
     edited_data = edit_data(dataset)
     # for doc in edited_data:
     # print(doc)
