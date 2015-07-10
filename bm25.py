@@ -30,34 +30,40 @@ def make_dict(lines):
     dictionary.compactify() 
     return dictionary
 
-def get_idf(corpus):
+def get_idf(corpus, query):
     result = {}
     N = len(corpus)
-    for doc in corpus:
-        for t_id, count in doc:
-            if (t_id in result):
-                result[t_id] += 1
-            else:
-                result[t_id] = 1
-        
-    result = dict([(name, compute_idf(val, N)) for name, val in result.items()])
+    for q,c in query:
+        for doc in corpus:
+            for t_id, count in doc:
+                if q == t_id:
+                    if q in result:
+                        result[q] += 1
+                    else:
+                        result[q] = 1
+                    break;
+    for q in result.keys():
+        result[q] = compute_idf(result[q],N)
+
     return result
 
 def compute_idf(D,N):
-    # return math.log10((N-D+0.5)/(D+0.5))
-    return math.log(N/D,2)
+    return math.log10((N-D+0.5)/(D+0.5))
+    # return math.log(N/D,2)
 
 def get_weights(query,tfidf_corp):
     result = []
-    dot = 0
     i = 0
     for doc in tfidf_corp:
+        dot = 0
         for t_id,weight in doc:
             for q_id,count in query:
                 if t_id == q_id:    
                     dot += weight*count
-        result.append((i, (dot/(compute_norm(query)*compute_norm(doc)))))
-        dot = 0
+        norm = compute_norm(query)*compute_norm(doc)
+        if norm == 0:
+            norm = 1
+        result.append((i, (dot/norm)))
         i += 1
     return result
 
@@ -67,16 +73,27 @@ def compute_norm(vec):
         result += elem*elem
     return math.sqrt(result)
 
-def my_bm25(corpus,avglen,idf_data):
+def my_bm25(corpus, avglen, idf_data):
     result = []
+    i = 0
     for doc in corpus:
-        result.append([(t_id,compute_bm25(idf_data[t_id], freq, avglen, len(doc))) for t_id,freq in doc])
+        # print(doc)
+        total = 0
+        for q in idf_data.keys():
+            for t_id,freq in doc:
+                if t_id == q:
+                    total += compute_bm25(idf_data[q], freq, avglen, len(doc))
+        result.append((i, total))
+        i += 1;
     return result
 
 def compute_bm25(idf,tf,avglen,length):
     b = 0.75
-    k1 = 1.2
-    return idf*(tf*(k1+1))/(tf+k1*(1 - b + b * (length/avglen)))
+    k1 = 1.6
+    # k3 = 1.6
+    result = idf*((tf*(k1+1))/(tf+k1*(1 - b + b * (length/avglen))))
+    # print(result)
+    return result # *((k3 + 1)* tf/(k3 + tf))
 
 if __name__ == "__main__":
     # dataset = load_data('mycorpus.txt')
@@ -90,20 +107,16 @@ if __name__ == "__main__":
     
     dictionary = make_dict(edited_data)
     corpus = [dictionary.doc2bow(text) for text in edited_data]
-    idf_data = get_idf(corpus)   
-    
-    mybm25 = my_bm25(corpus, avg, idf_data)
+
     query = raw_input('Enter query: ')
     porter = PorterStemmer()
     query = [porter.stem(word) for word in query.lower().split()]
-    new_vec = dictionary.doc2bow(query)    
-    
-    weights = get_weights(new_vec, mybm25)
-    sorted_weights = sorted(weights, key=operator.itemgetter(1),reverse=True)    
-    # for doc in sorted_weights:
-    #     for term in doc:
-    #         print(unicode(term)),
-    #     print('')
+    new_vec = dictionary.doc2bow(query)
+    # print(new_vec)
+    idf_data = get_idf(corpus,new_vec)
+    mybm25 = my_bm25(corpus, avg, idf_data)
+
+    sorted_weights = sorted(mybm25, key=operator.itemgetter(1),reverse=True)
     i = 0
     for key,value in sorted_weights:
         if (value == 0) or (i == 5):
