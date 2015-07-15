@@ -120,8 +120,11 @@ if __name__ == "__main__":
     # dataset = load_data('mycorpus.txt')
     # edited_data = edit_data(dataset)
     # dataset = gutenberg.sents('carroll-alice.txt')
-    dataset = gutenberg.sents('milton-paradise.txt')
+    # dataset = gutenberg.sents('milton-paradise.txt')
     # dataset = gutenberg.sents('bible-kjv.txt')
+    dataset = []
+    for fileid in gutenberg.fileids():
+        dataset += gutenberg.sents(fileid)
     edited_data = edit_data(dataset)    
     avg = 0
     for doc in edited_data:
