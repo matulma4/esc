@@ -5,15 +5,12 @@
 #PBS -l mem=20gb
 #PBS -l scratch=25gb
 
+
 log_echo() {
   echo $(date "+%Y%m%d-%H.%M.%S") " $@";
 }
 log_echo "Starting..."
-log_echo "Unloading..."
-module unload python34-modules-intel
-log_echo "Done."
-log_echo "Loading modules."
-module add python27-modules-gcc
+source /storage/brno2/home/$LOGNAME/.profile_matulma4
 log_echo "Done."
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"

@@ -1,0 +1,20 @@
+# export PATH=/storage/brno2/home/hnizdja2/diplomathesis/lib/protobuf/bin:/usr/lib/cuda:$PATH
+# export LD_LIBRARY_PATH=/storage/brno2/home/hnizdja2/diplomathesis/lib/protobuf/lib:$LD_LIBRARY_PATH
+
+# reset variables
+PYTHONPATH=""
+
+# this is for using python version 3.4, you can use similarly for python 2.x - IMPORTANT
+module unload python34-modules-intel
+module add python27-modules-gcc
+
+# Python variables - IMPORTANT
+export PYTHONUSERBASE=/storage/brno2/home/matulma4/.local
+export PATH=$PYTHONUSERBASE/bin:$PATH
+export PYTHONPATH=$PYTHONUSERBASE/lib/python2.7/site-packages:$PYTHONPATH
+
+# Protocol buffers python implementation
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=cpp
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION_VERSION=2
+
+# source /storage/brno2/home/hnizdja2/.bashrc
