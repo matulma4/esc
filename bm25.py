@@ -124,9 +124,9 @@ if __name__ == "__main__":
     # dataset = gutenberg.sents('milton-paradise.txt')
     # dataset = gutenberg.sents('bible-kjv.txt')
     nltk.download('gutenberg')
-    dataset = []
-    for fileid in gutenberg.fileids():
-        dataset += gutenberg.sents(fileid)
+    dataset = gutenberg.sents(gutenberg.fileids())
+    #for fileid in gutenberg.fileids():
+    #    dataset += gutenberg.sents(fileid)
     edited_data = edit_data(dataset)    
     avg = 0
     for doc in edited_data:
