@@ -2,6 +2,7 @@ from gensim import corpora, models, similarities
 from collections import defaultdict
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import gutenberg, stopwords
+import nltk
 import operator
 import math
 
