@@ -122,6 +122,7 @@ if __name__ == "__main__":
     # dataset = gutenberg.sents('carroll-alice.txt')
     # dataset = gutenberg.sents('milton-paradise.txt')
     # dataset = gutenberg.sents('bible-kjv.txt')
+    nltk.download('gutenberg')
     dataset = []
     for fileid in gutenberg.fileids():
         dataset += gutenberg.sents(fileid)
