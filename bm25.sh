@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N bm25
 #PBS -l walltime=4h
-#PBS -l nodes=1:ppn=1
+#PBS -l nodes=1:ppn=4
 #PBS -l mem=20gb
 #PBS -l scratch=25gb
 
