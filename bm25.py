@@ -44,12 +44,12 @@ def get_idf(corpus, query,dictionary):
                     else:
                         result[q] = 1
                     break
-    print('Document frequency of query terms:')
+    # print('Document frequency of query terms:')
     for q in result.keys():
-        print(dictionary[q]+': '+str(result[q])+' docs;'),
+        # print(dictionary[q]+': '+str(result[q])+' docs;'),
         result[q] = compute_idf(result[q],N)
 
-    print('')
+    # print('')
     return result
 
 def compute_idf(D,N):
@@ -130,11 +130,11 @@ if __name__ == "__main__":
     for doc in edited_data:
         avg += len(doc)
     avg = avg/len(edited_data)
-    print('Number of documents: ' + str(len(edited_data)))
-    print('Average length of document: '+ str(avg))
+    # print('Number of documents: ' + str(len(edited_data)))
+    # print('Average length of document: '+ str(avg))
     dictionary = make_dict(edited_data)
     corpus = [dictionary.doc2bow(text) for text in edited_data]
-    print('20 most common words of corpus:')
+    # print('20 most common words of corpus:')
     freq_data = get_frequency(corpus,dictionary)
     f = 0
     for doc, freq in freq_data:
@@ -144,27 +144,30 @@ if __name__ == "__main__":
         f += 1
     print('')
     print('------------------------------------------')
-    query = raw_input('Enter query: ')
-    porter = PorterStemmer()
-    query = [porter.stem(word) for word in query.lower().split()]
-    new_vec = dictionary.doc2bow(query)
-    # print(new_vec)
-    print('Frequency of query terms')
-    translated = [dictionary[q_id] for q_id,freq in new_vec]
-    for doc, freq in freq_data:
-        if doc in translated:
-            print(unicode(doc)+': '+str(freq)+' times;'),
-    print('')
-    idf_data = get_idf(corpus,new_vec,dictionary)
-    mybm25 = my_bm25(corpus, avg, idf_data)
-    print('------------------------------------------')
-    sorted_weights = sorted(mybm25, key=operator.itemgetter(1),reverse=True)
-    i = 0
-    for key,value in sorted_weights:
-        if (value == 0) or (i == 5):
-            break
-        for doc in dataset[key]:
-            print(unicode(doc)),
-        print('')
-        i += 1
-    print('End of output ')    
+    queries = ['white rabbit','heaven angel','queen plays croquet','white whale','salt pillar']
+    # query = # raw_input('Enter query: ')
+    for query in queries:
+        print(unicode(query))
+        porter = PorterStemmer()
+        query = [porter.stem(word) for word in query.lower().split()]
+        new_vec = dictionary.doc2bow(query)
+        # print(new_vec)
+        # print('Frequency of query terms')
+        # translated = [dictionary[q_id] for q_id,freq in new_vec]
+        # for doc, freq in freq_data:
+        #     if doc in translated:
+        #         print(unicode(doc)+': '+str(freq)+' times;'),
+        # print('')
+        idf_data = get_idf(corpus,new_vec,dictionary)
+        mybm25 = my_bm25(corpus, avg, idf_data)
+        sorted_weights = sorted(mybm25, key=operator.itemgetter(1),reverse=True)
+        i = 0
+        for key,value in sorted_weights:
+            if (value == 0) or (i == 5):
+                break
+            for doc in dataset[key]:
+                print(unicode(doc)),
+            print('')
+            i += 1
+        print('End of output ')
+        print('------------------------------------------')
