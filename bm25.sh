@@ -21,6 +21,7 @@ N_JOBS=1
 log_echo "Running script..."
 python -m nltk.downloader gutenberg
 python -m nltk.downloader punkt
+python -m nltk.downloader stopwords
 python $INPUT_DIR/bm25.py
 log_echo "Done."
 log_echo "Cleaning up..."
