@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N bm25
+#PBS -N w2v
 #PBS -l walltime=1h
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=4gb
@@ -19,6 +19,7 @@ cd $SCRATCHDIR
 N_JOBS=1
 
 log_echo "Running script..."
+python -m nltk.downloader punkt
 python $INPUT_DIR/bm25.py
 log_echo "Done."
 log_echo "Cleaning up..."
