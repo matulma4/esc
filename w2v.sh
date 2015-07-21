@@ -20,7 +20,7 @@ N_JOBS=1
 
 log_echo "Running script..."
 python -m nltk.downloader punkt
-python $INPUT_DIR/bm25.py
+python $INPUT_DIR/w2v.py
 log_echo "Done."
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
