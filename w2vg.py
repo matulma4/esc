@@ -2,21 +2,40 @@
 import os.path
 
 from gensim import models
+import numpy as np
 # from nltk.corpus import gutenberg
 import logging
 def load_data(fname):
-    return [line for line in open(fname) if line[0] != ':']
+    np.random.seed(11)
+    words = [line for line in open(fname)]
+    words = words[0].split()
+    length = len(words)
+    count = 0
+    dataset = []
+    while count < length:
+        sent_len = int(np.random.random() * 5) + 7
+        sent_end = count + sent_len
+        if (sent_end > length):
+            sent_end = length
+        dataset.append(words[count:sent_end])
+        count = sent_end
+    return dataset
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-    fname = "model.doc2vec"
+    fname = "bigmodel.doc2vec"
     if os.path.isfile(fname):
-        model = models.Doc2Vec.load()
+        model = models.Word2Vec.load(fname)
     else:
-        dataset = load_data('questions-words.txt')
-        dataset = [line.split() for line in dataset]
+        dataset = load_data('text8')
+        # dataset = [line.split() for line in dataset]
         model = models.Word2Vec(dataset, size=100, window=5, min_count=5, workers=4)
         model.save(fname)
     # model.init_sims(replace=True)
-    for word,value in model.most_similar(positive=['woman', 'king'], negative=['man']):
-        print(unicode(word)+' '+str(value))
-    print model.doesnt_match("breakfast cereal dinner lunch".split())
+    # for word,value in model.most_similar(positive=['woman', 'king'], negative=['man']):
+    #     print(unicode(word)+' '+str(value))
+    # a =
+    print model.most_similar(positive=['woman', 'king'], negative=['man'])[0]
+    print model.most_similar(positive=['sheep', 'milk'], negative=['cow'])[0]
+    print model.most_similar(positive=['Paris', 'Spain'], negative=['Madrid'])[0]
+    print model.doesnt_match("Paris Berlin Japan Tokyo".split())
+    print model.doesnt_match("dinner salad lunch breakfast".split())

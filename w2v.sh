@@ -1,8 +1,8 @@
 #!/bin/bash
-#PBS -N w2v
+#PBS -N w2vg
 #PBS -l walltime=1h
 #PBS -l nodes=1:ppn=1
-#PBS -l mem=4gb
+#PBS -l mem=8gb
 #PBS -l scratch=4gb
 
 
@@ -20,7 +20,7 @@ N_JOBS=1
 
 log_echo "Running script..."
 python -m nltk.downloader punkt
-python $INPUT_DIR/w2v.py
+python $INPUT_DIR/w2vg.py
 log_echo "Done."
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*

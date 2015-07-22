@@ -23,30 +23,53 @@ if __name__ == "__main__":
     'the dwarf poisons the queen']
     vocabulary = Vocabulary()
     sentences_bow = list(docs2bow(sentences,vocabulary))
-    V, N = len(vocabulary), 3
+    V, N = len(vocabulary), 10
     WI = (np.random.random((V, N)) - 0.5) / N
     WO = (np.random.random((N, V)) - 0.5) / V
-    input_word = raw_input("Enter query: ")
-    # input_word = 'the'
+    # target_word = ("king")
+    # context = ['queen', 'loves']
     learning_rate = 1.0
-    for target_word in vocabulary:
+    # for target_word in vocabulary:
     # for input_word in vocabulary:
-        for word in vocabulary:
-            for j in range(2):
-                p_word_given = (np.exp(-np.dot(WO.T[vocabulary[word]],
-                                               WI[vocabulary[input_word]])) /
-                                sum(np.exp(-np.dot(WO.T[vocabulary[w]],
-                                                   WI[vocabulary[input_word]]))
-                                    for w in vocabulary))
-                t = 1 if word == target_word else 0
-                error = t - p_word_given
-                WO.T[vocabulary[word]] = (WO.T[vocabulary[word]] - learning_rate *  error * WI[vocabulary[input_word]])
-                WI[vocabulary[input_word]] = WI[vocabulary[input_word]] - learning_rate * WO.sum(1)
-    # query = raw_input("Enter query: ")
+    # h = (WI[vocabulary['queen']] + WI[vocabulary['loves']]) / 2
+    sents = [sentence.split() for sentence in sentences]
+    for sentence in sents:
+        for i in range(0,len(sentence)):
+            target_word = sentence[i]
+            if i == 0:
+                context = sentence[i+1:]
+            else:
+                context = np.concatenate((sentence[:i],sentence[i+1:]),axis=0)
+
+            for j in range(20):
+                h = 0
+                for cw in context:
+                    h += WI[vocabulary[cw]]
+                h /= len(context)
+                for word in vocabulary:
+                    p = (np.exp(-np.dot(WO.T[vocabulary[word]], h)) /
+                        sum(np.exp(-np.dot(WO.T[vocabulary[w]], h))
+                            for w in vocabulary))
+                    print word,p
+                    if p == np.nan:
+                        p = 0
+                    t = 1 if word == target_word else 0
+                    error = t - p
+                    WO.T[vocabulary[word]] = (WO.T[vocabulary[word]] - learning_rate * error * h)
+                for word in context:
+                    WI[vocabulary[word]] = (WI[vocabulary[word]] - (1. / len(context)) * learning_rate * WO.sum(1))
+    query = raw_input("Enter query: ").split()
     #
+    h = 0
+    for cw in query:
+        h += WI[vocabulary[cw]]
+    h /= len(query)
     for word in vocabulary:
-        print word,np.dot(WI[vocabulary[target_word]],
-             WO.T[vocabulary[word]])
+         p = (np.exp(-np.dot(WO.T[vocabulary[word]],
+                                           h)) /
+                            sum(np.exp(-np.dot(WO.T[vocabulary[w]],
+                                               h)) for w in vocabulary))
+         print word,p
     # print WO
     # print WI
 
