@@ -13,9 +13,9 @@ class LabeledLineSentence(object):
             yield TaggedDocument(words=line.split(), labels=['SENT_%s' % uid])
 if __name__ == "__main__":
     name = sys.argv[1]
-    dist_mem = sys.argv[2]
-    hier_soft = sys.argv[3]
-    neg = sys.argv[4]
+    dist_mem = int(sys.argv[2])
+    hier_soft = int(sys.argv[3])
+    neg = int(sys.argv[4])
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
     fname = str(name)+".doc2vec"
     if path.isfile(fname):
