@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N w2vg
+#PBS -N d2vg
 #PBS -l walltime=1h
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=8gb
@@ -19,6 +19,8 @@ cd $SCRATCHDIR
 N_JOBS=1
 
 log_echo "Running script..."
+wget mattmahoney.net/dc/text8.zip
+unzip text8.zip
 python -m nltk.downloader punkt
 python $INPUT_DIR/d2vg.py
 log_echo "Done."
