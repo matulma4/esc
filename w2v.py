@@ -1,4 +1,5 @@
 import numpy as np
+from collections import defaultdict
 def make_dict(dataset,length):
     result = {}
     i = 0
@@ -13,62 +14,64 @@ def nonlin(x,deriv=False):
         return x*(1-x)
     return 1/(1+np.exp(-x))
 
+
+def Vocabulary():
+    dictionary = defaultdict()
+    dictionary.default_factory = lambda: len(dictionary) - 1
+    return dictionary
+
+def train_sentence(sentence,WI,WO,vocabulary):
+    sent = list(enumerate(sentence.split()))
+    for index,word in sent:
+        start = max(0,index - 2)
+        end = min(len(sentence),start + 5)
+        context = [sent[i] for i in range(start,end) if i != index]
+        train_pair(word,context,WI,WO,vocabulary)
+    return
+
+def train_pair(word,context,WI,WO,vocabulary):
+    w = WO[vocabulary[word]]
+    c = [WI[index] for index,wd in context]
+    l = 1. / (1. + np.exp(-np.dot(c, w.T)))
+    err = 1. - w - l
+    delta = np.dot(err,w)
+    WI += delta
+    WO[vocabulary[word]] += outer(err,)
+    return
+def docs2bow(docs, dictionary):
+    """Transforms a list of strings into a list of lists where
+    each unique item is converted into a unique integer."""
+    for doc in docs:
+        yield [dictionary[word] for word in doc.split()]
+
+
 if __name__ == "__main__":
-    l_rate = 5
-    dataset = set("In 1943 President Roosevelt and British Prime Minister Winston Churchill opened a wartime conference in Casablanca".lower().split())
-    length = len(dataset)
-    dic = make_dict(dataset,length)
-    onehot = []
-    for key in dic.keys():
-        tmp = [0 for s in range(0,length)]
-        tmp[key] = 1
-        onehot.append(tmp)
-    x = np.array(onehot)
-    #print(x)
-    np.random.seed(1)
-    Wa = 2*np.random.random((1,length)) - 1 # 1x15
-    Wb = 2*np.random.random((length,5)) - 1 # 15x14
-    for i in range(0, len(x)-1):
-        # print x[i].T
-        x_input = np.array([x[i]]).T #15x1
-        out_start = i - 2
-        if out_start < 0:
-            out_start = 0
-        out_end = out_start + 5
-        if out_end > len(x) - 1:
-            out_end  = len(x) - 1
-            out_start = out_end - 5
-        y_output = np.concatenate((x[out_start:i],x[i+1:out_end + 1]),axis=0).T # 15x14
-        # print(y_output)
-        # print(x_input)
-        for j in xrange(10000):
-            l0 = x_input #15x1
-            l1 = nonlin(np.dot(l0,Wa)) # 15x15
-            l2 = nonlin(np.dot(l1,Wb)) # 15x14
+    dataset = [line.lower() for line in open('mycorpus.txt')]
+    vocabulary = Vocabulary()
+    sentences_bow = list(docs2bow(dataset,vocabulary))
+    np.random.seed(11)
+    dimension = 5
+    window = 5
+    WI = 2*np.random.random((window,dimension)) - 1
+    WO = 2*np.random.random((dimension,len(vocabulary))) - 1
+    for sentence in dataset:
+        train_sentence(sentence,WI,WO,vocabulary)
 
-            l2_error = y_output - l2
 
-            if j == 9999:
-                print "Error:" + str(np.mean(np.abs(l2_error)))
 
-            l2_delta = l2_error*nonlin(l2,deriv=True) * l_rate# 15x14
 
-            l1_error = l2_delta.dot(Wb.T) # 15x14 *
 
-            l1_delta = l1_error * nonlin(l1,deriv=True) * l_rate
 
-            Wb += l1.T.dot(l2_delta)
-            Wa += l0.T.dot(l1_delta)
-    # print Wa
-    # print Wb
-    query = np.zeros(shape=(1,len(dic)))
-    query[0][5] = 1
-    a = nonlin(np.dot(nonlin(np.dot(query.T,Wa)),Wb))
-    j = 0
-    b = []
-    for term in a:
-        b.append((j,a[j]))
-        j += 1
-    b = sorted(b,key=lambda x : x[1],reverse=True)
-    for key,value in b:
-        print dic[key],value
+
+
+
+
+
+
+
+
+
+
+
+
+

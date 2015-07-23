@@ -27,15 +27,11 @@ if __name__ == "__main__":
         model = models.Word2Vec.load(fname)
     else:
         dataset = load_data('text8')
-        # dataset = [line.split() for line in dataset]
         model = models.Word2Vec(dataset, size=100, window=5, min_count=5, workers=4)
         model.save(fname)
-    # model.init_sims(replace=True)
-    # for word,value in model.most_similar(positive=['woman', 'king'], negative=['man']):
-    #     print(unicode(word)+' '+str(value))
-    # a =
-    print model.most_similar(positive=['woman', 'king'], negative=['man'])[0]
-    print model.most_similar(positive=['sheep', 'milk'], negative=['cow'])[0]
-    print model.most_similar(positive=['Paris', 'Spain'], negative=['Madrid'])[0]
+
+    print model.most_similar(positive=['woman', 'king'], negative=['man'])
+    print model.most_similar(positive=['sheep', 'milk'], negative=['cow'])
+    print model.most_similar(positive=['Paris', 'Spain'], negative=['Madrid'])
     print model.doesnt_match("Paris Berlin Japan Tokyo".split())
     print model.doesnt_match("dinner salad lunch breakfast".split())

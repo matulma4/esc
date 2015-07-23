@@ -14,13 +14,14 @@ def docs2bow(docs, dictionary):
 
 
 if __name__ == "__main__":
-    sentences = [
-    'the king loves the queen',
-    'the queen loves the king',
-    'the dwarf hates the king',
-    'the queen hates the dwarf',
-    'the dwarf poisons the king',
-    'the dwarf poisons the queen']
+    # sentences = [
+    # 'the king loves the queen',
+    # 'the queen loves the king',
+    # 'the dwarf hates the king',
+    # 'the queen hates the dwarf',
+    # 'the dwarf poisons the king',
+    # 'the dwarf poisons the queen']
+    sentences = [line.lower() for line in open('mycorpus.txt')]
     vocabulary = Vocabulary()
     sentences_bow = list(docs2bow(sentences,vocabulary))
     V, N = len(vocabulary), 10
@@ -36,12 +37,12 @@ if __name__ == "__main__":
     for sentence in sents:
         for i in range(0,len(sentence)):
             target_word = sentence[i]
-            if i == 0:
-                context = sentence[i+1:]
-            else:
-                context = np.concatenate((sentence[:i],sentence[i+1:]),axis=0)
-
-            for j in range(20):
+            # if i == 0:
+            #     context = sentence[i+1:]
+            # else:
+            #     context = np.concatenate((sentence[:i],sentence[i+1:]),axis=0)
+            context = sentence
+            for j in range(5):
                 h = 0
                 for cw in context:
                     h += WI[vocabulary[cw]]
@@ -50,7 +51,7 @@ if __name__ == "__main__":
                     p = (np.exp(-np.dot(WO.T[vocabulary[word]], h)) /
                         sum(np.exp(-np.dot(WO.T[vocabulary[w]], h))
                             for w in vocabulary))
-                    print word,p
+                    # print word,p
                     if p == np.nan:
                         p = 0
                     t = 1 if word == target_word else 0
