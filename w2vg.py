@@ -13,7 +13,7 @@ def load_data(fname):
     count = 0
     dataset = []
     while count < length:
-        sent_len = int(np.random.random() * 5) + 7
+        sent_len = 20# int(np.random.random() * 5) + 7
         sent_end = count + sent_len
         if (sent_end > length):
             sent_end = length
