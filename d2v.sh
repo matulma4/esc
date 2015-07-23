@@ -22,7 +22,7 @@ log_echo "Running script..."
 wget mattmahoney.net/dc/text8.zip
 unzip text8.zip
 python -m nltk.downloader punkt
-python $INPUT_DIR/d2vg.py
+python $INPUT_DIR/d2vg.py orig 0 0 0
 log_echo "Done."
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
