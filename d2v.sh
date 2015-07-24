@@ -1,9 +1,9 @@
 #!/bin/bash
 #PBS -N d2vg
-#PBS -l walltime=1h
+#PBS -l walltime=2h
 #PBS -l nodes=1:ppn=1
-#PBS -l mem=8gb
-#PBS -l scratch=4gb
+#PBS -l mem=16gb
+#PBS -l scratch=8gb
 
 
 log_echo() {
