@@ -53,4 +53,4 @@ if __name__ == "__main__":
     f.write(u'TARGET (%d): <%s>\n' % (doc_id, ' '.join(alldocs[doc_id].words)))
     f.write(u'SIMILAR/DISSIMILAR DOCS PER MODEL %s:\n' % model)
     for label, index in [('MOST', 0), ('MEDIAN', len(sims)//2), ('LEAST', len(sims) - 1)]:
-        f.write(u'%s %s: «%s»\n' % (label, sims[index], ' '.join(alldocs[sims[index][0]].words)))
+        f.write(u'%s %s: <%s>\n' % (label, sims[index], ' '.join(alldocs[sims[index][0]].words)))
