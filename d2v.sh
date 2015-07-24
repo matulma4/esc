@@ -19,10 +19,16 @@ cd $SCRATCHDIR
 N_JOBS=1
 
 log_echo "Running script..."
-wget mattmahoney.net/dc/text8.zip
-unzip text8.zip
+# wget mattmahoney.net/dc/text8.zip
+# unzip text8.zip
+/bin/bash go.sh
 python -m nltk.downloader punkt
+
 python $INPUT_DIR/d2vg.py orig 0 0 0
+python $INPUT_DIR/d2vg.py dm 1 0 0
+python $INPUT_DIR/d2vg.py hs 0 1 0
+python $INPUT_DIR/d2vg.py neg 0 0 1
+python $INPUT_DIR/d2vg.py max 0 1 1
 log_echo "Done."
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
