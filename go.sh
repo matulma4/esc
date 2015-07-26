@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-%%bash
+# %%bash
 # adapted from Mikolov's example go.sh script:
 if [ ! -f "aclImdb/alldata-id.txt" ]
 then
