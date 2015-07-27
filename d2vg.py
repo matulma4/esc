@@ -46,6 +46,7 @@ if __name__ == "__main__":
         model = models.Doc2Vec(size=100, window=5, min_count=5, workers=4,negative=neg,hs=hier_soft,dm=dist_mem)
         model.save(fname)
 
+    model.build_vocab(alldocs)
     model.train(alldocs)
 
     doc_id = 24# np.random.randint(model.docvecs.count)  # pick random doc, re-run cell for more examples

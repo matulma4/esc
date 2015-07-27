@@ -25,7 +25,7 @@ log_echo "Copying and running go.sh."
 cp $INPUT_DIR/go.sh $SCRATCHDIR
 /bin/bash go.sh
 # cp -R $INPUT_DIR/aclImdb_v1.tar.gz $SCRATCHDIR
-python -m nltk.downloader punkt
+# python -m nltk.downloader punkt
 log_echo "Running orig."
 python $INPUT_DIR/d2vg.py orig 0 0 0
 cp orig.out $INPUT_DIR
