@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     model.train(alldocs)
 
-    doc_id = np.random.randint(model.docvecs.count)  # pick random doc, re-run cell for more examples
+    doc_id = 24# np.random.randint(model.docvecs.count)  # pick random doc, re-run cell for more examples
     # model = np.random.choice(model)  # and a random model
     sims = model.docvecs.most_similar(doc_id, topn=model.docvecs.count)  # get *all* similar documents
     f = open(name+'.out','w')
