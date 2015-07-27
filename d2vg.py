@@ -46,6 +46,8 @@ if __name__ == "__main__":
         model = models.Doc2Vec(size=100, window=5, min_count=5, workers=4,negative=neg,hs=hier_soft,dm=dist_mem)
         model.save(fname)
 
+    model.train(alldocs)
+
     doc_id = np.random.randint(model.docvecs.count)  # pick random doc, re-run cell for more examples
     # model = np.random.choice(model)  # and a random model
     sims = model.docvecs.most_similar(doc_id, topn=model.docvecs.count)  # get *all* similar documents
