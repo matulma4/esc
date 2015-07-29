@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Word2Vec gensim
 import os.path
 
@@ -20,18 +21,29 @@ def load_data(fname):
         dataset.append(words[count:sent_end])
         count = sent_end
     return dataset
+
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-    fname = "bigmodel.doc2vec"
+    fname = "model.word2vec"
     if os.path.isfile(fname):
         model = models.Word2Vec.load(fname)
     else:
-        dataset = load_data('text8')
-        model = models.Word2Vec(dataset, size=100, window=5, min_count=5, workers=4)
+        dataset = [line.split() for line in open('temp.raw_text')]
+        model = models.Word2Vec(dataset, size=16, window=5, min_count=10, workers=4)
         model.save(fname)
-
-    print model.most_similar(positive=['woman', 'king'], negative=['man'])
-    print model.most_similar(positive=['sheep', 'milk'], negative=['cow'])
-    print model.most_similar(positive=['Paris', 'Spain'], negative=['Madrid'])
-    print model.doesnt_match("Paris Berlin Japan Tokyo".split())
-    print model.doesnt_match("dinner salad lunch breakfast".split())
+    # print(model.syn0)
+    for doc in model.most_similar(positive=['krab', 'ruka'], negative=['člověk']):
+        print unicode(doc[0],'utf-8'),str(doc[1])
+    print('--------------------------------------')
+    for doc in model.most_similar(positive=['nafta', 'člověk'], negative=['jídlo']):
+        print unicode(doc[0],'utf-8'),str(doc[1])
+    print('--------------------------------------')
+    for doc in model.most_similar(positive=['silnice', 'vlak'], negative=['kolej']):
+        print unicode(doc[0],'utf-8'),str(doc[1])
+    print('--------------------------------------')
+    #for doc in model.most_similar(positive=['žena', 'král'], negative=['muž'])
+    #    print unicode(doc,'utf-8')
+    # print unicode(,'utf-8')
+    # print model.most_similar(positive=['Paris', 'Spain'], negative=['Madrid'])
+    # print model.doesnt_match("Paris Berlin Japan Tokyo".split())
+    print unicode(model.doesnt_match("bratr sestra auto strýc".split()),'utf-8')
