@@ -14,6 +14,7 @@ class NeuralLayer:
 def nonlin(x,deriv=False):
     if(deriv==True):
         return x*(1-x)
+    # print x
     return 1/(1+np.exp(-x))
 
 
@@ -37,30 +38,24 @@ def back_propagate(layers, delta):
         e = layer.delta
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # layer_count = 5
-    # size = 4
     # layers = [NeuralLayer(size,size) for i in range(0, layer_count-2)]
-    X = np.array([[0,0,1],
-            [0,1,1],
-            [1,0,1],
-            [1,1,1]])
+def w_to_v(input,output,WI,WO):
+    X = np.array(input).T
 
-    y = np.array([[0],
-			[1],
-			[1],
-			[0]])
+    y = np.array(output).T
 
     np.random.seed(1)
-
+    size = 4
 # randomly initialize our weights with mean 0
-    syn0 = 2*np.random.random((3,4)) - 1
-    syn1 = 2*np.random.random((4,1)) - 1
+    syn0 = WI # 2*np.random.random((len(X[0]),size)) - 1
+    syn1 = WO # 2*np.random.random((size,1)) - 1
 
 
     # l_input = NeuralLayer(len(X[0]),size)
     # l_output = NeuralLayer(size,1)
-    for j in xrange(100000):
+    for j in xrange(1):
         # l_input.l = nonlin(np.dot(X,l_input.syn))
         #
         # layers = propagate(layers,l_input.l)
@@ -92,8 +87,8 @@ if __name__ == "__main__":
         # how much did we miss the target value?
         l2_error = y - l2
 
-        if (j% 10000) == 0:
-            print "Error:" + str(np.mean(np.abs(l2_error)))
+        # if (j% 100) == 0:
+        #    print "Error:" + str(np.mean(np.abs(l2_error)))
 
         # in what direction is the target value?
         # were we really sure? if so, don't change too much.
@@ -109,6 +104,10 @@ if __name__ == "__main__":
         syn1 += l1.T.dot(l2_delta)
         syn0 += l0.T.dot(l1_delta)
 
-    print "Output After Training:"
-    print l2
+    # print "Output After Training:"
+    # print syn0
+
+if __name__ == "__main__":
+    w_to_v([[1,0,0,0],[0,1,0,0],[0,0,1,0]],[[0,0,0,1]])
+
 
