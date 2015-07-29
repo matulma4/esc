@@ -27,7 +27,7 @@ then
     log_echo "Model not found."
    fi
 log_echo "Copying data."
-cp $DATA_DIR/all.raw_text.gz
+cp $DATA_DIR/all.raw_text.gz $SCRATCHDIR
 log_echo "Extracting data."
 gunzip $SCRATCHDIR/all.raw_text.gz
 log_echo "Done."
