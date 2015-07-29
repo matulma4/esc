@@ -28,7 +28,7 @@ if __name__ == "__main__":
     if os.path.isfile(fname):
         model = models.Word2Vec.load(fname)
     else:
-        dataset = [line.split() for line in open('temp.raw_text')]
+        dataset = [line.split() for line in open('all.raw_text')]
         model = models.Word2Vec(dataset, size=16, window=5, min_count=10, workers=4)
         model.save(fname)
     # print(model.syn0)
