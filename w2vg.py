@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Word2Vec gensim
 import os.path
-
+import sys
 from gensim import models
 import numpy as np
 # from nltk.corpus import gutenberg
@@ -30,11 +30,13 @@ def load_data(fname):
 
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-    fname = "model2.word2vec"
+    data_name = sys.argv[1]
+    model_name = sys.argv[2]
+    fname = model_name + ".word2vec"
     if os.path.isfile(fname):
         model = models.Word2Vec.load(fname)
     else:
-        dataset = MySentences('temp.raw_text')# [line.split() for line in open('temp.raw_text')]
+        dataset = MySentences(data_name + '.raw_text') # [line.split() for line in open('temp.raw_text')]
         model = models.Word2Vec(dataset, size=16, window=5, min_count=10, workers=4)
         model.save(fname)
     # print(model.syn0)
