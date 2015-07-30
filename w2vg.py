@@ -6,6 +6,12 @@ from gensim import models
 import numpy as np
 # from nltk.corpus import gutenberg
 import logging
+class MySentences(object):
+    def __init__(self,fname):
+        self.fname = fname
+    def __iter__(self):
+        for line in open(self.fname):
+            yield line.split()
 def load_data(fname):
     np.random.seed(11)
     words = [line for line in open(fname)]
@@ -16,7 +22,7 @@ def load_data(fname):
     while count < length:
         sent_len = 20# int(np.random.random() * 5) + 7
         sent_end = count + sent_len
-        if (sent_end > length):
+        if sent_end > length:
             sent_end = length
         dataset.append(words[count:sent_end])
         count = sent_end
@@ -24,11 +30,11 @@ def load_data(fname):
 
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-    fname = "model.word2vec"
+    fname = "model2.word2vec"
     if os.path.isfile(fname):
         model = models.Word2Vec.load(fname)
     else:
-        dataset = [line.split() for line in open('all.raw_text')]
+        dataset = MySentences('temp.raw_text')# [line.split() for line in open('temp.raw_text')]
         model = models.Word2Vec(dataset, size=16, window=5, min_count=10, workers=4)
         model.save(fname)
     # print(model.syn0)
