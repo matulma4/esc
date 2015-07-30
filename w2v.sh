@@ -15,27 +15,30 @@ log_echo "Done."
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 DATA_DIR="/storage/brno4-cerit-hsm/projects/sdata/hnizdja2_seznam/raw_texts/classic"
+MODEL_NAME = "model"
+FILE_NAME = "all"
+
 
 cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying model file."
-if [ -f $INPUT_DIR/model.word2vec ]
+if [ -f $INPUT_DIR/$MODEL_NAME.word2vec ]
 then
-    cp $INPUT_DIR/model.word2vec $SCRATCHDIR
+    cp $INPUT_DIR/$MODEL_NAME.word2vec $SCRATCHDIR
     log_echo "Model found."
     else
     log_echo "Model not found."
    fi
 log_echo "Copying data."
-cp $DATA_DIR/all.raw_text.gz $SCRATCHDIR
+cp $DATA_DIR/$FILE_NAME.raw_text.gz $SCRATCHDIR
 log_echo "Extracting data."
-gunzip $SCRATCHDIR/all.raw_text.gz
+gunzip $SCRATCHDIR/$FILE_NAME.raw_text.gz
 log_echo "Done."
 log_echo "Running script..."
-python $INPUT_DIR/w2vg.py
+python $INPUT_DIR/w2vg.py $FILE_NAME $MODEL_NAME
 log_echo "Done."
 log_echo "Copying files..."
-cp $SCRATCHDIR/model.word2vec $INPUT_DIR
+cp $SCRATCHDIR/$MODEL_NAME.word2vec $INPUT_DIR
 log_echo "Done."
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
