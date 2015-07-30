@@ -15,8 +15,8 @@ log_echo "Done."
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 DATA_DIR="/storage/brno4-cerit-hsm/projects/sdata/hnizdja2_seznam/raw_texts/classic"
-MODEL_NAME = "model"
-FILE_NAME = "all"
+MODEL_NAME="model"
+FILE_NAME="all"
 
 
 cd $SCRATCHDIR
