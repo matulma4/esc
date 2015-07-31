@@ -37,22 +37,25 @@ if __name__ == "__main__":
         model = models.Word2Vec.load(fname)
     else:
         dataset = MySentences(data_name + '.raw_text') # [line.split() for line in open('temp.raw_text')]
-        model = models.Word2Vec(dataset, size=16, window=5, min_count=10, workers=4)
+        model = models.Word2Vec(dataset, sg=int(sys.argv[3]),size=int(sys.argv[4]),window=int(sys.argv[5]),alpha=int(sys.argv[6])/1000,seed=37,
+                                min_count=int(sys.argv[7]),sample=0.00005,workers=4,hs=int(sys.argv[8]),negative=int(sys.argv[9]),iter=int(sys.argv[10]))
         model.save(fname)
     # print(model.syn0)
+    f = open(fname+'.out','w')
     for doc in model.most_similar(positive=['krab', 'ruka'], negative=['člověk']):
-        print doc[0].encode('utf-8'),str(doc[1])
+        f.write(doc[0].encode('utf-8')+" "+str(doc[1]))
     print('--------------------------------------')
     for doc in model.most_similar(positive=['nafta', 'člověk'], negative=['jídlo']):
-        print doc[0].encode('utf-8'),str(doc[1])
-    print('--------------------------------------')
+        f.write(doc[0].encode('utf-8')+" "+str(doc[1]))
+    f.write('--------------------------------------')
     for doc in model.most_similar(positive=['silnice', 'vlak'], negative=['kolej']):
-        print doc[0].encode('utf-8'),str(doc[1])
-    print('--------------------------------------')
+        f.write(doc[0].encode('utf-8')+" "+str(doc[1]))
+    f.write('--------------------------------------')
     #for doc in model.most_similar(positive=['žena', 'král'], negative=['muž'])
     #    print unicode(doc,'utf-8')
     # print unicode(,'utf-8')
     # print model.most_similar(positive=['Paris', 'Spain'], negative=['Madrid'])
     # print model.doesnt_match("Paris Berlin Japan Tokyo".split())
-    print model.doesnt_match("bratr sestra auto strýc".split()).encode('utf-8')
+    f.write(model.doesnt_match("bratr sestra auto strýc".split()).encode('utf-8'))
+    f.close()
     # model.accuracy('questions-words.txt')

@@ -12,19 +12,11 @@ log_echo() {
 log_echo "Starting..."
 source /storage/brno2/home/$LOGNAME/.profile_matulma4
 log_echo "Done."
-i=1
-s=4
-w=5
-a=25
-m=3
-h=0
-n=0
-g=0
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 DATA_DIR="/storage/brno4-cerit-hsm/projects/sdata/hnizdja2_seznam/raw_texts/classic"
 # sg size window alpha*1000 mincount hs neg iter
-MODEL_NAME=i$1_s$2_w$3_a$4_m$5_h$6_n$7_g$8
+
 FILE_NAME="all"
 
 
@@ -44,7 +36,17 @@ log_echo "Extracting data."
 gunzip $SCRATCHDIR/$FILE_NAME.raw_text.gz
 log_echo "Done."
 log_echo "Running scripts..."
-python $INPUT_DIR/w2vg.py $FILE_NAME $MODEL_NAME $g $s $w $a $m $h $n $i
+for i in 0 1
+do
+for j in 0 1
+do
+for k in 5 10 15
+do
+MODEL_NAME=i1_s4_w5_a25_m3_h$j_n$k_g$i
+python $INPUT_DIR/w2vg.py $FILE_NAME $MODEL_NAME $i 4 5 25 3 $j $k 1
+done
+done
+done
 log_echo "Done."
 log_echo "Copying files..."
 cp $SCRATCHDIR/$MODEL_NAME.* $INPUT_DIR
