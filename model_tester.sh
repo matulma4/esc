@@ -5,7 +5,7 @@
 #PBS -l mem=8gb
 #PBS -l scratch=16gb
 
-EXPORT LANG=cs_CZ
+export LANG=cs_CZ
 log_echo() {
   echo $(date "+%Y%m%d-%H.%M.%S") " $@";
 }

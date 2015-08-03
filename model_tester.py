@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gensim import models
 import sys
 
