@@ -12,14 +12,14 @@ log_echo() {
 log_echo "Starting..."
 source /storage/brno2/home/$LOGNAME/.profile_matulma4
 log_echo "Done."
-i=1
-s=4
-w=5
-a=25
-m=3
-h=0
-n=0
-g=0
+#i=1
+#s=4
+#w=5
+#a=25
+#m=3
+#h=0
+#n=0
+#g=0
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 DATA_DIR="/storage/brno4-cerit-hsm/projects/sdata/hnizdja2_seznam/raw_texts/classic"
