@@ -23,7 +23,7 @@ for doc in $INPUT_DIR/models/$TYPE/*.word2vec ; do
 cp $doc $SCRATCHDIR
 cp $doc.* $SCRATCHDIR
 python model_tester.py $doc
-cp $doc.out $INPUT_DIR/models/$TYPE
+#cp $SCRATCHDIR/$doc.out $INPUT_DIR/models/$TYPE
 done
 log_echo "Done."
 log_echo "Cleaning up..."
