@@ -16,6 +16,7 @@ INPUT_DIR="/storage/brno2/home/matulma4/esc/models"
 TYPE="classic"
 
 cd $SCRATCHDIR
+cp $INPUT_DIR/model_tester.py $SCRATCHDIR
 N_JOBS=1
 log_echo "Running scripts..."
 for doc in $INPUT_DIR/$TYPE/*.word2vec ; do
@@ -25,3 +26,7 @@ python model_tester.py $doc
 cp $doc.out $INPUT_DIR/$TYPE
 done
 log_echo "Done."
+log_echo "Cleaning up..."
+rm -rf $SCRATCHDIR/*
+log_echo "Done."
+log_echo "Finished."
