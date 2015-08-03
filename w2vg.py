@@ -30,8 +30,8 @@ def load_data(fname):
     return dataset
 
 if __name__ == "__main__":
-    locale.setlocale(locale.LC_ALL,"cs_CS")
-    sys.setdefaultencoding('utf-8')
+    # locale.setlocale(locale.LC_ALL,"cs_CZ")
+    # sys.setdefaultencoding('utf-8')
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
     data_name = sys.argv[1]
     model_name = sys.argv[2]
