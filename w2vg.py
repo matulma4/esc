@@ -41,7 +41,7 @@ if __name__ == "__main__":
     else:
         dataset = MySentences(data_name + '.raw_text') # [line.split() for line in open('temp.raw_text')]
         model = models.Word2Vec(dataset, sg=int(sys.argv[3]),size=int(sys.argv[4]),window=int(sys.argv[5]),alpha=int(sys.argv[6])/1000,seed=37,
-                                min_count=int(sys.argv[7]),sample=0.00005,workers=4,hs=int(sys.argv[8]),negative=int(sys.argv[9]),iter=int(sys.argv[10]))
+                                min_count=int(sys.argv[7]),sample=0.00005,workers=8,hs=int(sys.argv[8]),negative=int(sys.argv[9]),iter=int(sys.argv[10]))
         model.save(fname)
     # print(model.syn0)
 

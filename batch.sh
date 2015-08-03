@@ -1,7 +1,11 @@
 #!/bin/bash
 
-for min in 5 10 50 ; do
-for sg in 0 1 ; do
-qsub -v I=1,S=4,W=5,A=25,M=$min,H=1,N=1,G=$sg w2v.sh
+for nm in 'classic' 'lemmatized' ; do
+for iter in 1 2 3 4 5 ; do
+for size in 25 50 100 150 200 250 300 ; do
+for win in 1 2 3 5 10 ; do
+qsub -v I=$iter,S=$size,W=$win,A=25,M=50,H=1,N=1,G=0,NAME=$nm w2v.sh
+done
+done
 done
 done
