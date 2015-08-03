@@ -24,7 +24,7 @@ log_echo "Done."
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 DATA_DIR="/storage/brno4-cerit-hsm/projects/sdata/hnizdja2_seznam/raw_texts/classic"
 # sg size window alpha*1000 mincount hs neg iter
-MODEL_NAME=i$i_s$s_w$w_a$a_m$m_h$h_n$n_g$g
+MODEL_NAME=i$I-s$S-w$W-a$A-m$M-h$H-n$N-g$G
 FILE_NAME="all"
 
 
@@ -44,7 +44,7 @@ log_echo "Extracting data."
 gunzip $SCRATCHDIR/$FILE_NAME.raw_text.gz
 log_echo "Done."
 log_echo "Running scripts..."
-python $INPUT_DIR/w2vg.py $FILE_NAME $MODEL_NAME $g $s $w $a $m $h $n $i
+python $INPUT_DIR/w2vg.py $FILE_NAME $MODEL_NAME $G $S $W $A $M $H $N $I
 log_echo "Done."
 log_echo "Copying files..."
 cp $SCRATCHDIR/$MODEL_NAME.* $INPUT_DIR
