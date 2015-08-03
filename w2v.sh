@@ -24,7 +24,7 @@ log_echo "Done."
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 DATA_DIR="/storage/brno4-cerit-hsm/projects/sdata/hnizdja2_seznam/raw_texts/classic"
 # sg size window alpha*1000 mincount hs neg iter
-MODEL_NAME=i$1_s$2_w$3_a$4_m$5_h$6_n$7_g$8
+MODEL_NAME=i$i_s$s_w$w_a$a_m$m_h$h_n$n_g$g
 FILE_NAME="all"
 
 
