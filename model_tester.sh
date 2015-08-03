@@ -2,7 +2,7 @@
 #PBS -N w2vg
 #PBS -l walltime=24h
 #PBS -l nodes=2:ppn=4
-#PBS -l mem=8gb
+#PBS -l mem=32gb
 #PBS -l scratch=16gb
 
 export LANG=cs_CZ
