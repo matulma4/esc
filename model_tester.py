@@ -7,6 +7,7 @@ if __name__ == "__main__":
     linesep = os.linesep
     model = models.Word2Vec.load(sys.argv[1])
     f = open(sys.argv[1]+'.out','w')
+    f.write(sys.argv[1]+linesep)
     for doc in model.most_similar(positive=['krab', 'ruka'], negative=['člověk']):
         f.write(doc[0]+" "+str(doc[1])+linesep)
     print('--------------------------------------'+linesep)
@@ -18,4 +19,6 @@ if __name__ == "__main__":
     f.write('--------------------------------------'+linesep)
 
     f.write(model.doesnt_match("bratr sestra auto strýc".split())+linesep)
+    f.write(linesep)
+    f.write(linesep)
     f.close()

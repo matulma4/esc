@@ -1,7 +1,7 @@
 #!/bin/bash
-#PBS -N w2vg
+#PBS -N model_tester
 #PBS -l walltime=24h
-#PBS -l nodes=2:ppn=4
+#PBS -l nodes=4:ppn=4
 #PBS -l mem=32gb
 #PBS -l scratch=16gb
 
