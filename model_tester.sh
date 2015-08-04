@@ -13,7 +13,7 @@ log_echo "Starting..."
 source /storage/brno2/home/$LOGNAME/.profile_matulma4
 log_echo "Done."
 INPUT_DIR="/storage/brno2/home/matulma4/esc"
-TYPE="classic"
+TYPE="lemmatized"
 
 cd $SCRATCHDIR
 cp $INPUT_DIR/model_tester.py $SCRATCHDIR
