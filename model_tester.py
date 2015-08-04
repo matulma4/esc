@@ -10,7 +10,7 @@ if __name__ == "__main__":
     f.write(sys.argv[1]+linesep)
     for doc in model.most_similar(positive=['krab', 'ruka'], negative=['člověk']):
         f.write(doc[0]+" "+str(doc[1])+linesep)
-    print('--------------------------------------'+linesep)
+    f.write('--------------------------------------'+linesep)
     for doc in model.most_similar(positive=['nafta', 'člověk'], negative=['jídlo']):
         f.write(doc[0]+" "+str(doc[1])+linesep)
     f.write('--------------------------------------'+linesep)
