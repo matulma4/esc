@@ -19,7 +19,7 @@ cd $SCRATCHDIR
 cp $INPUT_DIR/model_tester.py $SCRATCHDIR
 N_JOBS=1
 log_echo "Running scripts..."
-for doc in $INPUT_DIR/models/$TYPE/*m30000*.word2vec ; do
+for doc in $INPUT_DIR/models/$TYPE/*.word2vec ; do
 cp $doc $SCRATCHDIR
 cp $doc.* $SCRATCHDIR
 python model_tester.py $doc
