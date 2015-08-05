@@ -25,7 +25,7 @@ INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 DATA_DIR="/storage/brno4-cerit-hsm/projects/sdata/hnizdja2_seznam/raw_texts"
 # sg size window alpha*1000 mincount hs neg iter
 MODEL_NAME=i$I-s$S-w$W-a$A-m$M-h$H-n$N-g$G
-FILE_NAME="all"
+# FILE_NAME="all"
 TYPE=$NAME
 
 
