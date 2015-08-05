@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N w2vg
 #PBS -l walltime=24h
-#PBS -l nodes=8:ppn=4
+#PBS -l nodes=1:ppn=8
 #PBS -l mem=8gb
 #PBS -l scratch=16gb
 

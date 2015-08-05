@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N model_tester
 #PBS -l walltime=24h
-#PBS -l nodes=4:ppn=4
+#PBS -l nodes=1:ppn=4
 #PBS -l mem=32gb
 #PBS -l scratch=16gb
 
@@ -13,7 +13,7 @@ log_echo "Starting..."
 source /storage/brno2/home/$LOGNAME/.profile_matulma4
 log_echo "Done."
 INPUT_DIR="/storage/brno2/home/matulma4/esc"
-TYPE="lemmatized"
+TYPE="classic"
 
 cd $SCRATCHDIR
 cp $INPUT_DIR/model_tester.py $SCRATCHDIR

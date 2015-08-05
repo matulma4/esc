@@ -8,15 +8,15 @@ if __name__ == "__main__":
     model = models.Word2Vec.load(sys.argv[1])
     f = open(sys.argv[1]+'.out','w')
     f.write(sys.argv[1]+linesep)
-    f.write('okno')
+    f.write('okno'+linesep)
     for doc in model.most_similar(positive=['okno']):
         f.write(doc[0]+" "+str(doc[1])+linesep)
     f.write('--------------------------------------'+linesep)
-    f.write('clovek')
+    f.write('clovek'+linesep)
     for doc in model.most_similar(positive=['člověk']):
         f.write(doc[0]+" "+str(doc[1])+linesep)
     f.write('--------------------------------------'+linesep)
-    f.write('auto')
+    f.write('auto'+linesep)
     for doc in model.most_similar(positive=['auto']):
         f.write(doc[0]+" "+str(doc[1])+linesep)
     f.write('--------------------------------------'+linesep)
