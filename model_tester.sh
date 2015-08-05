@@ -19,11 +19,13 @@ cd $SCRATCHDIR
 cp $INPUT_DIR/model_tester.py $SCRATCHDIR
 N_JOBS=1
 log_echo "Running scripts..."
-for doc in $INPUT_DIR/models/$TYPE/*.word2vec ; do
+for TYPE in 'classic' 'lemmatized' ; do
+for doc in $INPUT_DIR/models/$TYPE/default/*.word2vec ; do
 cp $doc $SCRATCHDIR
 cp $doc.* $SCRATCHDIR
 python model_tester.py $doc
 #cp $SCRATCHDIR/$doc.out $INPUT_DIR/models/$TYPE
+done
 done
 log_echo "Done."
 log_echo "Cleaning up..."
