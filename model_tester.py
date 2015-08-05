@@ -8,8 +8,8 @@ if __name__ == "__main__":
     model = models.Word2Vec.load(sys.argv[1])
     f = open(sys.argv[1]+'.out','w')
     f.write(sys.argv[1]+linesep)
-    for doc in model.most_similar(positive=['krab', 'ruka'], negative=['člověk']):
-        f.write(doc[0]+" "+str(doc[1])+linesep)
+    # for doc in model.most_similar(positive=['krab', 'ruka'], negative=['člověk']):
+    #     f.write(doc[0]+" "+str(doc[1])+linesep)
     f.write('--------------------------------------'+linesep)
     for doc in model.most_similar(positive=['nafta', 'člověk'], negative=['jídlo']):
         f.write(doc[0]+" "+str(doc[1])+linesep)
