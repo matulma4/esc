@@ -45,10 +45,10 @@ log_echo "Extracting data."
 gunzip $SCRATCHDIR/$FILE_NAME.raw_text.gz
 log_echo "Done."
 log_echo "Running scripts..."
-python $INPUT_DIR/w2vg.py $FILE_NAME $MODEL_NAME $G $S $W $A $M $H $N $I
+python $INPUT_DIR/w2vg.py $FILE_NAME $FILE_NAME $G $S $W $A $M $H $N $I
 log_echo "Done."
 log_echo "Copying files..."
-cp $SCRATCHDIR/$MODEL_NAME.* $INPUT_DIR/models/$TYPE
+cp $SCRATCHDIR/$MODEL_NAME.* $INPUT_DIR/models/$TYPE/default
 log_echo "Done."
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
