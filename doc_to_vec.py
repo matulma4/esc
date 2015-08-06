@@ -1,7 +1,7 @@
 from gensim import models
 import numpy as np
 from sklearn.manifold import TSNE
-from w2vg import MySentences
+# from w2vg import MySentences
 
 def average_vec(mx,model,length):
     """Accepts list of words and word2vec model. Returns average of vectors of the words"""
