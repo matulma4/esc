@@ -29,7 +29,7 @@ log_echo "Copying data."
 cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
 log_echo "Done."
-python $SCRATCHDIR doc_to_vec.py
+python $SCRATCHDIR/doc_to_vec.py
 log_echo "Done."
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
