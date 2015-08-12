@@ -95,7 +95,7 @@ def load_qs(model):
     dictionary = load_doc_hashes("doc_mapper.txt")
     questions = {}
     length = len(model[model.vocab.keys()[0]])
-    docs = [line.split() for line in open("temp.raw_text")]
+    docs = [line.split() for line in open("content.raw_text")]
     d = []
     for doc in docs:
         d.append(average_vec(doc,model,length))
@@ -125,11 +125,11 @@ def load_qs(model):
                 questions[qid].atext.insert(0,document)
                 questions[qid].y = np.insert(questions[qid].y,0,1)
             else:
-                questions[qid] = q(q_vec,[d[index]],np.zeros(2),query,[document],np.array([]))
+                questions[qid] = q(q_vec,[d[index]],np.empty((1,2)),query,[document],np.array([]))
     return questions
 
 if __name__ == "__main__":
-    fname = "model5.word2vec"
+    fname = "content.word2vec"
     # fname = sys.argv[1]
     model = models.Word2Vec.load(fname)
 
@@ -138,8 +138,9 @@ if __name__ == "__main__":
     # visualize(model)
     questions = load_qs(model)
     # (M,b) = train(questions.values(),[])
+    for q in questions:
+        print len(q.a)
 
-    data_name = 'raw_text'
     # data_name = 'temp.raw_text'
     # sentences = MySentences(data_name)
     # i = 0
