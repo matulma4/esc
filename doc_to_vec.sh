@@ -13,6 +13,7 @@ log_echo() {
 }
 log_echo "Starting..."
 source /storage/brno2/home/$LOGNAME/.profile_matulma4
+pip install --upgrade pip
 pip install sklearn --upgrade
 log_echo "Done."
 
