@@ -12,8 +12,10 @@ from basicgrad import q
 def average_vec(mx,model):
     """Accepts list of words and word2vec model. Returns average of vectors of the words"""
 
-    vec = np.matrix([model[word] for word in mx])
-    return np.mean(vec)
+    vec = np.matrix([model[word] for word in mx if word in model.vocab.keys()])
+    if len(vec) == 0:
+        vec = np.zeros(len(model[model.vocab.keys()[0]]))
+    return np.mean(vec,0)
     # for vec in mx:
     #     # print vec
     #     if vec in model.vocab.keys():
@@ -188,7 +190,7 @@ def load_qs(model):
     return questions
 
 if __name__ == "__main__":
-    fname = "model5.word2vec"
+    fname = "content.word2vec"
     # fname = sys.argv[1]
     model = models.Word2Vec.load(fname)
 
