@@ -9,12 +9,11 @@ from basicgrad import q
 
 
 
-def average_vec(mx,model,length):
+def average_vec(mx,model):
     """Accepts list of words and word2vec model. Returns average of vectors of the words"""
 
-    count = len(mx)
-    vec_sum = np.zeros(length)
-    return vec_sum
+    vec = np.matrix([model[word] for word in mx])
+    return np.mean(vec)
     # for vec in mx:
     #     # print vec
     #     if vec in model.vocab.keys():
@@ -87,13 +86,14 @@ def visualize(model):
             elif y < 0.3:
                 segments[14].append((x,y,label))
     for i in range(15):
-        output_file("bokeh\\"+str(i)+".html")
-        p = figure(plot_width=800,plot_height=600)
+        # output_file("bokeh\\"+str(i)+".html")
+        # p = figure(plot_width=800,plot_height=600)
         seg = segments[i]
         # p.scatter(X[:100],Y[:100],marker="circle")
         # labels = [word.decode('utf-8') for word in model.vocab.keys()]
         for x, y, label in seg:
-            p.text(float(x),float(y),text=[label],text_font_size="10pt")
+            # p.text(float(x),float(y),text=[label],text_font_size="10pt")
+            pass
         # show(p)
 
     # plt.scatter(X, Y, alpha=0.5)
@@ -156,7 +156,7 @@ def load_qs(model):
     docs = MySentences("content.raw_text")
     d = []
     for doc in docs:
-        d.append(average_vec(doc,model,length))
+        d.append(average_vec(doc,model))
     features = MySentences("base_text_features.rtData")
     for words in features:
         # words = line.split()
@@ -173,7 +173,7 @@ def load_qs(model):
             i += 1
         url = words[i]
         hash = words[i+1]
-        q_vec = average_vec(query,model,length)
+        q_vec = average_vec(query,model)
         # connected_docs = words[x:]
         index = translate_hash(hash,dictionary)
         if(index > -1 and index < len(docs)):
