@@ -21,7 +21,7 @@ def average(lines, result, model, dim):
 
 if __name__ == "__main__":
     threads = []
-    n = 3
+    n = 16
     model = models.Word2Vec.load("model5.word2vec")
     lines = [line.split() for line in open("temp.raw_text")]
     length = len(lines)
