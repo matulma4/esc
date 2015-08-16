@@ -1,13 +1,14 @@
 #!/bin/bash
 #PBS -N avg
-#PBS -l walltime=24h
+#PBS -l walltime=48h
 #PBS -l nodes=1:ppn=16
-#PBS -l mem=32gb
+#PBS -l mem=64gb
 #PBS -l scratch=16gb
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 MODEL_NAME="model5"
-DATA_NAME="temp.raw_text"
+DATA_NAME="content.raw_text"
+PATH_NAME="models/lemmatized/default"
 
 log_echo() {
   echo $(date "+%Y%m%d-%H.%M.%S") " $@";
@@ -20,16 +21,16 @@ log_echo "Done."
 cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying model file."
-if [ -f $INPUT_DIR/$MODEL_NAME.word2vec ]
+if [ -f $INPUT_DIR/$PATH_NAME/$MODEL_NAME.word2vec ]
 then
-    cp $INPUT_DIR/$MODEL_NAME.* $SCRATCHDIR
+    cp $INPUT_DIR/$PATH_NAME/$MODEL_NAME.* $SCRATCHDIR
     log_echo "Model found."
     else
     log_echo "Model not found."
+    exit 1
    fi
 log_echo "Copying data."
 # cp $INPUT_DIR/models/lemmatized/default/$DATA_NAME $SCRATCHDIR
-cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
 log_echo "Done."
 python $SCRATCHDIR/thread_average.py

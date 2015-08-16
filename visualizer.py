@@ -29,6 +29,35 @@ def visualize(model):
             plt.annotate(label,(x, y))
     plt.show()
 
+def output_tsne(model):
+    # X = [model[word] for word in model.vocab.keys()]
+    # tsne = TSNE(n_components=2,random_state=0)
+    # a = tsne.fit_transform(X)
+    f = open("HighCharts\examples\scatter\index2.htm",'w')
+    g = open("HighCharts\examples\scatter\start.htm",'r')
+    h = open("HighCharts\examples\scatter\end.htm",'r')
+
+    for line in g:
+        f.write(line)
+
+    f.write("[")
+    i = 0
+    for word in model.vocab.keys():
+    # for i in range(len(a)):
+        if i == 5000:
+            break
+        i += 1
+        values = ""
+        for value in model[word]:
+            values += str(value)+", "
+        values = values[:len(values)-2]
+        f.write("{name: '"+word+"',color: 'rgba(119, 152, 191, .5)',data: [["+values+"]]},")
+
+    f.write("]")
+
+    for line in h:
+        f.write(line)
+    f.close()
 
 if __name__ == "__main__":
     model = models.Word2Vec.load("model5.word2vec")

@@ -4,7 +4,6 @@
 import threading
 from gensim import models
 import numpy as np
-import io
 
 def average(lines, result, model, dim):
     length = len(lines)
@@ -22,8 +21,8 @@ def average(lines, result, model, dim):
 if __name__ == "__main__":
     threads = []
     n = 16
-    model = models.Word2Vec.load("model5.word2vec")
-    lines = [line.split() for line in open("temp.raw_text")]
+    model = models.Word2Vec.load("content.word2vec")
+    lines = [line.split() for line in open("content.raw_text")]
     length = len(lines)
     dim = len(model[model.vocab.keys()[0]])
     result = np.empty(shape=(length,dim))
@@ -36,7 +35,7 @@ if __name__ == "__main__":
     for thread in threads:
         thread.join()
 
-    with open("averages.txt",'w') as f:
+    with open("averages_content.txt",'w') as f:
         for vec in result:
             for value in vec:
                 f.write(str(value)+" ")
