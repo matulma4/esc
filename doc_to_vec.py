@@ -115,8 +115,8 @@ if __name__ == "__main__":
     # output_tsne(model)
     questions = load_qs(model)
     # (M,b) = train(questions.values(),[])
-    for q in questions:
-        print len(q.a)
+    for q in questions.keys():
+        print len(questions[q].a)
 
     # data_name = 'temp.raw_text'
     # sentences = MySentences(data_name)
