@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-save_data( int n, int d,double perplexity, double theta,int no_dims) {
+save_data( int n, int d,double perplexity, double theta,int no_dims,double** data) {
     
 	// Open file, write first 2 integers and then the data
 	FILE *h;
@@ -8,17 +8,17 @@ save_data( int n, int d,double perplexity, double theta,int no_dims) {
 		printf("Error: could not open data file.\n");
 		return;
 	}
-	int data[1000][100];
-	int i,j;	
+	//int data[1000][100];
+	/*int i,j;	
 	for (i = 0;i < 1000;i++){
 		for(j=0;j < 100;j++){
 			data[i][j] = i+j;
 		}
-	}
+	}*/
 	fwrite(&n, sizeof(int), 1, h);
-	fwrite(&d, sizeof(int), 1, h);					// original dimensionality
-    fwrite(&theta, sizeof(double), 1, h);			// gradient accuracy
-	fwrite(&perplexity, sizeof(double), 1, h);		// perplexity
+	fwrite(&d, sizeof(int), 1, h);												// original dimensionality
+   	fwrite(&theta, sizeof(double), 1, h);										// gradient accuracy
+	fwrite(&perplexity, sizeof(double), 1, h);								// perplexity
 	fwrite(&no_dims, sizeof(int), 1, h);   
 	fwrite(data, sizeof(double), n * d, h);
 	//fwrite(landmarks, sizeof(int), n, h);
@@ -63,6 +63,6 @@ int main(int argc,const char* argv[]){
 	fscanf(f,"%lf",&data[i][j]);
 	}
 	}
-	save_data(n,d,0,0.1,2);
+	save_data(n,d,0,0.1,2,(double**) data);	
 	}
 }
