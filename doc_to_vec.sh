@@ -6,10 +6,11 @@
 #PBS -l scratch=16gb
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
-MODEL_NAME="content"
-DATA_NAME="content.raw_text"
+MODEL_NAME="model5"
+DATA_NAME="temp.raw_text"
 FTR_NAME="base_text_features.rtData"
-MAP_NAME="doc_mapper.txt.gz"
+MAP_NAME="temp_mapper.txt"
+AVG_NAME="averages.txt"
 log_echo() {
   echo $(date "+%Y%m%d-%H.%M.%S") " $@";
 }
@@ -26,12 +27,14 @@ then
     log_echo "Model found."
     else
     log_echo "Model not found."
+    exit 1
    fi
 log_echo "Copying data."
-# cp $INPUT_DIR/models/lemmatized/default/$DATA_NAME $SCRATCHDIR
+cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
 cp $INPUT_DIR/$FTR_NAME $SCRATCHDIR
 cp $INPUT_DIR/$MAP_NAME $SCRATCHDIR
-gunzip $SCRATCHDIR/$MAP_NAME
+cp $INPUT_DIR/$AVG_NAME $SCRATCHDIR
+# gunzip $SCRATCHDIR/$MAP_NAME
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
 log_echo "Done."
 python $SCRATCHDIR/doc_to_vec.py
