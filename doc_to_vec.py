@@ -46,7 +46,7 @@ class MySentences:
         with open(self.fname) as f:
             for i, l in enumerate(f):
                 if i == item:
-                    return l
+                    return l.split()
 
 
 
@@ -66,9 +66,9 @@ def translate_hash(hash,dictionary):
 def load_qs(model):
     dictionary = load_doc_hashes("temp_mapper.txt")
     questions = {}
-    length = len(model[model.vocab.keys()[0]])
+    dim = len(model[model.vocab.keys()[0]])
     # docs = [line.split() for line in open("content.raw_text")]
-    docs = MySentences("content.raw_text")
+    docs = MySentences("temp.raw_text")
     length = len(docs)
     model_len = len(model[model.vocab.keys()[0]])
     d = MySentences("averages.txt")# [average_vec(mx,model,model_len) for mx in docs]
@@ -89,11 +89,11 @@ def load_qs(model):
             i += 1
         url = words[i]
         hash = words[i+1]
-        if query in queries.keys():
-            q_vec = queries[query]
+        if qid in queries.keys():
+            q_vec = queries[qid]
         else:
             q_vec = average_vec(query,model,model_len)
-            queries[query] = q_vec
+            queries[qid] = q_vec
         index = translate_hash(hash,dictionary)
         if index > -1 and index < length:
             document = docs[index]

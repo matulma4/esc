@@ -21,9 +21,9 @@ log_echo "Done."
 cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying model file."
-if [ -f $INPUT_DIR/models/lemmatized/default/$MODEL_NAME.word2vec ]
+if [ -f $INPUT_DIR/$MODEL_NAME.word2vec ]
 then
-    cp $INPUT_DIR/models/lemmatized/default/$MODEL_NAME.* $SCRATCHDIR
+    cp $INPUT_DIR/$MODEL_NAME.* $SCRATCHDIR
     log_echo "Model found."
     else
     log_echo "Model not found."
