@@ -116,7 +116,7 @@ if __name__ == "__main__":
     questions = load_qs(model)
     # (M,b) = train(questions.values(),[])
     for q in questions.keys():
-        print len(questions[q].a)
+        print len(questions[q].a),q.qtext
 
     # data_name = 'temp.raw_text'
     # sentences = MySentences(data_name)
