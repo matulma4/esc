@@ -42,7 +42,7 @@ def average_documents(feature_dataset_dir, n_processors,model):
 
 if __name__ == "__main__":
     model = models.Word2Vec.load("model5.word2vec")
-    average_documents(os.getcwd()+"\chunks",4,model)
+    average_documents(os.getcwd()+"/chunks",4,model)
     # threads = []
     # n = 16
     # model = models.Word2Vec.load("content.word2vec")
