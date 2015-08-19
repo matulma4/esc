@@ -31,6 +31,9 @@ then
    fi
 log_echo "Copying data."
 # cp $INPUT_DIR/models/lemmatized/default/$DATA_NAME $SCRATCHDIR
+log_echo "Splitting the input file"
+split -l 50000 -a 2 -d temp.raw_text document_
+log_echo "Done."
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
 log_echo "Done."
 python $SCRATCHDIR/thread_average.py
