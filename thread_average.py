@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import threading
+import argparse
 from gensim import models
 import numpy as np
 from joblib import Parallel,delayed
@@ -37,30 +37,32 @@ def average_documents(feature_dataset_dir, n_processors,model):
     results = Parallel(n_jobs=n_processors)(delayed(average)(f, model) for f in files)
 
 
-    # merge_temp_file(output)
+def threading_old():
+    threads = []
+    n = 16
+    model = models.Word2Vec.load("content.word2vec")
+    lines = [line.split() for line in open("content.raw_text")]
+    length = len(lines)
+    dim = len(model[model.vocab.keys()[0]])
+    result = np.empty(shape=(length,dim))
+    size = length/(n-1)
+    for i in range(0,length,size):
+        t = threading.Thread(target=average,args=(lines[i:i+size],result[i:i+size],model,dim,))
+        threads.append(t)
+        t.start()
+    for thread in threads:
+        thread.join()
 
+    with open("averages_content.txt",'w') as f:
+        for vec in result:
+            for value in vec:
+                f.write(str(value)+" ")
+            f.write('\n')
 
 if __name__ == "__main__":
-    model = models.Word2Vec.load("model5.word2vec")
-    average_documents(os.getcwd()+"/chunks",4,model)
-    # threads = []
-    # n = 16
-    # model = models.Word2Vec.load("content.word2vec")
-    # lines = [line.split() for line in open("content.raw_text")]
-    # length = len(lines)
-    # dim = len(model[model.vocab.keys()[0]])
-    # result = np.empty(shape=(length,dim))
-    # size = length/(n-1)
-    #
-    # for i in range(0,length,size):
-    #     t = threading.Thread(target=average,args=(lines[i:i+size],result[i:i+size],model,dim,))
-    #     threads.append(t)
-    #     t.start()
-    # for thread in threads:
-    #     thread.join()
-    #
-    # with open("averages_content.txt",'w') as f:
-    #     for vec in result:
-    #         for value in vec:
-    #             f.write(str(value)+" ")
-    #         f.write('\n')
+    parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
+    parser.add_argument("n_processors",help="number of processors used",type=int)
+    parser.add_argument("filename",help="model file",type=str)
+    args = parser.parse_args()
+    model = models.Word2Vec.load(args.filename)
+    average_documents(os.getcwd()+"/chunks",args.n_processors,model)
