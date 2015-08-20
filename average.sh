@@ -38,7 +38,7 @@ cp document_* chunks
 log_echo "Done."
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
 log_echo "Done."
-python $SCRATCHDIR/thread_average.py
+python $SCRATCHDIR/thread_average.py 16 $MODEL_NAME.word2vec
 log_echo "Done."
 cp $SCRATCHDIR/*.out $INPUT_DIR
 log_echo "Cleaning up..."
