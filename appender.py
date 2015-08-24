@@ -1,6 +1,7 @@
 import numpy as np
+from doc_to_vec import MySentences
 
-class MySentences:
+class MyWords(MySentences):
     def __init__(self,fname):
         self.fname = fname
 
@@ -17,7 +18,7 @@ class DocRow:
         self.metadata = metadata
 
 if __name__ == "__main__":
-    data = MySentences("base_text_features.rtData")
+    data = MyWords("base_text_features.rtData")
     features = []
     max_ftr = 0
     for line in data:

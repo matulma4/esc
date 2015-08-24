@@ -7,7 +7,8 @@ def dist(x,y):
     return np.sqrt(x*x+y*y)
 
 
-def visualize(model):
+def visualize_model(fname):
+    model = models.Word2Vec.load(fname)
     X = [model[word][0] for word in model.vocab.keys()]
     Y = [model[word][1] for word in model.vocab.keys()]
     segments = [[] for seg in range(16)]
@@ -59,6 +60,48 @@ def output_tsne(model):
         f.write(line)
     f.close()
 
+def visualize_file(fname,model_name):
+    # model = models.Word2Vec.load(model_name)
+    with open(fname) as f:
+        lines = [line.split() for line in f]
+        X = [float(line[0]) for line in lines[1:]]
+        Y = [float(line[1]) for line in lines[1:]]
+        # (a,b,c,d) = find_max_min(X,Y)
+        # x_diff = a - c
+        # y_diff = b - d
+        # t = (x_diff/16 + y_diff/16)/2
+        # step =  np.round(t,decimals=0)
+        # segments = [[] for seg in range(16)]
+        # labels = [word.decode('utf-8') for word in open(model_name)]
+        # for x,y,label in zip(X,Y,labels):
+        #     distance = dist(x,y)
+        #     i = 0
+        #     e = step
+        #     while distance > e:
+        #         i += 1
+        #         e += step
+        #         if i == 15:
+        #             break
+        #     segments[i].append((x,y,label))
+        # for i in range(16):
+        #     plt.figure(i)
+        #     seg = segments[i]
+        # plt.figure()
+        plt.plot(X,Y,"ro")
+        # for x, y,label in zip(X,Y,labels):
+
+         #    plt.annotate(label,(x, y))
+        plt.show()
+
+def find_max_min(X,Y):
+    xmin = np.min(X)
+    ymin = np.min(Y)
+    xmax = np.max(X)
+    ymax = np.max(Y)
+    return (xmax,ymax,xmin,ymin)
 if __name__ == "__main__":
-    model = models.Word2Vec.load("model5.word2vec")
-    visualize(model)
+    # visualize_model("model5.word2vec")
+
+    visualize_file("out.txt","words.txt")
+
+
