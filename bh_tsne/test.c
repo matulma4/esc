@@ -79,8 +79,11 @@ int main(int argc,const char* argv[]){
 	fscanf(f,"%lf",&data[i][j]);
 	}
 	}
+	int perplexity = atoi(argv[2]);
+	double theta;
+	sscanf(argv[3],"%lf",&theta)
 	printf("Scanned,saving data\n");
-	save_data(n,d,0,0.1,2,(double**) data);	
+	save_data(n,d,perplexity,theta,2,(double**) data);
 	printf("Saved\n");
 	free(data);
 	}

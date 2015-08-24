@@ -1,5 +1,6 @@
 from gensim import models
 import numpy as np
+import argparse
 
 def convert_data(fname):
     model = models.Word2Vec.load(fname)
@@ -30,5 +31,8 @@ def get_result(fname):
             print "\n"
 
 if __name__ == "__main__":
-    convert_data("content.word2vec")
+    parser = argparse.ArgumentParser(description="Converts data")
+    parser.add_argument("filename",help="model file",type=str)
+    args = parser.parse_args()
+    convert_data(args.filename)
     # get_result("result.dat")
