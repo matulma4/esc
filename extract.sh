@@ -20,8 +20,8 @@ log_echo "Done."
 cd $SCRATCHDIR
 N_JOBS=1
 
-cp $INPUT_DIR/$DATA_NAME
-cp $INPUT_DIR/temp_mapper.txt
+cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
+cp $INPUT_DIR/temp_mapper.txt $SCRATCHDIR
 cp extractor.py $SCRATCHDIR
 cp doc_to_vec.py $SCRATCHDIR
 cp appender.py $SCRATCHDIR
