@@ -25,6 +25,7 @@ cp $INPUT_DIR/temp_mapper.txt $SCRATCHDIR
 cp $INPUT_DIR/extractor.py $SCRATCHDIR
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
 cp $INPUT_DIR/appender.py $SCRATCHDIR
+cp $INPUT_DIR/basicgrad.py $SCRATCHDIR
 python $SCRATCHDIR/extractor.py
 cp $SCRATCHDIR/temp_features.rtData $INPUT_DIR
 rm -rf $SCRATCHDIR/*
