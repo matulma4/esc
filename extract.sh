@@ -22,9 +22,9 @@ N_JOBS=1
 
 cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
 cp $INPUT_DIR/temp_mapper.txt $SCRATCHDIR
-cp extractor.py $SCRATCHDIR
-cp doc_to_vec.py $SCRATCHDIR
-cp appender.py $SCRATCHDIR
+cp $INPUT_DIR/extractor.py $SCRATCHDIR
+cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
+cp $INPUT_DIR/appender.py $SCRATCHDIR
 python $SCRATCHDIR/extractor.py
 cp $SCRATCHDIR/temp_features.rtData $INPUT_DIR
 rm -rf $SCRATCHDIR/*
