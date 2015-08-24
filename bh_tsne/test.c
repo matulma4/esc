@@ -81,7 +81,7 @@ int main(int argc,const char* argv[]){
 	}
 	int perplexity = atoi(argv[2]);
 	double theta;
-	sscanf(argv[3],"%lf",&theta)
+	sscanf(argv[3],"%lf",&theta);
 	printf("Scanned,saving data\n");
 	save_data(n,d,perplexity,theta,2,(double**) data);
 	printf("Saved\n");

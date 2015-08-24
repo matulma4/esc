@@ -18,14 +18,14 @@ cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying..."
 cp $INPUT_DIR/* $SCRATCHDIR
-cp $INPUT_DIR/../models/$models/default/content.* $SCRATCHDIR
+cp $INPUT_DIR/../models/$MODEL/default/content.* $SCRATCHDIR
 log_echo "Done"
 log_echo "Starting..."
-python $SCRATCHDIR bh.py content.word2vec
+python $SCRATCHDIR/bh.py content.word2vec
 /bin/bash tsne.sh $PERPLEXITY $THETA
-mkdir $INPUT_DIR/words/$MODELp$PERPLEXITYt$THETA
-cp out.txt $INPUT_DIR/words/$MODELp$PERPLEXITYt$THETA
-cp tsne_out.txt $INPUT_DIR/words/$MODELp$PERPLEXITYt$THETA
+mkdir $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
+cp out.txt $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
+cp tsne_out.txt $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
 log_echo "Done"
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
