@@ -6,7 +6,7 @@
 #PBS -l scratch=16gb
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
-DATA_NAME="base_text_features.rtData"
+DATA_NAME="temp_text_features.rtData"
 PATH_NAME="models/lemmatized/default"
 
 log_echo() {
@@ -21,7 +21,9 @@ cd $SCRATCHDIR
 N_JOBS=1
 
 cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
-cp $INPUT_DIR/temp_mapper.txt $SCRATCHDIR
+cp $INPUT_DIR/$PATH_NAME/content.raw_text
+cp $INPUT_DIR/doc_mapper.txt.gz $SCRATCHDIR
+gunzip $SCRATCHDIR/doc_mapper.txt.gz
 cp $INPUT_DIR/extractor.py $SCRATCHDIR
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
 cp $INPUT_DIR/appender.py $SCRATCHDIR
