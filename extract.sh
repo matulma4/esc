@@ -29,5 +29,5 @@ cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
 cp $INPUT_DIR/appender.py $SCRATCHDIR
 cp $INPUT_DIR/basicgrad.py $SCRATCHDIR
 python $SCRATCHDIR/extractor.py
-cp $SCRATCHDIR/temp_features.rtData $INPUT_DIR
+cp $SCRATCHDIR/temp_all.raw_text $INPUT_DIR
 rm -rf $SCRATCHDIR/*
