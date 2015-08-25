@@ -19,7 +19,7 @@ log_echo "Done."
 
 cd $SCRATCHDIR
 N_JOBS=1
-pip install numpy --user
+pip install numpy --upgrade --user
 cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
 cp $INPUT_DIR/$PATH_NAME/content.raw_text $SCRATCHDIR
 cp $INPUT_DIR/doc_mapper.txt.gz $SCRATCHDIR
