@@ -87,10 +87,10 @@ def visualize_file(fname,model_name):
         #     plt.figure(i)
         #     seg = segments[i]
         # plt.figure()
+        labels = [line.decode('utf8') for line in open(model_name)]
         plt.plot(X,Y,"ro")
-        # for x, y,label in zip(X,Y,labels):
-
-         #    plt.annotate(label,(x, y))
+        for x, y,label in zip(X,Y,labels):
+            plt.annotate(label,(x, y))
         plt.show()
 
 def find_max_min(X,Y):
@@ -101,7 +101,13 @@ def find_max_min(X,Y):
     return (xmax,ymax,xmin,ymin)
 if __name__ == "__main__":
     # visualize_model("model5.word2vec")
-
-    visualize_file("out.txt","words.txt")
+    p = ["10","20","30","40","50"]
+    t = ["0.2","0.4","0.6","0.8","1"]
+    m = ["classic","lemmatized"]
+    for perplex in p[4:5]:
+        for theta in t:
+            for mode in m[1:2]:
+                path = "words\\"+mode+"-p"+perplex+"-t"+theta+"\\"
+                visualize_file(path+"out.txt",path+"words.txt")
 
 

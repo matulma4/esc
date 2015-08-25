@@ -7,6 +7,7 @@ import numpy as np
 # from sklearn.manifold import TSNE
 # from w2vg import MySentences
 from basicgrad import q
+import random
 # from train import train
 
 
@@ -34,10 +35,11 @@ class MySentences:
         self.length = i+1
 
     def __iter__(self):
-        for line in open(self.fname):
-            print self.i
-            self.i += 1
-            yield line.split()
+        with open(self.fname) as f:
+            for line in f:
+                # print self.i
+                self.i += 1
+                yield line.split()
 
     def __len__(self):
         return self.length
@@ -70,8 +72,10 @@ def load_qs(model):
     # docs = [line.split() for line in open("content.raw_text")]
     docs = MySentences("temp.raw_text")
     length = len(docs)
-    model_len = len(model[model.vocab.keys()[0]])
-    d = MySentences("averages.txt")# [average_vec(mx,model,model_len) for mx in docs]
+    dummy_file(length,dim)
+    dim = len(model[model.vocab.keys()[0]])
+    dummy_file(length,dim)
+    d = MySentences("dummy_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
     features = MySentences("base_text_features.rtData")
     queries = {}
     for words in features:
@@ -89,10 +93,11 @@ def load_qs(model):
             i += 1
         url = words[i]
         hash = words[i+1]
+
         if qid in queries.keys():
             q_vec = queries[qid]
         else:
-            q_vec = average_vec(query,model,model_len)
+            q_vec = average_vec(query,model,dim)
             queries[qid] = q_vec
         index = translate_hash(hash,dictionary)
         if index > -1 and index < length:
@@ -103,20 +108,28 @@ def load_qs(model):
                 questions[qid].atext.insert(0,document)
                 questions[qid].y = np.insert(questions[qid].y,0,1)
             else:
+                print q_vec,[float(a) for a in d[index]],query,[document],np.array([])
                 questions[qid] = q(q_vec,[float(a) for a in d[index]],np.empty((1,2)),query,[document],np.array([]))
     return questions
+
+def dummy_file(length,dim):
+    random.seed(13)
+    with open("dummy_averages.txt","w") as f:
+        for i in range(length):
+            for j in range(dim):
+                f.write(str(random.randrange(100)) + " ")
+            f.write("\n")
 
 if __name__ == "__main__":
     fname = "model5.word2vec"
     # fname = sys.argv[1]
     model = models.Word2Vec.load(fname)
 
-
     # output_tsne(model)
     questions = load_qs(model)
     # (M,b) = train(questions.values(),[])
     for q in questions.keys():
-        print len(questions[q].a),questions[q].qtext
+        print len(questions[q].a[0]),questions[q].qtext
 
     # data_name = 'temp.raw_text'
     # sentences = MySentences(data_name)
