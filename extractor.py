@@ -1,7 +1,17 @@
 __author__ = 'Martin'
 
-from appender import MyWords
+
 from doc_to_vec import load_doc_hashes
+from doc_to_vec import MySentences
+
+class MyWords(MySentences):
+    def __init__(self,fname):
+        self.fname = fname
+
+    def __iter__(self):
+        with open(self.fname) as f:
+            for line in f:
+                yield line
 
 if __name__ == "__main__":
     features = MyWords("temp_features.rtData")
