@@ -7,7 +7,7 @@
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 MODEL_NAME="model5"
-DATA_NAME="temp.raw_text"
+DATA_NAME="temp_new.raw_text"
 PATH_NAME="models/lemmatized/default"
 
 log_echo() {
@@ -32,7 +32,7 @@ then
 log_echo "Copying data."
 cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
 log_echo "Splitting the input file"
-split -l 625 -a 2 -d temp_new.raw_text document_
+split -l 625 -a 2 -d $DATA_NAME document_
 mkdir chunks
 cp document_* chunks
 log_echo "Done."
