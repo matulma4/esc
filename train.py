@@ -10,7 +10,7 @@ from basicgrad import getInputs,mrrcount,mrr,testGrad,setRes
 import numpy as np
 import pickle
 from sklearn import linear_model
-MATRIX_SIZE = 100
+MATRIX_SIZE = 2
 def trecEval(li):
     truth=open('truth.txt','w')
     res=open('res.txt','w')

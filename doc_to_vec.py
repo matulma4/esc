@@ -8,8 +8,13 @@ import numpy as np
 # from w2vg import MySentences
 from basicgrad import q
 import random
-# from train import train
+from train import train
+import pickle
 
+class Doc_Model():
+    def __init__(self,M,b):
+        self.M = M
+        self.b = b
 
 def mean(a):
     return sum(a) / len(a)
@@ -18,8 +23,8 @@ def average_vec(mx,model,length):
     """Accepts list of words and word2vec model. Returns average of vectors of the words"""
 
     vec = np.matrix([model[word] for word in mx if word in model.vocab.keys()])
-    if len(vec) == 0:
-        vec = np.zeros(length)
+    if not vec.any():
+        vec =[[np.zeros(length)]]
     return np.mean(vec,0)
     # return sum(vec)/len(vec)
     # return map(mean,zip(*vec))
@@ -70,15 +75,17 @@ def load_qs(model):
     questions = {}
     dim = len(model[model.vocab.keys()[0]])
     # docs = [line.split() for line in open("content.raw_text")]
-    docs = MySentences("temp.raw_text")
+    docs = MySentences("temp_new.raw_text")
     length = len(docs)
     dummy_file(length,dim)
     dim = len(model[model.vocab.keys()[0]])
     dummy_file(length,dim)
     d = MySentences("dummy_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
-    features = MySentences("base_text_features.rtData")
+    features = MySentences("temp_features.rtData")
     queries = {}
+    # o = 0
     for words in features:
+        # o += 1
         # words = line.split()
         relevancy = int(words[0])
         qid = int(words[1].split(':')[1])
@@ -104,11 +111,12 @@ def load_qs(model):
             document = docs[index]
             # doc_vec = average_vec(document,model,length)
             if qid in questions.keys():
-                questions[qid].a = np.hstack((np.array([float(a) for a in d[index]]).T,questions[qid].a))
+                new = np.array([np.array([float(a) for a in d[index]])]).T
+                questions[qid].a = np.hstack((new,questions[qid].a))
                 questions[qid].atext.insert(0,document)
                 questions[qid].y = np.insert(questions[qid].y,0,1)
             else:
-                print q_vec,[float(a) for a in d[index]],query,[document],np.array([])
+                # print q_vec,[float(a) for a in d[index]],query,[document],np.array([])
                 questions[qid] = q(q_vec,[float(a) for a in d[index]],np.empty((1,2)),query,[document],np.array([]))
     return questions
 
@@ -127,9 +135,11 @@ if __name__ == "__main__":
 
     # output_tsne(model)
     questions = load_qs(model)
-    # (M,b) = train(questions.values(),[])
-    for q in questions.keys():
-        print len(questions[q].a[0]),questions[q].qtext
+    (M,b) = train(questions.values(),[])
+    doc_model = Doc_Model(M,b)
+    pickle.dump(doc_model,"doc_model.pickle")
+    # for q in questions.keys():
+    #     print len(questions[q].a[0]),questions[q].qtext
 
     # data_name = 'temp.raw_text'
     # sentences = MySentences(data_name)

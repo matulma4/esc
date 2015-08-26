@@ -7,10 +7,10 @@
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 MODEL_NAME="model5"
-DATA_NAME="temp.raw_text"
-FTR_NAME="base_text_features.rtData"
+DATA_NAME="temp_new.raw_text"
+FTR_NAME="temp_features.rtData"
 MAP_NAME="temp_mapper.txt"
-AVG_NAME="averages.txt"
+AVG_NAME="dummy_averages.txt"
 log_echo() {
   echo $(date "+%Y%m%d-%H.%M.%S") " $@";
 }
@@ -35,10 +35,12 @@ cp $INPUT_DIR/$FTR_NAME $SCRATCHDIR
 cp $INPUT_DIR/$MAP_NAME $SCRATCHDIR
 cp $INPUT_DIR/$AVG_NAME $SCRATCHDIR
 cp $INPUT_DIR/basicgrad.py $SCRATCHDIR
+cp $INPUT_DIR/train.py $SCRATCHDIR
 # gunzip $SCRATCHDIR/$MAP_NAME
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
 log_echo "Done."
 python $SCRATCHDIR/doc_to_vec.py
+cp $SCRATCHDIR/doc_model.pickle $INPUT_DIR
 log_echo "Done."
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
