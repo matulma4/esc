@@ -32,7 +32,7 @@ then
 log_echo "Copying data."
 cp $INPUT_DIR/$DATA_NAME $SCRATCHDIR
 log_echo "Splitting the input file"
-split -l 2000 -a 2 -d temp.raw_text document_
+split -l 625 -a 2 -d temp_new.raw_text document_
 mkdir chunks
 cp document_* chunks
 log_echo "Done."
