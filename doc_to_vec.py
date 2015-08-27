@@ -83,11 +83,11 @@ def load_qs(model):
     d = MySentences("dummy_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
     features = MySentences("temp_features.rtData")
     queries = {}
-    o = 0
+    # o = 0
     for words in features:
-        o += 1
-        if o == 500:
-            break
+        # o += 1
+        # if o == 500:
+        #    break
         # words = line.split()
         relevancy = int(words[0])
         qid = int(words[1].split(':')[1])
