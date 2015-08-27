@@ -30,7 +30,7 @@ class q(object):
         a0=np.array(a0,ndmin=2)  # incorrect
         self.a=np.transpose(a1)  # np.hstack((np.transpose(a1),np.transpose(a0)))  # answer matrix (answer per column, correct come first)
         self.y=np.ones(len(a1))  # np.hstack((np.ones(len(a1)),np.zeros(len(a0))))  # answer labels
-        self.y = [relevancy]
+        self.y = np.array([relevancy])
         self.qtext=qtext
         self.atext=atext1
         self.atext.extend((atext0))

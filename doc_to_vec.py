@@ -83,9 +83,11 @@ def load_qs(model):
     d = MySentences("dummy_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
     features = MySentences("temp_features.rtData")
     queries = {}
-    # o = 0
+    o = 0
     for words in features:
-        # o += 1
+        o += 1
+        if o == 500:
+            break
         # words = line.split()
         relevancy = int(words[0])
         qid = int(words[1].split(':')[1])
@@ -114,7 +116,7 @@ def load_qs(model):
                 new = np.array([np.array([float(a) for a in d[index]])]).T
                 questions[qid].a = np.hstack((new,questions[qid].a))
                 questions[qid].atext.insert(0,document)
-                questions[qid].y.append(relevancy)
+                np.append(questions[qid].y,relevancy)
             else:
                 # print q_vec,[float(a) for a in d[index]],query,[document],np.array([])
                 questions[qid] = q(q_vec,[float(a) for a in d[index]],np.empty((1,2)),query,[document],np.array([]),relevancy)
@@ -137,7 +139,8 @@ if __name__ == "__main__":
     questions = load_qs(model)
     (M,b) = train(questions.values(),[])
     doc_model = Doc_Model(M,b)
-    pickle.dump(doc_model,"doc_model.pickle")
+    with open("doc_model.pickle","wb") as f:
+        pickle.dump(doc_model,f)
     # for q in questions.keys():
     #     print len(questions[q].a[0]),questions[q].qtext
 
