@@ -114,10 +114,10 @@ def load_qs(model):
                 new = np.array([np.array([float(a) for a in d[index]])]).T
                 questions[qid].a = np.hstack((new,questions[qid].a))
                 questions[qid].atext.insert(0,document)
-                questions[qid].y = np.insert(questions[qid].y,0,1)
+                questions[qid].y.append(relevancy)
             else:
                 # print q_vec,[float(a) for a in d[index]],query,[document],np.array([])
-                questions[qid] = q(q_vec,[float(a) for a in d[index]],np.empty((1,2)),query,[document],np.array([]))
+                questions[qid] = q(q_vec,[float(a) for a in d[index]],np.empty((1,2)),query,[document],np.array([]),relevancy)
     return questions
 
 def dummy_file(length,dim):

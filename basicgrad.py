@@ -6,7 +6,7 @@ Created on Sat Jul 11 09:49:42 2015
 @author: Silvicek
 """
 import numpy as np
-import matplotlib.pyplot as mpl
+# import matplotlib.pyplot as mpl
 import scipy.special as s
 MATRIX_SIZE = 2
 
@@ -24,12 +24,13 @@ class q(object):
     atext=[]
     counts=[]
     idf=[]
-    def __init__(self,q,a1,a0,qtext,atext1,atext0):
+    def __init__(self,q,a1,a0,qtext,atext1,atext0,relevancy):
         self.q=np.transpose(np.array(np.array(q,ndmin=2)))  # question emb. (column)
         a1=np.array(a1,ndmin=2)  # correct ans. emb. (answers in rows)
         a0=np.array(a0,ndmin=2)  # incorrect
         self.a=np.transpose(a1)  # np.hstack((np.transpose(a1),np.transpose(a0)))  # answer matrix (answer per column, correct come first)
         self.y=np.ones(len(a1))  # np.hstack((np.ones(len(a1)),np.zeros(len(a0))))  # answer labels
+        self.y = [relevancy]
         self.qtext=qtext
         self.atext=atext1
         self.atext.extend((atext0))
@@ -93,7 +94,7 @@ def testGrad(M,b,li):
             bestmrr=curmrr
             bestM=M
             bestb=b
-    mpl.plot(plot)
+    # mpl.plot(plot)
     return(bestM,bestb)
 
 def loss(labels,q,M,a,b):
