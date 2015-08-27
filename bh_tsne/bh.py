@@ -7,12 +7,12 @@ def convert_data(fname):
     dim = len(model.syn0[0])
     n = len(model.syn0)
     i = 0
-    limit = 2000
+    # limit = 2000
     with open("data.txt","wb") as f:
-        f.write(str(limit)+" "+str(dim)+"\n")
+        f.write(str(n)+" "+str(dim)+"\n")
         for vec in model.syn0:
-            if i == limit:
-                break
+            # if i == limit:
+            #    break
             for value in vec:
                 f.write(str(value) +" "),
             f.write("\n")
