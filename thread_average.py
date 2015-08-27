@@ -6,20 +6,23 @@ from gensim import models
 import numpy as np
 from joblib import Parallel,delayed
 import glob,os
+from doc_to_vec import MySentences
 
 
 def average(f,model):
     dim = len(model[model.vocab.keys()[0]])
-    lines = [line.split() for line in open(f)]
+    lines = MySentences(f) # [line.split() for line in open(f)]
     length = len(lines)
     result = np.empty(shape=(length,dim))
-    for i in range(length):
-        line = lines[i]
+    i = 0
+    for line in lines:
+        # line = lines[i]
         vec = np.matrix([model[word] for word in line if word in model.vocab.keys()])
         if not vec.any():
             result[i] = np.zeros(dim)
         else:
             result[i] = np.mean(vec,0)
+        i += 1
 
     with open(f+".out","w") as f:
         for res in result:
