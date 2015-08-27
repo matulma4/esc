@@ -18,7 +18,7 @@ cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying..."
 cp $INPUT_DIR/* $SCRATCHDIR
-cp $INPUT_DIR/../models/$MODEL/default/content.* $SCRATCHDIR
+cp $INPUT_DIR/../models/lemmatized/default/content.* $SCRATCHDIR
 log_echo "Done"
 log_echo "Starting..."
 python $SCRATCHDIR/bh.py content.word2vec
