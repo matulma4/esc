@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -N avg
-#PBS -l walltime=24h
+#PBS -l walltime=48h
 #PBS -l nodes=1:ppn=16
 #PBS -l mem=64gb
 #PBS -l scratch=32gb
