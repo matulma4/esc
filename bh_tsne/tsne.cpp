@@ -713,7 +713,7 @@ void TSNE::save_data(double* data, int* landmarks, double* costs, int n, int d) 
 
 // Function that runs the Barnes-Hut implementation of t-SNE
 int main() {
-    std::cout << "Starting\n"
+    std::cout << "Starting\n";
     // Define some variables
 	int origN, N, D, no_dims, *landmarks;
 	double perc_landmarks;
