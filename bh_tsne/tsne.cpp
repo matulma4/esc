@@ -668,14 +668,14 @@ double TSNE::randn() {
 // Function that loads data from a t-SNE file
 // Note: this function does a malloc that should be freed elsewhere
 bool TSNE::load_data(double** data, int* n, int* d, int* no_dims, double* theta, double* perplexity, int* rand_seed) {
-	std::cout << "Loading\n"
+	std::cout << "Loading\n";
 	// Open file, read first 2 integers, allocate memory, and read the data
     FILE *h;
 	if((h = fopen("data.dat", "r+b")) == NULL) {
 		printf("Error: could not open data file.\n");
 		return false;
 	}
-	std::cout << "Opened file\n"
+	std::cout << "Opened file\n";
 	fread(n, sizeof(int), 1, h);	
 	printf("%i.\n",*n);										// number of datapoints
 	fread(d, sizeof(int), 1, h);
@@ -720,10 +720,10 @@ int main() {
 	double perplexity, theta, *data;
     int rand_seed = -1;
     TSNE* tsne = new TSNE();
-    std::cout << "TSNE obj done\n"
+    std::cout << "TSNE obj done\n";
     // Read the parameters and the dataset
 	if(tsne->load_data(&data, &origN, &D, &no_dims, &theta, &perplexity, &rand_seed)) {
-        std::cout << "Loaded\n"
+        std::cout << "Loaded\n";
         // Set random seed
         if(rand_seed >= 0) {
             printf("Using random seed: %d\n", rand_seed);
