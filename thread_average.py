@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-from gensim import models
+from gensim import models,corpora
 import numpy as np
 from joblib import Parallel,delayed
 import glob,os
@@ -62,10 +62,19 @@ def threading_old():
                 f.write(str(value)+" ")
             f.write('\n')
 
+
+def convert_to_corpus(model_name,fname):
+    model = models.Word2Vec.load(model_name)
+    sentences = [line.split() for line in open(fname)]
+    #corpus = model.vocab.doc2bow(sentences)
+    for a in model.vocab:
+        print a
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
-    parser.add_argument("n_processors",help="number of processors used",type=int)
-    parser.add_argument("filename",help="model file",type=str)
-    args = parser.parse_args()
-    model = models.Word2Vec.load(args.filename)
-    average_documents(os.getcwd()+"/chunks",args.n_processors,model)
+    convert_to_corpus("model5.word2vec","temp.raw_text")
+    # parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
+    # parser.add_argument("n_processors",help="number of processors used",type=int)
+    # parser.add_argument("filename",help="model file",type=str)
+    # args = parser.parse_args()
+    # model = models.Word2Vec.load(args.filename)
+    # average_documents(os.getcwd()+"/chunks",args.n_processors,model)
