@@ -32,9 +32,9 @@ then
 log_echo "Copying data."
 cp $INPUT_DIR/$PATH_NAME/$DOC_NAME $SCRATCHDIR
 log_echo "Splitting the input file"
-split -l 3920 -a 2 -d $DOC_NAME document_
+split -l 3920 -a 2 -d $SCRATCHDIR/$DOC_NAME $SCRATCHDIR/document_
 mkdir $SCRATCHDIR/chunks
-cp document_* $SCRATCHDIR/chunks
+cp $SCRATCHDIR/document_* $SCRATCHDIR/chunks
 log_echo "Done."
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR

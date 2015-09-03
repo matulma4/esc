@@ -7,6 +7,7 @@ import numpy as np
 from joblib import Parallel,delayed
 import glob,os
 from doc_to_vec import MySentences
+import threading
 
 
 def average(f,model):
@@ -91,11 +92,11 @@ def convert_to_corpus(model_name,fname):
     return csc
 
 if __name__ == "__main__":
-    csc = convert_to_corpus("model5.word2vec","temp.raw_text")
-    print csc
-    # parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
-    # parser.add_argument("n_processors",help="number of processors used",type=int)
-    # parser.add_argument("filename",help="model file",type=str)
-    # args = parser.parse_args()
-    # model = models.Word2Vec.load(args.filename)
-    # average_documents(os.getcwd()+"/chunks",args.n_processors,model)
+    # csc = convert_to_corpus("model5.word2vec","temp.raw_text")
+    # print csc
+    parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
+    parser.add_argument("n_processors",help="number of processors used",type=int)
+    parser.add_argument("filename",help="model file",type=str)
+    args = parser.parse_args()
+    model = models.Word2Vec.load(args.filename)
+    average_documents(os.getcwd()+"/chunks",args.n_processors,model)
