@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-from gensim import models,corpora
+from gensim import models,corpora,matutils
 import numpy as np
 from joblib import Parallel,delayed
 import glob,os
@@ -62,16 +62,37 @@ def threading_old():
                 f.write(str(value)+" ")
             f.write('\n')
 
+def load_d(fname):
+    with open(fname) as f:
+        for line in f:
+            yield f.split()
+
+def doc2bow(doc,dictionary):
+    dictio = {}
+    for word in doc:
+        print word
+        if word not in dictionary.keys():
+            continue
+        num = dictionary[word].index
+        if num in dictio.keys():
+           dictio[num] += 1
+        else:
+           dictio[num] = 1
+    return [(w_id,dictio[w_id]) for w_id in dictio.keys()]
 
 def convert_to_corpus(model_name,fname):
     model = models.Word2Vec.load(model_name)
-    sentences = [line.split() for line in open(fname)]
-    #corpus = model.vocab.doc2bow(sentences)
-    for a in model.vocab:
-        print a
+    # sentences = load_d(fname)
+    docs = [line.split() for line in open(fname)]
+    dictionary = corpora.Dictionary(docs)
+    dictionary.doc2bow()
+    corpus = [doc2bow(text,model.vocab) for text in docs]
+    csc = matutils.corpus2csc(corpus)
+    return csc
 
 if __name__ == "__main__":
-    convert_to_corpus("model5.word2vec","temp.raw_text")
+    csc = convert_to_corpus("model5.word2vec","temp.raw_text")
+    print csc
     # parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
     # parser.add_argument("n_processors",help="number of processors used",type=int)
     # parser.add_argument("filename",help="model file",type=str)

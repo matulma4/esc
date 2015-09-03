@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N avg
 #PBS -l walltime=48h
-#PBS -l nodes=1:ppn=16
+#PBS -l nodes=1:ppn=32
 #PBS -l mem=64gb
 #PBS -l scratch=32gb
 
@@ -30,9 +30,9 @@ then
     exit 1
    fi
 log_echo "Copying data."
-cp $INPUT_DIR/$PATH_NAME/$DATA_NAME $SCRATCHDIR
+cp $INPUT_DIR/$PATH_NAME/$DOC_NAME $SCRATCHDIR
 log_echo "Splitting the input file"
-split -l 78400 -a 2 -d $DATA_NAME document_
+split -l 3920 -a 2 -d $DOC_NAME document_
 mkdir $SCRATCHDIR/chunks
 cp document_* $SCRATCHDIR/chunks
 log_echo "Done."
@@ -41,9 +41,11 @@ cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
 cp $INPUT_DIR/train.py $SCRATCHDIR
 cp $INPUT_DIR/basicgrad.py $SCRATCHDIR
 log_echo "Done."
-python $SCRATCHDIR/thread_average.py 16 $MODEL_NAME.word2vec
+python $SCRATCHDIR/thread_average.py 32 $MODEL_NAME.word2vec
 log_echo "Done."
-cp $SCRATCHDIR/chunks/*.out $INPUT_DIR
+mkdir $INPUTDIR/chunks
+mkdir $INPUTDIR/chunks/$DOC_NAME
+cp $SCRATCHDIR/chunks/*.out $INPUT_DIR/chunks/$DOC_NAME
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
 log_echo "Done."

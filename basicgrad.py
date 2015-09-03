@@ -1,10 +1,12 @@
 from __future__ import division
+from inversion import count_inversion
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jul 11 09:49:42 2015
 
 @author: Silvicek
 """
+from rankpy import metrics
 import numpy as np
 # import matplotlib.pyplot as mpl
 import scipy.special as s
@@ -27,9 +29,9 @@ class q(object):
     def __init__(self,q,a1,a0,qtext,atext1,atext0,relevancy):
         self.q=np.transpose(np.array(np.array(q,ndmin=2)))  # question emb. (column)
         a1=np.array(a1,ndmin=2)  # correct ans. emb. (answers in rows)
-        a0=np.array(a0,ndmin=2)  # incorrect
+        # a0=np.array(a0,ndmin=2)  # incorrect
         self.a=np.transpose(a1)  # np.hstack((np.transpose(a1),np.transpose(a0)))  # answer matrix (answer per column, correct come first)
-        self.y=np.ones(len(a1))  # np.hstack((np.ones(len(a1)),np.zeros(len(a0))))  # answer labels
+        # self.y=np.ones(len(a1))  # np.hstack((np.ones(len(a1)),np.zeros(len(a0))))  # answer labels
         self.y = np.array([relevancy])
         self.qtext=qtext
         self.atext=atext1
@@ -74,14 +76,14 @@ def testGrad(M,b,li):
     bestmrr=0.0
     bestM=0
     bestb=0
-    n_iter = 100
+    n_iter = 500
     plot = np.zeros(n_iter / 5)
     for i in range(0, n_iter):
         ggM=0
         ggb=0
         if i%5==0:
             plot[i/5]=lossAll(li,M,b)
-            print '[%d/%d] loss function: %.1f (bestMRR %.3f)' % (i, n_iter, plot[i/5], bestmrr)
+            print '[%d/%d] loss function: %.1f (bestNDCG %.3f)' % (i, n_iter, plot[i/5], bestmrr)
         for q in li:
             for j in range(0,len(q.y)):
                 (gM,gb)=grad(q.y[j],q.q,M,np.transpose(np.array(q.a[:,j],ndmin=2)),b)
@@ -124,16 +126,20 @@ class yt(object):
 
 #Sorts probabilities and returns first True
 def firstTrue(y,t):
+
+    ncdg = metrics.NormalizedDiscountedCumulativeGain()
     li=[]
     for i in range(0,len(y)):
         li.append(yt(y[i],t[i]))
     li.sort(key=lambda x: x.t,reverse=True)
-    i=0
-    for item in li:
-        i+=1
-        if item.y==1:
-            return i
-    return i+1
+    a = [u.y for u in li]
+    return ncdg.evaluate(ranked_labels=np.array([int(b*5) for b in a]))
+    # i=0
+    # for item in li:
+    #     i+=1
+    #     if item.y==1:
+    #         return i
+    # return i+1# count_inversion([item.y for item in li])
 
 #Sum of losses for multiple qs
 def lossAll(li,M,b):
@@ -147,7 +153,7 @@ def mrr(M,b,li):
     mrr=0.0
     for q in li:
         q.sett(M,b)
-        mrr+=1/firstTrue(q.y,q.t)
+        mrr+=firstTrue(q.y,q.t)#1/firstTrue(q.y,q.t)
     if len(li) == 0:
         return 0
     return mrr/len(li)
