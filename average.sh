@@ -30,7 +30,7 @@ then
     exit 1
    fi
 log_echo "Copying data."
-cp $INPUT_DIR/$PATH_NAME/$DOC_NAME $SCRATCHDIR
+mv $INPUT_DIR/$PATH_NAME/$DOC_NAME $SCRATCHDIR
 log_echo "Splitting the input file"
 split -l 3920 -a 2 -d $SCRATCHDIR/$DOC_NAME $SCRATCHDIR/document_
 mkdir $SCRATCHDIR/chunks
