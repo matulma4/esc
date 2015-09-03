@@ -30,11 +30,11 @@ then
     exit 1
    fi
 log_echo "Copying data."
-mv $INPUT_DIR/$PATH_NAME/$DOC_NAME $SCRATCHDIR
+mv $DOC_NAME $SCRATCHDIR
 log_echo "Splitting the input file"
 split -l 3920 -a 2 -d $SCRATCHDIR/$DOC_NAME $SCRATCHDIR/document_
 mkdir $SCRATCHDIR/chunks
-cp $SCRATCHDIR/document_* $SCRATCHDIR/chunks
+cp $SCRATCHDIR/document_* $SCRATCHDIR/chunksm
 log_echo "Done."
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
@@ -43,7 +43,7 @@ cp $INPUT_DIR/basicgrad.py $SCRATCHDIR
 log_echo "Done."
 python $SCRATCHDIR/thread_average.py 32 $MODEL_NAME.word2vec
 log_echo "Done."
-mkdir $INPUTDIR/chunks
+# mkdir $INPUTDIR/chunks
 mkdir $INPUTDIR/chunks/$DOC_NAME
 cp $SCRATCHDIR/chunks/*.out $INPUT_DIR/chunks/$DOC_NAME
 log_echo "Cleaning up..."

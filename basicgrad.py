@@ -1,5 +1,4 @@
 from __future__ import division
-from inversion import count_inversion
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jul 11 09:49:42 2015
