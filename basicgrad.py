@@ -5,11 +5,11 @@ Created on Sat Jul 11 09:49:42 2015
 
 @author: Silvicek
 """
-# from rankpy import metrics
+from rankpy import metrics
 import numpy as np
 # import matplotlib.pyplot as mpl
 import scipy.special as s
-MATRIX_SIZE = 2
+MATRIX_SIZE = 100
 
 l=5e-3    #regularisation constant
 alpha=2e-5  #learning constant
@@ -126,13 +126,13 @@ class yt(object):
 #Sorts probabilities and returns first True
 def firstTrue(y,t):
 
-    #ncdg = metrics.NormalizedDiscountedCumulativeGain()
+    ncdg = metrics.NormalizedDiscountedCumulativeGain()
     li=[]
     for i in range(0,len(y)):
         li.append(yt(y[i],t[i]))
     li.sort(key=lambda x: x.t,reverse=True)
     a = [u.y for u in li]
-    return #ncdg.evaluate(ranked_labels=np.array([int(b*5) for b in a]))
+    return ncdg.evaluate(ranked_labels=np.array([int(b*5) for b in a]))
     # i=0
     # for item in li:
     #     i+=1

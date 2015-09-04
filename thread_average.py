@@ -103,11 +103,15 @@ def edit_dic(fname):
 def get_sparse(fname,model):
     short = fname.split('.')[0]
 
-    if not os.path.isfile(os.getcwd()+"\\"+short+".dic"):
+    if not os.path.isfile(os.getcwd()+os.sep+short+".dic"):
+        print "Creating dictionary"
         data_to_dic(fname)
-    if not os.path.isfile(os.getcwd()+"\\"+short+"_sparse.mtx"):
+    if not os.path.isfile(os.getcwd()+os.sep+short+"_sparse.mtx"):
+        print "Editing dictionary"
         dictionary = edit_dic(short+".dic")
+        print "Filtering dictionary"
         filter_dic(model,dictionary,"new.dic")
+        print "Loading dictionary"
         dct = corpora.Dictionary.load_from_text("new.dic")
         texts = [line.split() for line in open(fname)]
         corpus = [dct.doc2bow(text) for text in texts]
@@ -121,7 +125,10 @@ def filter_dic(model,dictionary,fname):
 
     with open(fname,"w") as f:
         for key in model.vocab.keys():
-            f.write(str(model.vocab[key].index)+'\t'+key+'\t'+str(dictionary[key][1])+'\n')
+            if key in dictionary.keys():
+                f.write(str(model.vocab[key].index)+'\t'+key+'\t'+str(dictionary[key][1])+'\n')
+            else:
+                f.write(str(model.vocab[key].index)+'\t'+key+'\t'+str(0)+'\n')
 
 
 if __name__ == "__main__":
@@ -130,9 +137,11 @@ if __name__ == "__main__":
     parser.add_argument("modelname",help="model file",type=str)
     args = parser.parse_args()
     model = models.Word2Vec.load(args.modelname)
+    print "Model loaded"
     fname = args.dataname# "temp_new.raw_text"
     # model = models.Word2Vec.load("model6.word2vec")
     csc = get_sparse(fname,model)
+    print "Sparse matrix computed"
     R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
     io.mmwrite("R_new.mtx",R)
     # csc = convert_to_corpus("model5.word2vec","temp.raw_text")

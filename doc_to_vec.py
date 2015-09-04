@@ -10,6 +10,7 @@ from basicgrad import q
 import random
 from train import train
 import pickle
+from scipy import io
 
 class Doc_Model():
     def __init__(self,M,b):
@@ -80,7 +81,7 @@ def load_qs(model):
     dummy_file(length,dim)
     dim = len(model[model.vocab.keys()[0]])
     dummy_file(length,dim)
-    d = MySentences("dummy_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
+    d = MySentences("new_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
     features = MySentences("temp_features.rtData")
     queries = {}
     o = 0
@@ -130,8 +131,18 @@ def dummy_file(length,dim):
                 f.write(str(random.randrange(100)) + " ")
             f.write("\n")
 
+def matrix_to_file():
+    csc = io.mmread("R_new.mtx")
+    R = csc.T
+    with open("new_averages.txt","w") as f:
+        for line in R:
+            for value in line:
+                f.write(str(value)+" ")
+            f.write("\n")
+
 if __name__ == "__main__":
-    fname = "model5.word2vec"
+    # matrix_to_file()
+    fname = "model6.word2vec"
     # fname = sys.argv[1]
     model = models.Word2Vec.load(fname)
 
@@ -141,16 +152,3 @@ if __name__ == "__main__":
     doc_model = Doc_Model(M,b)
     with open("doc_model.pickle","wb") as f:
         pickle.dump(doc_model,f)
-    # for q in questions.keys():
-    #     print len(questions[q].a[0]),questions[q].qtext
-
-    # data_name = 'temp.raw_text'
-    # sentences = MySentences(data_name)
-    # i = 0
-    # d = []
-    #
-    # for sent in sentences:
-    #     d.append(average_vec(sent,model,length))
-    # # query = raw_input("Enter query: ").split()
-    # # print(average_vec(query,model))
-    # print ""
