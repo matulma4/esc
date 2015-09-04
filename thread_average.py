@@ -4,8 +4,9 @@
 import argparse
 from gensim import models,corpora,matutils
 import numpy as np
+from scipy import io
 from joblib import Parallel,delayed
-import glob,os
+import glob,os.path
 from doc_to_vec import MySentences
 import threading
 
@@ -66,12 +67,12 @@ def threading_old():
 def load_d(fname):
     with open(fname) as f:
         for line in f:
-            yield f.split()
+            yield line
 
 def doc2bow(doc,dictionary):
     dictio = {}
     for word in doc:
-        print word
+        # print word
         if word not in dictionary.keys():
             continue
         num = dictionary[word].index
@@ -81,22 +82,60 @@ def doc2bow(doc,dictionary):
            dictio[num] = 1
     return [(w_id,dictio[w_id]) for w_id in dictio.keys()]
 
-def convert_to_corpus(model_name,fname):
-    model = models.Word2Vec.load(model_name)
-    # sentences = load_d(fname)
+def data_to_dic(fname):
     docs = [line.split() for line in open(fname)]
     dictionary = corpora.Dictionary(docs)
-    dictionary.doc2bow()
-    corpus = [doc2bow(text,model.vocab) for text in docs]
-    csc = matutils.corpus2csc(corpus)
+    dictionary.save_as_text(fname.split('.')[0]+".dic")
+
+def load_dic(fname):
+    dictionary = corpora.Dictionary()
+    dictionary = dictionary.load_from_text(fname.split('.')[0]+".dic")
+    return dictionary
+
+def edit_dic(fname):
+    result = {}
+    with open(fname) as f:
+        for line in f:
+            words = line.split()
+            result[words[1]] = [words[0],words[2]]
+    return result
+
+def get_sparse(fname,model):
+    short = fname.split('.')[0]
+
+    if not os.path.isfile(os.getcwd()+"\\"+short+".dic"):
+        data_to_dic(fname)
+    if not os.path.isfile(os.getcwd()+"\\"+short+"_sparse.mtx"):
+        dictionary = edit_dic(short+".dic")
+        filter_dic(model,dictionary,"new.dic")
+        dct = corpora.Dictionary.load_from_text("new.dic")
+        texts = [line.split() for line in open(fname)]
+        corpus = [dct.doc2bow(text) for text in texts]
+        csc = matutils.corpus2csc(corpus)
+        io.mmwrite(short+"_sparse.mtx",csc)
+    else:
+        csc = io.mmread(short+"_sparse.mtx")
     return csc
 
+def filter_dic(model,dictionary,fname):
+
+    with open(fname,"w") as f:
+        for key in model.vocab.keys():
+            f.write(str(model.vocab[key].index)+'\t'+key+'\t'+str(dictionary[key][1])+'\n')
+
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
+    parser.add_argument("dataname",help="dataset",type=str)
+    parser.add_argument("modelname",help="model file",type=str)
+    args = parser.parse_args()
+    model = models.Word2Vec.load(args.modelname)
+    fname = args.dataname# "temp_new.raw_text"
+    # model = models.Word2Vec.load("model6.word2vec")
+    csc = get_sparse(fname,model)
+    R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
+    io.mmwrite("R_new.mtx",R)
     # csc = convert_to_corpus("model5.word2vec","temp.raw_text")
     # print csc
-    parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
-    parser.add_argument("n_processors",help="number of processors used",type=int)
-    parser.add_argument("filename",help="model file",type=str)
-    args = parser.parse_args()
-    model = models.Word2Vec.load(args.filename)
-    average_documents(os.getcwd()+"/chunks",args.n_processors,model)
+
+    # average_documents(os.getcwd()+"/chunks",args.n_processors,model)
