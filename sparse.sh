@@ -30,9 +30,9 @@ then
     exit 1
    fi
 log_echo "Copying data."
-cp $INPUTDIR/$PATH_NAME/$DOC_NAME $SCRATCHDIR
-cp $INPUTDIR/*.dic $SCRATCHDIR
-cp $INPUTDIR/*.mtx $SCRATCHDIR
+cp $INPUT_DIR/$PATH_NAME/$DATA_NAME $SCRATCHDIR
+cp $INPUT_DIR/*.dic $SCRATCHDIR
+cp $INPUT_DIR/*.mtx $SCRATCHDIR
 log_echo "Done."
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR

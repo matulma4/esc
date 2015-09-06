@@ -136,15 +136,15 @@ if __name__ == "__main__":
     parser.add_argument("dataname",help="dataset",type=str)
     parser.add_argument("modelname",help="model file",type=str)
     args = parser.parse_args()
-    model = models.Word2Vec.load(args.modelname)
-    print "Model loaded"
+    # model = models.Word2Vec.load(args.modelname)
+    # print "Model loaded"
     fname = args.dataname# "temp_new.raw_text"
-    # model = models.Word2Vec.load("model6.word2vec")
-    csc = get_sparse(fname,model)
-    print "Sparse matrix computed"
-    R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
-    io.mmwrite("R_new.mtx",R)
-    # csc = convert_to_corpus("model5.word2vec","temp.raw_text")
-    # print csc
+    data_to_dic(fname)
+    # # model = models.Word2Vec.load("model6.word2vec")
+    # csc = get_sparse(fname,model)
+    # print "Sparse matrix computed"
+    # R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
+    # io.mmwrite("R_new.mtx",R)
+
 
     # average_documents(os.getcwd()+"/chunks",args.n_processors,model)

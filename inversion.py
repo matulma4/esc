@@ -16,7 +16,7 @@ def merge_count_split_inversion(left, right):
     i, j = 0, 0
     left_len = len(left)
     while i < left_len and j < len(right):
-        if left[i] <= right[j]:
+        if left[i] >= right[j]:
             result.append(left[i])
             i += 1
         else:
@@ -28,4 +28,4 @@ def merge_count_split_inversion(left, right):
     return result, count
 
 if __name__ == "__main__":
-    print count_inversion([4, 1, 3, 2, 9, 1])
+    print count_inversion([1,2,3,4,5])
