@@ -1,5 +1,5 @@
 from gensim import models
-import numpy as np
+# import numpy as np
 import argparse
 
 def convert_data(fname):
@@ -7,12 +7,12 @@ def convert_data(fname):
     dim = len(model.syn0[0])
     n = len(model.syn0)
     i = 0
-    # limit = 2000
+    limit = 10000
     with open("data.txt","wb") as f:
-        f.write(str(n)+" "+str(dim)+"\n")
+        f.write(str(limit)+" "+str(dim)+"\n")
         for vec in model.syn0:
-            # if i == limit:
-            #    break
+            if i == limit:
+                break
             for value in vec:
                 f.write(str(value) +" "),
             f.write("\n")
@@ -21,13 +21,13 @@ def convert_data(fname):
 
 def get_result(fname):
     with open(fname,"r") as f:
-        a = np.fromfile(f,dtype=np.uint32,count=2)
-        n = a[0]
-        d = a[1]
-        b = np.fromfile(f,dtype=np.double)
+  #      a = np.fromfile(f,dtype=np.uint32,count=2)
+  #      n = a[0]
+  #      d = a[1]
+  #      b = np.fromfile(f,dtype=np.double)
         for i in range(int(n)):
-            for j in range(int(d)):
-                print b[i+j],
+  #          for j in range(int(d)):
+  #              print b[i+j],
             print "\n"
 
 if __name__ == "__main__":

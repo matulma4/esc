@@ -2,9 +2,10 @@ import matplotlib.pyplot as plt
 from bokeh.plotting import figure,output_file,show
 from gensim import models
 import numpy as np
+from doc_to_vec import MySentences
 
-def dist(x,y):
-    return np.sqrt(x*x+y*y)
+def dist(a,b):
+    return np.sqrt(np.sum([x*x for x in a-b]))
 
 
 def visualize_model(fname):
@@ -60,33 +61,43 @@ def output_tsne(model):
         f.write(line)
     f.close()
 
+def split_to_segs(fname,model_name):
+    model = models.Word2Vec.load(model_name)
+    segments = []
+    segments.append([])
+    lines = MySentences(fname)
+    index = 0
+    for line in model.syn0:
+        # print index
+        if index == 0:
+            index += 1
+            continue
+        segment = 0
+        float_line = line#np.array([float(word) for word in line])
+        if len(segments[segment]) == 0:
+            segments[segment].append((float_line,model.vocab.keys()[index].decode('utf-8')))
+        else:
+            flt_line = segments[segment][0][0]
+            # print dist(float_line,flt_line)
+            while(dist(float_line,flt_line) > 0.05):
+                segment += 1
+                if segment == len(segments):
+                    segments.append([])
+                    break
+                flt_line = segments[segment][0][0]
+            # print dist(float_line,flt_line),segment,len(segments),flt_line,float_line
+            segments[segment].append((float_line,model.vocab.keys()[index].decode('utf-8')))
+        index += 1
+
+    return segments
+
 def visualize_file(fname,model_name):
     # model = models.Word2Vec.load(model_name)
     with open(fname) as f:
         lines = [line.split() for line in f]
         X = [float(line[0]) for line in lines[1:]]
         Y = [float(line[1]) for line in lines[1:]]
-        # (a,b,c,d) = find_max_min(X,Y)
-        # x_diff = a - c
-        # y_diff = b - d
-        # t = (x_diff/16 + y_diff/16)/2
-        # step =  np.round(t,decimals=0)
-        # segments = [[] for seg in range(16)]
-        # labels = [word.decode('utf-8') for word in open(model_name)]
-        # for x,y,label in zip(X,Y,labels):
-        #     distance = dist(x,y)
-        #     i = 0
-        #     e = step
-        #     while distance > e:
-        #         i += 1
-        #         e += step
-        #         if i == 15:
-        #             break
-        #     segments[i].append((x,y,label))
-        # for i in range(16):
-        #     plt.figure(i)
-        #     seg = segments[i]
-        # plt.figure()
+        (xmax,ymax,xmin,ymin) = find_max_min(X,Y)
         labels = [line.decode('utf8') for line in open(model_name)]
         plt.plot(X,Y,"ro")
         for x, y,label in zip(X,Y,labels):
@@ -101,13 +112,25 @@ def find_max_min(X,Y):
     return (xmax,ymax,xmin,ymin)
 if __name__ == "__main__":
     # visualize_model("model5.word2vec")
-    p = ["10","20","30","40","50"]
-    t = ["0.2","0.4","0.6","0.8","1"]
-    m = ["classic","lemmatized"]
-    for perplex in p[4:5]:
-        for theta in t:
-            for mode in m[1:2]:
-                path = "words\\"+mode+"-p"+perplex+"-t"+theta+"\\"
-                visualize_file(path+"out.txt",path+"words.txt")
+    segs = split_to_segs("C:\Users\Martin\PycharmProjects\esc-s\words\lemmatized-p50-t0.8\out.txt","model5.word2vec")
+
+    for i in [2,13]:
+        seg = segs[i]
+        print seg[0][0]
+        plt.figure(i)
+        for xy,label in seg:
+            plt.annotate(label,(xy[0], xy[1]))
+        # plt.show()
+    print max(len(s) for s in segs)
+    print min(len(s) for s in segs)
+    print np.average([len(s) for s in segs])
+    # p = ["10","20","30","40","50","60","80","100"]
+    # t = ["0.2","0.4","0.6","0.8","1"]
+    # m = ["classic","lemmatized"]
+    # for perplex in p[7:8]:
+    #     for theta in t[4:5]:
+    #         for mode in m[1:2]:
+    #             path = "words\\"+mode+"-p"+perplex+"-t"+theta+"\\"
+    #             visualize_file(path+"out.txt",path+"words.txt")
 
 
