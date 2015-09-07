@@ -59,7 +59,7 @@ int main(int argc,const char* argv[]){
 	else{
 	FILE *f;
 	printf("Opening data.txt\n");
-	f = fopen("data.txt","r");
+	f = fopen(argv[4],"r");
 	printf("Opened.\n");
 	int n,d,y;
 	fscanf(f,"%i %i",&n,&d);
