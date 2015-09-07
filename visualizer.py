@@ -2,7 +2,12 @@ import matplotlib.pyplot as plt
 from bokeh.plotting import figure,output_file,show
 from gensim import models
 import numpy as np
-from doc_to_vec import MySentences
+# from doc_to_vec import MySentences
+import time,pickle
+
+class Segments():
+    def __init__(self,segs):
+        self.segments = segs
 
 def dist(a,b):
     return np.sqrt(np.sum([x*x for x in a-b]))
@@ -61,21 +66,26 @@ def output_tsne(model):
         f.write(line)
     f.close()
 
-def split_to_segs(fname,model_name):
-    model = models.Word2Vec.load(model_name)
+def split_to_segs():
+    # model = models.Word2Vec.load(model_name)
     segments = []
     segments.append([])
-    lines = MySentences(fname)
+    lines = [line.split() for line in open("data_big.txt")]
+    words = [line for line in open("words.txt")]
     index = 0
-    for line in model.syn0:
+    start = time.time()
+    for line in lines:
         # print index
-        if index == 0:
-            index += 1
-            continue
+        if index % 10000 == 0:
+            print time.time()-start
+        # if index % 100 == 0:
+        #     print index
+        #     index += 1
+        #     continue
         segment = 0
-        float_line = line#np.array([float(word) for word in line])
+        float_line = np.array([float(word) for word in line])
         if len(segments[segment]) == 0:
-            segments[segment].append((float_line,model.vocab.keys()[index].decode('utf-8')))
+            segments[segment].append((float_line,words[index].decode('utf-8')))
         else:
             flt_line = segments[segment][0][0]
             # print dist(float_line,flt_line)
@@ -86,7 +96,7 @@ def split_to_segs(fname,model_name):
                     break
                 flt_line = segments[segment][0][0]
             # print dist(float_line,flt_line),segment,len(segments),flt_line,float_line
-            segments[segment].append((float_line,model.vocab.keys()[index].decode('utf-8')))
+            segments[segment].append((float_line,words[index].decode('utf-8')))
         index += 1
 
     return segments
@@ -112,18 +122,23 @@ def find_max_min(X,Y):
     return (xmax,ymax,xmin,ymin)
 if __name__ == "__main__":
     # visualize_model("model5.word2vec")
-    segs = split_to_segs("C:\Users\Martin\PycharmProjects\esc-s\words\lemmatized-p50-t0.8\out.txt","model5.word2vec")
+    segs = split_to_segs()
+    segments = Segments(segs)
+    pickle.dump(segments,"content.seg")
+    # for i in [2,13]:
+    #     seg = segs[i]
+    #     print seg[0][0]
+    #     plt.figure(i)
+    #     for xy,label in seg:
+    #         plt.annotate(label,(xy[0], xy[1]))
+    #     # plt.show()
+    # print max(len(s) for s in segs)
+    # print min(len(s) for s in segs)
+    # print np.average([len(s) for s in segs])
 
-    for i in [2,13]:
-        seg = segs[i]
-        print seg[0][0]
-        plt.figure(i)
-        for xy,label in seg:
-            plt.annotate(label,(xy[0], xy[1]))
-        # plt.show()
-    print max(len(s) for s in segs)
-    print min(len(s) for s in segs)
-    print np.average([len(s) for s in segs])
+
+
+
     # p = ["10","20","30","40","50","60","80","100"]
     # t = ["0.2","0.4","0.6","0.8","1"]
     # m = ["classic","lemmatized"]
