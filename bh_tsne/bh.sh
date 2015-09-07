@@ -23,14 +23,18 @@ rm $SCRATCHDIR/test.exe
 cp $INPUT_DIR/../models/lemmatized/default/content.* $SCRATCHDIR
 log_echo "Done"
 log_echo "Starting..."
+mkdir $SCRATCHDIR/data
 python $SCRATCHDIR/bh.py content.word2vec
-/bin/bash tsne.sh $PERPLEXITY $THETA
+# /bin/bash tsne.sh $PERPLEXITY $THETA
+
 # ./bh_tsne > tsne_out.txt
 # ./test.exe > out.txt
-mkdir $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
-cp out.txt $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
-cp tsne_out.txt $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
-cp $SCRATCHDIR/data.dat $INPUT_DIR
+
+#mkdir $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
+#cp out.txt $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
+#cp tsne_out.txt $INPUT_DIR/words/$MODEL-p$PERPLEXITY-t$THETA
+#cp $SCRATCHDIR/data.dat $INPUT_DIR
+cp $SCRATCHDIR/data/* $INPUT_DIR/data
 log_echo "Done"
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
