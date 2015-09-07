@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N bhtsne
 #PBS -l walltime=24h
-#PBS -l nodes=1:ppn=4
+#PBS -l nodes=1:ppn=1
 #PBS -l mem=16gb
 #PBS -l scratch=16gb
 
@@ -20,6 +20,8 @@ log_echo "Copying..."
 cp $INPUT_DIR/* $SCRATCHDIR
 rm $SCRATCHDIR/bh_tsne
 rm $SCRATCHDIR/test.exe
+rm $SCRATCHDIR/out.txt
+rm $SCRATCHDIR/tsne_out.txt
 cp $INPUT_DIR/../models/lemmatized/default/content.* $SCRATCHDIR
 log_echo "Done"
 log_echo "Starting..."
