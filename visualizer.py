@@ -124,7 +124,8 @@ if __name__ == "__main__":
     # visualize_model("model5.word2vec")
     segs = split_to_segs()
     segments = Segments(segs)
-    pickle.dump(segments,"content.seg")
+    with open("content.seg","w") as f:
+        pickle.dump(segments,f)
     # for i in [2,13]:
     #     seg = segs[i]
     #     print seg[0][0]
