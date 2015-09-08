@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from bokeh.plotting import figure,output_file,show
+# from bokeh.plotting import figure,output_file,show
 from gensim import models
 import numpy as np
 # from doc_to_vec import MySentences
