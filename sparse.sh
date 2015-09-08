@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N sparse
 #PBS -l walltime=24h
-#PBS -l nodes=1:ppn=1
+#PBS -l nodes=1:ppn=32
 #PBS -l mem=64gb
 #PBS -l scratch=32gb
 
@@ -43,6 +43,7 @@ python $SCRATCHDIR/thread_average.py $DATA_NAME $MODEL_NAME.word2vec
 log_echo "Done."
 cp $SCRATCHDIR/*.mtx $INPUT_DIR
 cp $SCRATCHDIR/*.dic $INPUT_DIR
+cp $SCRATCHDIR/*.txt $INPUT_DIR
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
 log_echo "Done."

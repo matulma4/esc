@@ -121,15 +121,21 @@ def get_sparse(fname,model):
         csc = io.mmread(short+"_sparse.mtx")
     return csc
 
-def filter_dic(model,dictionary,fname):
+def filter_dic(model,vocab,dictionary,fname):
 
     with open(fname,"w") as f:
-        for key in model.vocab.keys():
+        for key in vocab:
             if key in dictionary.keys():
                 f.write(str(model.vocab[key].index)+'\t'+key+'\t'+str(dictionary[key][1])+'\n')
             else:
                 f.write(str(model.vocab[key].index)+'\t'+key+'\t'+str(0)+'\n')
 
+
+def sparse_thread(n_processors):
+    model = models.Word2Vec.load("content.word2vec")
+    dictionary = corpora.Dictionary.load_from_text("content.dic")
+    keyset = model.vocab.keys()
+    results = Parallel(n_jobs=n_processors)(delayed(filter_dic)(model,keyset[i*32000:(i+1)*32000],dictionary,"dict"+str(i)+".txt") for i in range(32))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compute document averages of word vectors.")
@@ -137,9 +143,10 @@ if __name__ == "__main__":
     parser.add_argument("modelname",help="model file",type=str)
     args = parser.parse_args()
     # model = models.Word2Vec.load(args.modelname)
+    sparse_thread(32)
     # print "Model loaded"
-    fname = args.dataname# "temp_new.raw_text"
-    data_to_dic(fname)
+    # fname = args.dataname# "temp_new.raw_text"
+    # data_to_dic(fname)
     # # model = models.Word2Vec.load("model6.word2vec")
     # csc = get_sparse(fname,model)
     # print "Sparse matrix computed"
