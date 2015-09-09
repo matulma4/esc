@@ -122,10 +122,14 @@ def find_max_min(X,Y):
     return (xmax,ymax,xmin,ymin)
 if __name__ == "__main__":
     # visualize_model("model5.word2vec")
-    segs = split_to_segs()
-    segments = Segments(segs)
-    with open("content.seg","w") as f:
-        pickle.dump(segments,f)
+
+    # segs = split_to_segs()
+    # segments = Segments(segs)
+    # with open("content.seg","w") as f:
+    #     pickle.dump(segments,f)
+    with open("content.seg") as f:
+        segments = pickle.load(f)
+    # segs = segments.segments
     # for i in [2,13]:
     #     seg = segs[i]
     #     print seg[0][0]
@@ -133,10 +137,15 @@ if __name__ == "__main__":
     #     for xy,label in seg:
     #         plt.annotate(label,(xy[0], xy[1]))
     #     # plt.show()
-    # print max(len(s) for s in segs)
-    # print min(len(s) for s in segs)
-    # print np.average([len(s) for s in segs])
-
+    # print max(len(s) for s in segments.segments)
+    # print min(len(s) for s in segments.segments)
+    # print np.average([len(s) for s in segments.segments])
+    i = 0
+    for segment in segments:
+        with open("seg"+str(i)+".txt") as f:
+            for value in segment:
+                f.write(str(value[0][0])+" "+str(value[0][1])+" "+str(value[1])+"\n")
+        i += 1
 
 
 

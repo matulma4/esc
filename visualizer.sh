@@ -18,13 +18,13 @@ log_echo "Done."
 cd $SCRATCHDIR
 N_JOBS=1
 
-cp $INPUT_DIR/bh_tsne/words.txt $SCRATCHDIR
-cp $INPUT_DIR/bh_tsne/bh_out/data_big.txt $SCRATCHDIR
+#cp $INPUT_DIR/bh_tsne/words.txt $SCRATCHDIR
+#cp $INPUT_DIR/bh_tsne/bh_out/data_big.txt $SCRATCHDIR
 cp $INPUT_DIR/visualizer.py $SCRATCHDIR
-
+cp $INPUT_DIR/*.seg $SCRATCHDIR
 python $SCRATCHDIR/visualizer.py
 
-cp $SCRATCHDIR/*.seg $INPUT_DIR
+cp $SCRATCHDIR/*.txt $INPUT_DIR
 
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
