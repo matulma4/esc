@@ -142,19 +142,21 @@ if __name__ == "__main__":
     parser.add_argument("dataname",help="dataset",type=str)
     parser.add_argument("modelname",help="model file",type=str)
     args = parser.parse_args()
+
+
     model = models.Word2Vec.load(args.modelname)
-    keyset = model.vocab.keys()[1024000:]
-    dictionary = corpora.Dictionary.load_from_text("content.dic")
-    filter_dic(model,keyset,dictionary,"dict32.txt")
+    # keyset = model.vocab.keys()[1024000:]
+    # dictionary = corpora.Dictionary.load_from_text("content.dic")
+    # filter_dic(model,keyset,dictionary,"dict32.txt")
     # sparse_thread(32)
     # print "Model loaded"
     # fname = args.dataname# "temp_new.raw_text"
     # data_to_dic(fname)
     # # model = models.Word2Vec.load("model6.word2vec")
 
-    # csc = get_sparse("content.raw_text")
-    # R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
-    # io.mmwrite("R_new.mtx",R)
+    csc = get_sparse("content.raw_text")
+    R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
+    io.mmwrite("R_new.mtx",R)
 
 
     # average_documents(os.getcwd()+"/chunks",args.n_processors,model)

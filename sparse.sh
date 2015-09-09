@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N sparse
 #PBS -l walltime=24h
-#PBS -l nodes=1:ppn=32
+#PBS -l nodes=1:ppn=1
 #PBS -l mem=64gb
 #PBS -l scratch=32gb
 
@@ -33,7 +33,7 @@ log_echo "Copying data."
 cp $INPUT_DIR/$PATH_NAME/$DATA_NAME $SCRATCHDIR
 cp $INPUT_DIR/*.dic $SCRATCHDIR
 cp $INPUT_DIR/*.mtx $SCRATCHDIR
-# cp $INPUT_DIR/dict_big.txt $SCRATCHDIR
+cp $INPUT_DIR/dict_big.txt $SCRATCHDIR
 log_echo "Done."
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
