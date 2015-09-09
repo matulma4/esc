@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N sparse
+#PBS -N visualq
 #PBS -l walltime=24h
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=64gb
