@@ -116,11 +116,11 @@ def load_qs(model):
             if qid in questions.keys():
                 new = np.array([np.array([float(a) for a in d[index]])]).T
                 questions[qid].a = np.hstack((new,questions[qid].a))
-                questions[qid].atext.insert(0,document)
+                # questions[qid].atext.insert(0,document)
                 questions[qid].y = np.append(questions[qid].y,relevancy)
             else:
                 # print q_vec,[float(a) for a in d[index]],query,[document],np.array([])
-                questions[qid] = q(q_vec,[float(a) for a in d[index]],np.empty((1,2)),query,[document],np.array([]),relevancy)
+                questions[qid] = q(q_vec,[float(a) for a in d[index]],relevancy)
     return questions
 
 def dummy_file(length,dim):
@@ -150,5 +150,5 @@ if __name__ == "__main__":
     questions = load_qs(model)
     (M,b) = train(questions.values(),[])
     doc_model = Doc_Model(M,b)
-    with open("doc_model.pickle","wb") as f:
+    with open("doc_model2.pickle","wb") as f:
         pickle.dump(doc_model,f)
