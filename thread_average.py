@@ -100,19 +100,19 @@ def edit_dic(fname):
             result[words[1]] = [words[0],words[2]]
     return result
 
-def get_sparse(fname,model):
+def get_sparse(fname):
     short = fname.split('.')[0]
 
-    if not os.path.isfile(os.getcwd()+os.sep+short+".dic"):
-        print "Creating dictionary"
-        data_to_dic(fname)
+    # if not os.path.isfile(os.getcwd()+os.sep+short+".dic"):
+    #     print "Creating dictionary"
+    #     data_to_dic(fname)
     if not os.path.isfile(os.getcwd()+os.sep+short+"_sparse.mtx"):
-        print "Editing dictionary"
-        dictionary = edit_dic(short+".dic")
-        print "Filtering dictionary"
-        filter_dic(model,dictionary,"new.dic")
-        print "Loading dictionary"
-        dct = corpora.Dictionary.load_from_text("new.dic")
+        # print "Editing dictionary"
+        # dictionary = edit_dic(short+".dic")
+        # print "Filtering dictionary"
+        # filter_dic(model,dictionary,"new.dic")
+        # print "Loading dictionary"
+        dct = corpora.Dictionary.load_from_text("dict_big.txt")
         texts = [line.split() for line in open(fname)]
         corpus = [dct.doc2bow(text) for text in texts]
         csc = matutils.corpus2csc(corpus)
@@ -143,12 +143,12 @@ if __name__ == "__main__":
     parser.add_argument("modelname",help="model file",type=str)
     args = parser.parse_args()
     # model = models.Word2Vec.load(args.modelname)
-    sparse_thread(32)
+    # sparse_thread(32)
     # print "Model loaded"
     # fname = args.dataname# "temp_new.raw_text"
     # data_to_dic(fname)
     # # model = models.Word2Vec.load("model6.word2vec")
-    # csc = get_sparse(fname,model)
+    csc = get_sparse("content.raw_text")
     # print "Sparse matrix computed"
     # R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
     # io.mmwrite("R_new.mtx",R)
