@@ -33,7 +33,7 @@ log_echo "Copying data."
 cp $INPUT_DIR/$PATH_NAME/$DATA_NAME $SCRATCHDIR
 cp $INPUT_DIR/*.dic $SCRATCHDIR
 cp $INPUT_DIR/*.mtx $SCRATCHDIR
-cp $INPUT_DIR/dict_big.txt $SCRATCHDIR
+# cp $INPUT_DIR/dict_big.txt $SCRATCHDIR
 log_echo "Done."
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
@@ -44,6 +44,7 @@ python $SCRATCHDIR/thread_average.py $DATA_NAME $MODEL_NAME.word2vec
 log_echo "Done."
 cp $SCRATCHDIR/*.mtx $INPUT_DIR
 cp $SCRATCHDIR/*.dic $INPUT_DIR
+cp $SCRATCHDIR/*.txt $INPUT_DIR
 # cp $SCRATCHDIR/*.txt $INPUT_DIR
 log_echo "Cleaning up..."
 rm -rf $SCRATCHDIR/*
