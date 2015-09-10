@@ -11,11 +11,16 @@ import random
 from train import train
 import pickle
 from scipy import io
+import os.path
 
 class Doc_Model():
     def __init__(self,M,b):
         self.M = M
         self.b = b
+
+class Questions():
+    def __init__(self):
+        self.q = q
 
 def mean(a):
     return sum(a) / len(a)
@@ -145,7 +150,13 @@ if __name__ == "__main__":
     model = models.Word2Vec.load(fname)
 
     # output_tsne(model)
-    questions = load_qs(model)
+    if os.path.isfile("questions_content.pickle"):
+        pickle.load("questions_content.pickle")
+    else:
+        questions = load_qs(model)
+        qs = Questions(questions)
+        with open("questions_content.pickle","wb") as f:
+            pickle.dump(qs,f)
     (M,b) = train(questions.values(),[])
     doc_model = Doc_Model(M,b)
     with open("doc_model_content.pickle","wb") as f:
