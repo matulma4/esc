@@ -72,17 +72,17 @@ def translate_hash(hash,dictionary):
         return -1
 
 def load_qs(model):
-    dictionary = load_doc_hashes("temp_mapper.txt")
+    dictionary = load_doc_hashes("doc_mapper.txt")
     questions = {}
     dim = len(model[model.vocab.keys()[0]])
     # docs = [line.split() for line in open("content.raw_text")]
-    docs = MySentences("temp_new.raw_text")
+    docs = MySentences("content.raw_text")
     length = len(docs)
     dummy_file(length,dim)
     dim = len(model[model.vocab.keys()[0]])
     dummy_file(length,dim)
     d = io.mmread("R_new.mtx").T# MySentences("new_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
-    features = MySentences("temp_features.rtData")
+    features = MySentences("base_all_features.rtData")
     queries = {}
     o = 0
     for words in features:
