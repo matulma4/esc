@@ -80,9 +80,9 @@ def load_qs(model):
     length = len(docs)
     dummy_file(length,dim)
     dim = len(model[model.vocab.keys()[0]])
-    dummy_file(length,dim)
+    # dummy_file(length,dim)
     d = io.mmread("R_new.mtx").T# MySentences("new_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
-    features = MySentences("base_all_features.rtData")
+    features = MySentences("base_text_features.rtData")
     queries = {}
     o = 0
     for words in features:
