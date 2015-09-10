@@ -7,13 +7,12 @@ import numpy as np
 from scipy import io
 from joblib import Parallel,delayed
 import glob,os.path
-from doc_to_vec import MySentences
 import threading
 
 
 def average(f,model):
     dim = len(model[model.vocab.keys()[0]])
-    lines = MySentences(f) # [line.split() for line in open(f)]
+    lines = [line.split() for line in open(f)]
     length = len(lines)
     result = np.empty(shape=(length,dim))
     i = 0
@@ -143,8 +142,8 @@ if __name__ == "__main__":
     parser.add_argument("modelname",help="model file",type=str)
     args = parser.parse_args()
 
-
     model = models.Word2Vec.load(args.modelname)
+
     # keyset = model.vocab.keys()[1024000:]
     # dictionary = corpora.Dictionary.load_from_text("content.dic")
     # filter_dic(model,keyset,dictionary,"dict32.txt")
@@ -155,8 +154,8 @@ if __name__ == "__main__":
     # # model = models.Word2Vec.load("model6.word2vec")
 
     csc = get_sparse("content.raw_text")
-    # R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
-    # io.mmwrite("R_new.mtx",R)
+    R = np.array(model.syn0.T * csc) / np.array([1 if value == 0 else value for value in csc.sum(axis=0).A1])
+    io.mmwrite("R_new.mtx",R)
 
 
     # average_documents(os.getcwd()+"/chunks",args.n_processors,model)

@@ -36,9 +36,6 @@ cp $INPUT_DIR/*.mtx $SCRATCHDIR
 cp $INPUT_DIR/dict_big.txt $SCRATCHDIR
 log_echo "Done."
 cp $INPUT_DIR/thread_average.py $SCRATCHDIR
-cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
-cp $INPUT_DIR/train.py $SCRATCHDIR
-cp $INPUT_DIR/basicgrad.py $SCRATCHDIR
 log_echo "Done."
 python $SCRATCHDIR/thread_average.py $DATA_NAME $MODEL_NAME.word2vec
 log_echo "Done."
