@@ -19,7 +19,7 @@ class Doc_Model():
         self.b = b
 
 class Questions():
-    def __init__(self):
+    def __init__(self,q):
         self.q = q
 
 def mean(a):
