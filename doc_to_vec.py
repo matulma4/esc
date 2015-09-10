@@ -81,7 +81,7 @@ def load_qs(model):
     dummy_file(length,dim)
     dim = len(model[model.vocab.keys()[0]])
     dummy_file(length,dim)
-    d = MySentences("new_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
+    d = io.mmread("R_new.mtx").T# MySentences("new_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
     features = MySentences("temp_features.rtData")
     queries = {}
     o = 0
@@ -142,7 +142,7 @@ def matrix_to_file():
 
 if __name__ == "__main__":
     # matrix_to_file()
-    fname = "model6.word2vec"
+    fname = "content.word2vec"
     # fname = sys.argv[1]
     model = models.Word2Vec.load(fname)
 
@@ -150,5 +150,5 @@ if __name__ == "__main__":
     questions = load_qs(model)
     (M,b) = train(questions.values(),[])
     doc_model = Doc_Model(M,b)
-    with open("doc_model2.pickle","wb") as f:
+    with open("doc_model_content.pickle","wb") as f:
         pickle.dump(doc_model,f)
