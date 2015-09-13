@@ -77,15 +77,16 @@ def translate_hash(hash,dictionary):
         return -1
 
 def load_qs(model):
-    dictionary = load_doc_hashes("doc_mapper.txt")
+    dictionary = load_doc_hashes("temp_mapper.txt")
     questions = {}
     # dim = len(model[model.vocab.keys()[0]])
     # docs = [line.split() for line in open("content.raw_text")]
-    docs = MySentences("content.raw_text")
-    length = len(docs)
+    # docs = MySentences("temp_new.raw_text")
+    # length = len(docs)
     dim = len(model[model.vocab.keys()[0]])
-    d = io.mmread("R_new.mtx").T# MySentences("new_averages.txt")# [average_vec(mx,model,dim) for mx in docs]
-    features = MySentences("base_text_features.rtData")
+    d = MySentences("new_averages.txt")# io.mmread("R_new.mtx").T # [average_vec(mx,model,dim) for mx in docs]
+    features = MySentences("temp_features.rtData")
+    length = len(d)
     queries = {}
     o = 0
     for words in features:
@@ -114,7 +115,7 @@ def load_qs(model):
             queries[qid] = q_vec
         index = translate_hash(hash,dictionary)
         if index > -1 and index < length:
-            document = docs[index]
+            # document = docs[index]
             # doc_vec = average_vec(document,model,length)
             if qid in questions.keys():
                 new = np.array([np.array([float(a) for a in d[index]])]).T
@@ -145,19 +146,20 @@ def matrix_to_file():
 
 if __name__ == "__main__":
     # matrix_to_file()
-    fname = "content.word2vec"
+    fname = "model6.word2vec"
     # fname = sys.argv[1]
     model = models.Word2Vec.load(fname)
 
     # output_tsne(model)
     if os.path.isfile("questions_content.pickle"):
-        pickle.load("questions_content.pickle")
+        with open("questions_content.pickle") as f:
+            questions = pickle.load(f)
     else:
         questions = load_qs(model)
         qs = Questions(questions)
-        with open("questions_content.pickle","wb") as f:
+        with open("questions_temp.pickle","wb") as f:
             pickle.dump(qs,f)
-    (M,b) = train(questions.values(),[])
+    (M,b) = train(questions.questions.values(),[])
     doc_model = Doc_Model(M,b)
     with open("doc_model_content.pickle","wb") as f:
         pickle.dump(doc_model,f)
