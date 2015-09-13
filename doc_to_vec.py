@@ -146,7 +146,7 @@ def matrix_to_file():
 
 if __name__ == "__main__":
     # matrix_to_file()
-    fname = "model6.word2vec"
+    fname = "content.word2vec"
     # fname = sys.argv[1]
     model = models.Word2Vec.load(fname)
 
@@ -159,7 +159,7 @@ if __name__ == "__main__":
         qs = Questions(questions)
         with open("questions_temp.pickle","wb") as f:
             pickle.dump(qs,f)
-    (M,b) = train(questions.questions.values(),[])
+    (M,b) = train(questions.q.values(),[])
     doc_model = Doc_Model(M,b)
     with open("doc_model_content.pickle","wb") as f:
         pickle.dump(doc_model,f)
