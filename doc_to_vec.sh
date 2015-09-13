@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -N doc2vec
 #PBS -l walltime=24h
-#PBS -l nodes=1:ppn=1
-#PBS -l mem=128gb
+#PBS -l nodes=1:ppn=32
+#PBS -l mem=512gb
 #PBS -l scratch=16gb
 
 PATH_NAME="models/lemmatized/default"
