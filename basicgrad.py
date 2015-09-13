@@ -132,7 +132,7 @@ def firstTrue(y,t):
         li.append(yt(y[i],t[i]))
     li.sort(key=lambda x: x.t,reverse=True)
     a = [u.y for u in li]
-    c = np.array([np.int(b*5) for b in a])
+    c = np.array([np.int32(b*5) for b in a])
     print c
     return ncdg.evaluate(ranked_labels=c)
     # i=0
