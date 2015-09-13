@@ -49,7 +49,7 @@ class MySentences:
             for line in f:
                 # print self.i
                 self.i += 1
-                yield line.split()
+                yield line
 
     def __len__(self):
         return self.length
@@ -127,15 +127,15 @@ def load_qs(model):
     return questions
 
 def load_questions(fname,questions,dictionary,model,dim,d):
-    features = [line for line in open(fname)]
+    features = MySentences(fname)# [line for line in open(fname)]
     queries = {}
     length = len(d)
     for line in features:
         halves = line.split(' #')
-        features = halves[0].split()
+        ftr = halves[0].split()
         metadata = halves[1].split('\t')
-        relevancy = int(features[0])
-        qid = int(features[1].split(':')[1])
+        relevancy = int(ftr[0])
+        qid = int(ftr[1].split(':')[1])
         query = metadata[0].strip()
         if len(metadata) < 3:
             print line
