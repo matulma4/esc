@@ -127,7 +127,7 @@ def load_qs(model):
     return questions
 
 def load_questions(fname,questions,dictionary,model,dim,d):
-    features = MySentences(fname)# [line for line in open(fname)]
+    features = [line for line in open(fname)]
     queries = {}
     length = len(d)
     for line in features:
