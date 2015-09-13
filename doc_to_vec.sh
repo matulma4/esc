@@ -31,15 +31,16 @@ then
     exit 1
    fi
 log_echo "Copying data."
-cp $INPUT_DIR/$PATH_NAME/$DATA_NAME $SCRATCHDIR
-cp $INPUT_DIR/$FTR_NAME $SCRATCHDIR
+# cp $INPUT_DIR/$PATH_NAME/$DATA_NAME $SCRATCHDIR
+cp $INPUT_DIR/../$FTR_NAME $SCRATCHDIR
 cp $INPUT_DIR/$MAP_NAME $SCRATCHDIR
 cp $INPUT_DIR/$AVG_NAME $SCRATCHDIR
 cp $INPUT_DIR/basicgrad.py $SCRATCHDIR
 cp $INPUT_DIR/train.py $SCRATCHDIR
-cp $INPUT_DIR/questions_content.pickle $SCRATCHDIR
+# cp $INPUT_DIR/questions_content.pickle $SCRATCHDIR
 gunzip $SCRATCHDIR/$MAP_NAME
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
+split -l 41480 -a 2 -d $SCRATCHDIR/$FTR_NAME $SCRATCHDIR/feature_
 log_echo "Done."
 python $SCRATCHDIR/doc_to_vec.py
 cp $SCRATCHDIR/*.pickle $INPUT_DIR

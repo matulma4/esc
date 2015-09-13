@@ -4,10 +4,9 @@
 from __future__ import division
 from gensim import models
 import numpy as np
-# from sklearn.manifold import TSNE
-# from w2vg import MySentences
+from joblib import Parallel,delayed
 from basicgrad import q
-import random
+import random,glob
 from train import train
 import pickle
 from scipy import io
@@ -127,6 +126,46 @@ def load_qs(model):
                 questions[qid] = q(q_vec,[float(a) for a in d[index]],relevancy)
     return questions
 
+def load_questions(fname,questions,dictionary,model,dim,d):
+    features = [line for line in open(fname)]
+    queries = {}
+    length = len(d)
+    for line in features:
+        halves = line.split(' #')
+        features = halves[0].split()
+        metadata = halves[1].split('\t')
+        relevancy = int(features[0])
+        qid = int(features[1].split(':')[1])
+        query = metadata[0].strip()
+        if len(metadata) < 3:
+            print line
+        hash = metadata[2]
+        index = translate_hash(hash,dictionary)
+        if qid in queries.keys():
+            q_vec = queries[qid]
+        else:
+            q_vec = average_vec(query,model,dim)
+            queries[qid] = q_vec
+        if index > -1 and index < length:
+            if qid in questions.keys():
+                new = np.array([np.array([float(a) for a in d[index]])]).T
+                questions[qid].a = np.hstack((new,questions[qid].a))
+                questions[qid].y = np.append(questions[qid].y,relevancy)
+            else:
+                questions[qid] = q(q_vec,[float(a) for a in d[index]],relevancy)
+    return questions
+
+def load_thread(n_processors,feature_dataset_dir):
+    d = io.mmread("R_new.mtx")
+    model = models.Word2Vec.load("content.word2vec")
+    dictionary = load_doc_hashes("doc_mapper.txt")
+    dim = len(model[model.vocab.keys()[0]])
+    questions = {}
+    files = sorted(glob.glob(feature_dataset_dir + "/feature_*"))
+    results = Parallel(n_jobs=n_processors)(delayed(load_questions)(fname,questions,dictionary,model,dim,d) for fname in files)
+    return results
+
+
 def dummy_file(length,dim):
     random.seed(13)
     with open("dummy_averages.txt","w") as f:
@@ -145,21 +184,24 @@ def matrix_to_file():
             f.write("\n")
 
 if __name__ == "__main__":
-    # matrix_to_file()
-    fname = "content.word2vec"
-    # fname = sys.argv[1]
-    model = models.Word2Vec.load(fname)
 
-    # output_tsne(model)
     if os.path.isfile("questions_content.pickle"):
         with open("questions_content.pickle") as f:
             questions = pickle.load(f)
     else:
-        questions = load_qs(model)
+
+        # io.mmread("R_new.mtx")
+        # model = models.Word2Vec.load("model6.word2vec")
+        # dictionary = load_doc_hashes("temp_mapper.txt")
+        # dim = len(model[model.vocab.keys()[0]])
+        # d = np.zeros(shape=(10000,100))
+        questions = load_thread(32,os.getcwd())
         qs = Questions(questions)
-        with open("questions_temp.pickle","wb") as f:
+        with open("questions_content.pickle","wb") as f:
             pickle.dump(qs,f)
-    (M,b) = train(questions.q.values(),[])
-    doc_model = Doc_Model(M,b)
-    with open("doc_model_content.pickle","wb") as f:
-        pickle.dump(doc_model,f)
+
+
+    # (M,b) = train(questions.q.values(),[])
+    # doc_model = Doc_Model(M,b)
+    # with open("doc_model_content.pickle","wb") as f:
+    #     pickle.dump(doc_model,f)
