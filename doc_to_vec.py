@@ -159,15 +159,33 @@ def load_questions(fname,questions,dictionary,model,dim,d):
                 questions[qid] = q(q_vec,[float(a) for a in d[index]],relevancy)
     return questions
 
+def merge_dicts(dicts):
+    questions = dicts[0]
+    for i in range(1,len(dicts)):
+        dictionary = dicts[i]
+        for qid in dictionary.keys:
+            value = dictionary[qid]
+            if qid in questions.keys():
+                questions[qid].a = np.hstack((value.a,questions[qid].a))
+                questions[qid].y = value.y[::-1] + questions[qid].y# np.append(questions[qid].y,relevancy)
+            else:
+                questions[qid] = value
+                questions[qid].y = questions[qid].y[::-1]
+    return questions
+
+
 def load_thread(n_processors,feature_dataset_dir):
-    d = io.mmread("R_new.mtx")
+    d = io.mmread("R_new.mtx").T
     model = models.Word2Vec.load("content.word2vec")
     dictionary = load_doc_hashes("doc_mapper.txt")
     dim = len(model[model.vocab.keys()[0]])
     questions = {}
     files = sorted(glob.glob(feature_dataset_dir + "/feature_*"))
     results = Parallel(n_jobs=n_processors)(delayed(load_questions)(fname,questions,dictionary,model,dim,d) for fname in files)
-    return results
+    with open("backup.pickle","wb") as f:
+        o = Questions(results)
+        pickle.dump(o,f)
+    return questions
 
 def dummy_file(length,dim):
     random.seed(13)
@@ -186,7 +204,7 @@ def matrix_to_file():
                 f.write(str(value)+" ")
             f.write("\n")
 
-if __name__ == "__mein__":
+if __name__ == "__main__":
 
     if os.path.isfile("questions_content.pickle"):
         with open("questions_content.pickle") as f:
@@ -200,17 +218,21 @@ if __name__ == "__mein__":
         # d = np.zeros(shape=(10000,100))
         questions = load_thread(32,os.getcwd())
         qs = Questions(questions)
-        with open("questions_content.pickle","wb") as f:
+        with open("correct_questions_content.pickle","wb") as f:
             pickle.dump(qs,f)
 
 
 
 
-if __name__ == "__main__":
+if __name__ == "__muin__":
     with open("questions_content.pickle") as f:
             questions = pickle.load(f)
-    (M,b) = train(questions.q,[])
-    doc_model = Doc_Model(M,b)
-    with open("doc_model_content.pickle","wb") as f:
-        pickle.dump(doc_model,f)
+    (M,b) = train(questions.q.values(),[])
+    # doc_model = Doc_Model(M,b)
+    # with open("doc_model_content.pickle","wb") as f:
+    #     pickle.dump(doc_model,f)
+    new_questions = merge_dicts(questions.q)
+    qs = Questions(new_questions)
+    with open("new_questions_content.pickle","wb") as f:
+        pickle.dump(qs,f)
 
