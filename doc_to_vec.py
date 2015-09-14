@@ -209,7 +209,7 @@ if __name__ == "__mein__":
 if __name__ == "__main__":
     with open("questions_content.pickle") as f:
             questions = pickle.load(f)
-    (M,b) = train(questions.q.values(),[])
+    (M,b) = train(questions.q,[])
     doc_model = Doc_Model(M,b)
     with open("doc_model_content.pickle","wb") as f:
         pickle.dump(doc_model,f)
