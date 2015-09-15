@@ -204,7 +204,7 @@ def matrix_to_file():
                 f.write(str(value)+" ")
             f.write("\n")
 
-if __name__ == "__main__":
+if __name__ == "__mein__":
 
     if os.path.isfile("questions_content.pickle"):
         with open("questions_content.pickle") as f:
@@ -224,15 +224,15 @@ if __name__ == "__main__":
 
 
 
-if __name__ == "__muin__":
-    with open("questions_content.pickle") as f:
+if __name__ == "__main__":
+    with open("newest_questions_content.pickle") as f:
             questions = pickle.load(f)
     (M,b) = train(questions.q.values(),[])
-    # doc_model = Doc_Model(M,b)
-    # with open("doc_model_content.pickle","wb") as f:
-    #     pickle.dump(doc_model,f)
-    new_questions = merge_dicts(questions.q)
-    qs = Questions(new_questions)
-    with open("new_questions_content.pickle","wb") as f:
-        pickle.dump(qs,f)
+    doc_model = Doc_Model(M,b)
+    with open("doc_model_content.pickle","wb") as f:
+        pickle.dump(doc_model,f)
+    # new_questions = merge_dicts(questions.q)
+    # qs = Questions(new_questions)
+    # with open("new_questions_content.pickle","wb") as f:
+    #     pickle.dump(qs,f)
 

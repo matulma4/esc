@@ -37,10 +37,10 @@ cp $INPUT_DIR/$MAP_NAME $SCRATCHDIR
 cp $INPUT_DIR/$AVG_NAME $SCRATCHDIR
 cp $INPUT_DIR/basicgrad.py $SCRATCHDIR
 cp $INPUT_DIR/train.py $SCRATCHDIR
-# cp $INPUT_DIR/questions_content.pickle $SCRATCHDIR
+cp $INPUT_DIR/newest_questions_content.pickle $SCRATCHDIR
 gunzip $SCRATCHDIR/$MAP_NAME
 cp $INPUT_DIR/doc_to_vec.py $SCRATCHDIR
-split -l 41480 -a 2 -d $SCRATCHDIR/$FTR_NAME $SCRATCHDIR/feature_
+# split -l 41480 -a 2 -d $SCRATCHDIR/$FTR_NAME $SCRATCHDIR/feature_
 log_echo "Done."
 python $SCRATCHDIR/doc_to_vec.py
 cp $SCRATCHDIR/*.pickle $INPUT_DIR
