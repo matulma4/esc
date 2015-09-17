@@ -1,8 +1,8 @@
 #!/bin/bash
 #PBS -N forest
 #PBS -l walltime=24h
-#PBS -l nodes=1:ppn=16
-#PBS -l mem=512gb
+#PBS -l nodes=1:ppn=1
+#PBS -l mem=8gb
 #PBS -l scratch=16gb
 
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
