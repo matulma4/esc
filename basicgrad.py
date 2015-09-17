@@ -12,7 +12,7 @@ import scipy.special as s
 MATRIX_SIZE = 100
 
 l=5e-3    #regularisation constant
-alpha=2e-8  #learning constant
+alpha=2e-10  #learning constant
 
 class q(object):
     """Holds question with all its answers and T/F values as well as counted probabilities"""
@@ -73,6 +73,32 @@ def ttlist(qa,a1a,a0a,ans1,ans0,sentences):
 def testGrad(M,b,li):
     """Updates weights using basic gradient descent"""
     bestmrr=0.0
+    n_iter = 200
+    plot = np.zeros(n_iter / 5)
+    for i in range(0, n_iter):
+        ggM=0.0
+        ggb=0.0
+        if i%5==0:
+            plot[i/5]=lossAll(li,M,b)
+            print '[%d/%d] loss function: %.1f (bestMRR %.3f)' % (i, n_iter, plot[i/5], bestmrr)
+        for q in li:
+            labels=q.y
+#                np.transpose(np.array(q.a[:,j],ndmin=2))
+            (gM,gb)=grad(labels,q.q,M,q.a,b)
+            ggM+=gM
+            ggb+=gb
+            M=M-alpha*ggM
+            b=b-alpha*ggb
+        curmrr=mrr(M,b,li)
+        if bestmrr<curmrr:
+            bestmrr=curmrr
+            bestM=M
+            bestb=b
+    return(bestM,bestb)
+
+def testGrad_old(M,b,li):
+    """Updates weights using basic gradient descent"""
+    bestmrr=0.0
     bestM=0
     bestb=0
     n_iter = 100
@@ -85,7 +111,7 @@ def testGrad(M,b,li):
             print '[%d/%d] loss function: %.1f (bestNDCG %.3f)' % (i, n_iter, plot[i/5], bestmrr)
         for q in li:
             for j in range(0,len(q.y)):
-                (gM,gb)=grad(q.y[j],q.q,M,np.transpose(np.array(q.a[:,j],ndmin=2)),b)
+                (gM,gb)=grad(float(q.y[j])/5,q.q,M,np.transpose(np.array(q.a[:,j],ndmin=2)),b)
                 ggM+=gM
                 ggb+=gb
         M=M-alpha*ggM
@@ -111,10 +137,19 @@ def z(q,M,a,b):
     return np.dot(np.dot(np.transpose(q),M),a)+b
 
 #Grad of loss over weights, 1 question 1 answer input
-def grad(label,q,M,a,b):
+def grad_old(label,q,M,a,b):
     d=s.expit(z(q,M,a,b))-label
     gM=np.transpose(np.dot(a,q.reshape((1,MATRIX_SIZE))))*d+l*M
     return (gM,d)
+
+#Grad of loss over weights, 1 question 1 answer input
+def grad(labels,q,M,anss,b):
+    d=np.reshape(s.expit(z(q,M,anss,b)),(len(labels),))-labels
+    gM=0
+#    gb=0
+    for i in range(0,len(d)):
+        gM+=np.transpose(np.dot(np.reshape(anss[:,i],(MATRIX_SIZE,1)),q.reshape((1,MATRIX_SIZE))))*d[i]+l*M
+    return (gM,sum(d))
 
 class yt(object):
     y=0
@@ -126,13 +161,13 @@ class yt(object):
 #Sorts probabilities and returns first True
 def firstTrue(y,t):
 
-    ncdg = metrics.NormalizedDiscountedCumulativeGain()
+    ncdg = metrics.NormalizedDiscountedCumulativeGain(max_documents=8192,max_relevance=5)
     li=[]
     for i in range(0,len(y)):
         li.append(yt(y[i],t[i]))
     li.sort(key=lambda x: x.t,reverse=True)
     a = [u.y for u in li]
-    c = np.array([np.int32(b*5) for b in a])
+    c = np.array([np.int32(b) for b in a])
     return ncdg.evaluate(ranked_labels=c)
     # i=0
     # for item in li:
