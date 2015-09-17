@@ -75,7 +75,7 @@ def testGrad(M,b,li):
     bestmrr=0.0
     bestM=0
     bestb=0
-    n_iter = 500
+    n_iter = 100
     plot = np.zeros(n_iter / 5)
     for i in range(0, n_iter):
         ggM=0

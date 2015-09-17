@@ -24,3 +24,9 @@ cp $INPUT_DIR/$AVG_NAME $SCRATCHDIR
 cp $INPUT_DIR/forest.py $SCRATCHDIR
 python $SCRATCHDIR/forest.py
 cp $SCRATCHDIR/*.pickle $INPUT_DIR
+cp $SCRATCHDIR/score.txt $INPUT_DIR
+
+log_echo "Cleaning up..."
+rm -rf $SCRATCHDIR/*
+log_echo "Done."
+log_echo "Finished."
