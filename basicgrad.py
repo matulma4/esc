@@ -12,7 +12,7 @@ import scipy.special as s
 MATRIX_SIZE = 100
 
 l=5e-3    #regularisation constant
-alpha=2e-5  #learning constant
+alpha=2e-8  #learning constant
 
 class q(object):
     """Holds question with all its answers and T/F values as well as counted probabilities"""
