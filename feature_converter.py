@@ -9,18 +9,16 @@ def convert_features(fname, outname, ftr):
                 halves = line.split('#')
                 data = [a.split(':') for a in halves[0].split(' ')]
                 new_line = data[0][0]+" "+data[1][0]+":"+data[1][1]+" "
-                for f in data[2:-1]:
-                    if int(f[0]) != ftr:
-                        new_line += f[0]+":"+f[1]+" "
+                for k in data[2:-1]:
+                    if int(k[0]) != ftr:
+                        new_line += k[0]+":"+k[1]+" "
                 g.write(new_line+"#"+halves[1])
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Fetch ids.")
-    # parser.add_argument("dataname",help="dataset",type=str)
     parser.add_argument("ftrname",help="ftrset",type=str)
     parser.add_argument("outname",help="outfile",type=str)
     parser.add_argument("ftr",help="feature",type=int)
     args = parser.parse_args()
-    # dct = load_ids(args.dataname)
     convert_features(args.ftrname,args.outname,args.ftr)
