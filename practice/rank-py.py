@@ -13,21 +13,21 @@ from rankpy.metrics import *
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.INFO)
 
 # Load the query datasets.
-train_queries = Queries.load_from_text('data\\MQ2007\\Fold2\\train.txt')
-valid_queries = Queries.load_from_text('data\\MQ2007\\Fold2\\vali.txt')
-test_queries = Queries.load_from_text('data\\MQ2007\\Fold2\\test.txt')
+train_queries = Queries.load_from_text('data/train.txt')
+valid_queries = Queries.load_from_text('data/vali.txt')
+test_queries = Queries.load_from_text('data/test.txt')
 
 logging.info('================================================================================')
 
 # Save them to binary format ...
-train_queries.save('data\\fold2_train')
-valid_queries.save('data\\fold2_vali')
-test_queries.save('data\\fold2_test')
+train_queries.save('data/fold2_train')
+valid_queries.save('data/fold2_vali')
+test_queries.save('data/fold2_test')
 
 # ... because loading them will be then faster.
-train_queries = Queries.load('data\\fold2_train')
-valid_queries = Queries.load('data\\fold2_vali')
-test_queries = Queries.load('data\\fold2_test')
+train_queries = Queries.load('data/fold2_train')
+valid_queries = Queries.load('data/fold2_vali')
+test_queries = Queries.load('data/fold2_test')
 
 logging.info('================================================================================')
 
