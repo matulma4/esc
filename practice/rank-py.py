@@ -51,7 +51,7 @@ metrics[2] = WinnerTakesAll(10, queries=[train_queries, valid_queries, test_quer
 # metrics[4] = ExpectedReciprocalRank(10, queries=[train_queries, valid_queries, test_queries])
 # Initialize LambdaMART model and train it.
 model = LambdaMART(n_estimators=50000, max_depth=4, shrinkage=0.1, estopping=args.iter, n_jobs=-1)
-metric = metrics(args.metric)
+metric = metrics[args.metric]
 model.fit(metric, train_queries, validation=valid_queries)
 
 logging.info('================================================================================')
