@@ -24,8 +24,8 @@ cp $INPUT_DIR/rank-py.py $SCRATCHDIR
 cp $INPUT_DIR/feature_converter.py $SCRATCHDIR
 python $SCRATCHDIR/feature_converter.py $FTR_NAME $NUMBER_$FTR_NAME $NUMBER
 split -l 442239 -a 2 -d $NUMBER_$FTR_NAME document_
-mv document_00 $SCRATCHDIR/data/train.txt
-mv document_01 $SCRATCHDIR/data/test.txt
-mv document_02 $SCRATCHDIR/data/vali.txt
+mv $SCRATCHDIR/document_00 $SCRATCHDIR/data/train.txt
+mv $SCRATCHDIR/document_01 $SCRATCHDIR/data/test.txt
+mv $SCRATCHDIR/document_02 $SCRATCHDIR/data/vali.txt
 python $SCRATCHDIR/rank-py.py $METRIC $ITER
 log_echo "Finished"
