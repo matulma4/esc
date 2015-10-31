@@ -2,7 +2,7 @@
 
 #PBS -N feature_tester
 #PBS -l walltime=24h
-#PBS -l nodes=1:ppn=1
+#PBS -l nodes=1:ppn=4
 #PBS -l mem=8gb
 #PBS -l scratch=16gb
 
