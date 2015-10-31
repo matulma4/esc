@@ -18,10 +18,14 @@ INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 FTR_NAME="new_text_features4.rtData"
 cd $SCRATCHDIR
 N_JOBS=1
-cp $INPUT_DIR/data/* $SCRATCHDIR
+mkdir $SCRATCHDIR/data
 cp $INPUT_DIR/$FTR_NAME $SCRATCHDIR
 cp $INPUT_DIR/rank-py.py $SCRATCHDIR
 cp $INPUT_DIR/feature_converter.py $SCRATCHDIR
-python feature_converter.py $FTR_NAME $NUMBER_$FTR_NAME $NUMBER
-python rank-py.py $METRIC $ITER
+python $SCRATCHDIR/feature_converter.py $FTR_NAME $NUMBER_$FTR_NAME $NUMBER
+split -l 442239 -a 2 -d $NUMBER_$FTR_NAME document_
+mv document_00 $SCRATCHDIR/data/train.txt
+mv document_01 $SCRATCHDIR/data/test.txt
+mv document_02 $SCRATCHDIR/data/vali.txt
+python $SCRATCHDIR/rank-py.py $METRIC $ITER
 log_echo "Finished"
