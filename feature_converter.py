@@ -7,9 +7,9 @@ def convert_features(fname, outname, ftr):
         with open(outname,'w') as g:
             for line in f:
                 halves = line.split('#')
-                data = [a.split(':') for a in halves[0].split(' ')]
+                data = [a.split(':') for a in filter(None,halves[0].split(' '))]
                 new_line = data[0][0]+" "+data[1][0]+":"+data[1][1]+" "
-                for k in filter(None,data[2:]):
+                for k in data[2:]:
                     if int(k[0]) != ftr:
                         new_line += k[0]+":"+k[1]+" "
                 g.write(new_line+"#"+halves[1])
