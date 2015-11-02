@@ -28,7 +28,7 @@ python $SCRATCHDIR/feature_converter.py $FTR_NAME $SCRATCHDIR/$i-$NAME $i
 split -l 442239 -a 2 -d $i-$NAME document_
 # ls $SCRATCHDIR
 mv $SCRATCHDIR/document_00 $SCRATCHDIR/data/train.txt
-mv $SCRATCHDIR/document_01 $SCRATCHDIR/data/test.txtit
+mv $SCRATCHDIR/document_01 $SCRATCHDIR/data/test.txt
 mv $SCRATCHDIR/document_02 $SCRATCHDIR/data/vali.txt
 python $SCRATCHDIR/rank-py.py $METRIC $ITER &> $i.txt
 NAME=$i-$NAME
