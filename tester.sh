@@ -24,13 +24,13 @@ cp $INPUT_DIR/rank-py.py $SCRATCHDIR
 cp $INPUT_DIR/feature_converter.py $SCRATCHDIR
 NAME=$FTR_NAME
 for i in 783 774 775 925 781 773 780 778 779 782 777 776; do
-python $SCRATCHDIR/feature_converter.py $FTR_NAME $SCRATCHDIR/$i-$NAME $NUMBER
-split -l 442239 -a 2 -d $NUMBER-$FTR_NAME document_
+python $SCRATCHDIR/feature_converter.py $FTR_NAME $SCRATCHDIR/$i-$NAME $i
+split -l 442239 -a 2 -d $i-$FTR_NAME document_
 # ls $SCRATCHDIR
 mv $SCRATCHDIR/document_00 $SCRATCHDIR/data/train.txt
-mv $SCRATCHDIR/document_01 $SCRATCHDIR/data/test.txt
+mv $SCRATCHDIR/document_01 $SCRATCHDIR/data/test.txtit
 mv $SCRATCHDIR/document_02 $SCRATCHDIR/data/vali.txt
-python $SCRATCHDIR/rank-py.py $METRIC $ITER > $i.txt
+python $SCRATCHDIR/rank-py.py $METRIC $ITER &> $i.txt
 NAME=$i-$NAME
 done
 cp *.txt $INPUT_DIR/feature_test_output
