@@ -20,7 +20,7 @@ MODEL="model1"
 cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying files..."
-cp $INPUT_DIR/$PATH/$fname %SCRATCHDIR
+cp $INPUT_DIR/$PATH/$fname $SCRATCHDIR
 cp $INPUT_DIR/doc2vec.py $SCRATCHDIR
 log_echo "Done"
 log_echo "Running script..."
