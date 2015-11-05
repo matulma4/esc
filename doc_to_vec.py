@@ -138,10 +138,10 @@ def parse_feature_line(line):
     hash = metadata[2]
     return (relevancy,qid,query,hash)
 
-def load_questions(fname,questions,dictionary,model,dim,d):
+def load_questions(fname,questions,dictionary,model,dim):
     features = [line for line in open(fname)]
     queries = {}
-    length = len(d)
+    length = len(model.docvecs)
     for line in features:
         (relevancy,qid,query,hash) = parse_feature_line(line)
         index = translate_hash(hash,dictionary)
@@ -152,11 +152,11 @@ def load_questions(fname,questions,dictionary,model,dim,d):
             queries[qid] = q_vec
         if index > -1 and index < length:
             if qid in questions.keys():
-                new = np.array([np.array([float(a) for a in d[index]])]).T
+                new = np.array([np.array([float(a) for a in model.docvecs[index]])]).T
                 questions[qid].a = np.hstack((new,questions[qid].a))
                 questions[qid].y = np.append(questions[qid].y,relevancy)
             else:
-                questions[qid] = q(q_vec,[float(a) for a in d[index]],relevancy)
+                questions[qid] = q(q_vec,[float(a) for a in model.docvecs[index]],relevancy)
     return questions
 
 def merge_dicts(dicts):
@@ -175,13 +175,13 @@ def merge_dicts(dicts):
 
 
 def load_thread(n_processors,feature_dataset_dir):
-    d = io.mmread("R_new.mtx").T
-    model = models.Word2Vec.load("content.word2vec")
+    # d = io.mmread("R_new.mtx").T
+    model = models.Doc2Vec.load("model1.doc2vec")
     dictionary = load_doc_hashes("doc_mapper.txt")
-    dim = len(model[model.vocab.keys()[0]])
+    dim = len(model.docvecs[0])
     questions = {}
     files = sorted(glob.glob(feature_dataset_dir + "/feature_*"))
-    results = Parallel(n_jobs=n_processors)(delayed(load_questions)(fname,questions,dictionary,model,dim,d) for fname in files)
+    results = Parallel(n_jobs=n_processors)(delayed(load_questions)(fname,questions,dictionary,model,dim) for fname in files)
     with open("backup.pickle","wb") as f:
         o = Questions(results)
         pickle.dump(o,f)
@@ -204,7 +204,7 @@ def matrix_to_file():
                 f.write(str(value)+" ")
             f.write("\n")
 
-if __name__ == "__mein__":
+if __name__ == "__main__":
 
     if os.path.isfile("questions_content.pickle"):
         with open("questions_content.pickle") as f:
@@ -216,7 +216,7 @@ if __name__ == "__mein__":
         # dictionary = load_doc_hashes("temp_mapper.txt")
         # dim = len(model[model.vocab.keys()[0]])
         # d = np.zeros(shape=(10000,100))
-        questions = load_thread(32,os.getcwd())
+        questions = load_thread(16,os.getcwd())
         qs = Questions(questions)
         with open("correct_questions_content.pickle","wb") as f:
             pickle.dump(qs,f)
@@ -224,7 +224,7 @@ if __name__ == "__mein__":
 
 
 
-if __name__ == "__main__":
+if __name__ == "__muin__":
     with open("newest_questions_content.pickle") as f:
             questions = pickle.load(f)
     (M,b) = train(questions.q.values(),[])
