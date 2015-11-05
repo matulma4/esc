@@ -27,5 +27,5 @@ log_echo "Running script..."
 python $SCRATCHDIR/doc2vec.py $FNAME $MODEL
 log_echo "Done"
 log_echo "Copying result..."
-cp $SCRATCHDIR/*.doc2vec $INPUT_DIR
+cp $SCRATCHDIR/*.doc2vec* $INPUT_DIR
 log_echo "Finished"
