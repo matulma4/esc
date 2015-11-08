@@ -1,4 +1,3 @@
-import numpy as np
 import pickle
 from doc_to_vec import MySentences
 
@@ -24,30 +23,12 @@ if __name__ == "__main__":
         signals = pickle.load(f)
     features = []
     max_ftr = 925
-    g = open("new_text_features.rtData","w")
+    g = open("new_text_features5.rtData","w")
     i = 0
     for line in data:
         halves = line.split('#')
-        new_line = halves[0]+" "+str(max_ftr)+":"+signals[i]+" #"+halves[1]+"\n"
+        ftr = float(signals[i])
+        new_line = halves[0]+" "+str(max_ftr)+":"+str(1/(1+exp(ftr)))+" #"+halves[1]+"\n"
         g.write(new_line)
         i += 1
     g.close()
-    #     data_array = parsed_row[0].split()
-    #     metadata_array = parsed_row[1].split('\t')
-    #     relevancy = data_array[0]
-    #     qid = data_array[1].split(":")[1]
-    #     query_text = metadata_array[0]
-    #     hash_doc = metadata_array[2]
-    #     doc_features = [ftr.split(":") for ftr in data_array[2:]]
-    #
-    #     max_ftr = max(np.max([int(a[0]) for a in doc_features]),max_ftr)
-    #
-    #     doc = DocRow(relevancy,qid,doc_features,metadata_array)
-    #     features.append(doc)
-    # my_ftr = max_ftr + 1
-    #
-    # for i in range(len(features)):
-    #     doc = features[i]
-    #     doc.doc_features.append([str(my_ftr),str(147.2)])
-    #     # features.append(parsed_row)
-    # print(max_ftr)
