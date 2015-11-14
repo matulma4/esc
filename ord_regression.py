@@ -28,7 +28,7 @@ if __name__ == "__main__":
     parser.add_argument("fname",help="modelname",type=str)
     parser.add_argument("rel",help="relname",type=str)
     args = parser.parse_args()
-    y = [int(line) for line in open(args.relname)]
+    y = [int(line) for line in open(args.rel)]
     model = models.Doc2Vec.load(args.fname)
     X = model.docvecs
     (w,theta) = ordinal_logistic_fit(X,y,max_iter=1000)
