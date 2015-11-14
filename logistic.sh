@@ -19,7 +19,7 @@ cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying files..."
 cp $INPUT_DIR/$FNAME $SCRATCHDIR
-cp $INPUT_DIR/$MODEL $SCRATCHDIR
+cp $INPUT_DIR/$MODEL* $SCRATCHDIR
 cp $INPUT_DIR/ord_regression.py $SCRATCHDIR
 cp $INPUT_DIR/logistic.py $SCRATCHDIR
 log_echo "Done"
