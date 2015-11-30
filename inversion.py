@@ -1,3 +1,8 @@
+import pickle
+from doc_to_vec import Questions
+from gensim import models
+import numpy as np
+
 def count_inversion(lst):
     return merge_count_inversion(lst)[1]
 
@@ -28,4 +33,15 @@ def merge_count_split_inversion(left, right):
     return result, count
 
 if __name__ == "__main__":
-    print count_inversion([1,2,3,4,5])
+    # print count_inversion([1,2,3,4,5])
+    (w,theta) = pickle.load(open("regress.pickle"))
+    classes = {}
+    j = 0
+    for t in theta:
+        classes[t] = j
+        j += 1
+    model = models.Doc2Vec.load("model.doc2vec")
+    for docvec in model.docvecs:
+        k = np.dot(docvec,w)
+        i = [t for t in theta if k > t]
+        print classes[min(i)]
