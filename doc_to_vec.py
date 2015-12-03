@@ -138,25 +138,28 @@ def parse_feature_line(line):
     hash = metadata[2]
     return (relevancy,qid,query,hash)
 
-def load_questions(fname,questions,dictionary,model,dim):
-    features = [line for line in open(fname)]
-    queries = {}
-    length = len(model.docvecs)
-    for line in features:
-        (relevancy,qid,query,hash) = parse_feature_line(line)
-        index = translate_hash(hash,dictionary)
-        if qid in queries.keys():
-            q_vec = queries[qid]
-        else:
-            q_vec = average_vec(query,model,dim)
-            queries[qid] = q_vec
-        if index > -1 and index < length:
-            if qid in questions.keys():
+def load_questions(model,rel,hash,qid,dictionary):
+    # features = [line for line in open(fname)]
+    questions = {}
+    # length = len(model.docvecs)
+    for i in range(len(rel)):
+        qi = qid[i]
+        r = rel[i]
+        h = hash[i]
+        index = translate_hash(h,dictionary)
+        # if qid in queries.keys():
+        #     q_vec = queries[qid]
+        # else:
+        #     q_vec = average_vec(query,model,dim)
+        #     queries[qid] = q_vec
+        q_vec = [int(a) for a in '{:020b}'.format(int(qi))]*5
+        if index > -1: # and index < length:
+            if qi in questions.keys():
                 new = np.array([np.array([float(a) for a in model.docvecs[index]])]).T
-                questions[qid].a = np.hstack((new,questions[qid].a))
-                questions[qid].y = np.append(questions[qid].y,relevancy)
+                questions[qi].a = np.hstack((new,questions[qi].a))
+                questions[qi].y = np.append(r,questions[qi].y)
             else:
-                questions[qid] = q(q_vec,[float(a) for a in model.docvecs[index]],relevancy)
+                questions[qi] = q(q_vec,[float(a) for a in model.docvecs[index]],r)
     return questions
 
 def merge_dicts(dicts):
@@ -204,7 +207,7 @@ def matrix_to_file():
                 f.write(str(value)+" ")
             f.write("\n")
 
-if __name__ == "__main__":
+if __name__ == "__mein__":
 
     if os.path.isfile("questions_content.pickle"):
         with open("questions_content.pickle") as f:
@@ -225,7 +228,7 @@ if __name__ == "__main__":
 
 
 if __name__ == "__muin__":
-    with open("newest_questions_content.pickle") as f:
+    with open("pickle/questions_content.pickle") as f:
             questions = pickle.load(f)
     (M,b) = train(questions.q.values(),[])
     doc_model = Doc_Model(M,b)
@@ -236,3 +239,12 @@ if __name__ == "__muin__":
     # with open("new_questions_content.pickle","wb") as f:
     #     pickle.dump(qs,f)
 
+if __name__ == "__main__":
+    rel = [line for line in open("rel4.txt")]
+    hash = [line for line in open("hashes2.txt")]
+    qid = [line for line in open("metadata2.txt")]
+    dictionary = load_doc_hashes("doc_mapper.txt")
+    model = models.Doc2Vec.load("model1.doc2vec")
+    questions = load_questions(model,rel,hash,qid,dictionary)
+    with open("doc2vec_questions.pickle","w") as f:
+        pickle.dump(questions,f)
