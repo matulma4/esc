@@ -35,16 +35,18 @@ if __name__ == "__main__":
     with open("regress.pickle") as f:
         (w,theta) = pickle.load(f)
     prediction = ordinal_logistic_predict(w,theta,X)
-    l = [line for line in open("rel4.txt")]
+    for p in prediction:
+        print p
+    # l = [line for line in open("rel4.txt")]
     # print len(s),len(l)
-    confmat = np.zeros((6,6))
-    for i in range(len(prediction)):
-        predict = prediction[i]
-        label = int(l[i])
-        confmat[label][predict] += 1
-    for c in confmat:
-        for a in c:
-            print int(a),
-        print ''
+    # confmat = np.zeros((6,6))
+    # for i in range(len(prediction)):
+    #     predict = prediction[i]
+    #     label = int(l[i])
+    #     confmat[label][predict] += 1
+    # for c in confmat:
+    #     for a in c:
+    #         print int(a),
+    #     print ''
 
 
