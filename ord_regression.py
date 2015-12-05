@@ -1,4 +1,4 @@
-from logistic import ordinal_logistic_fit
+from logistic import ordinal_logistic_fit,ordinal_logistic_predict
 import numpy as np
 import argparse,pickle
 from gensim import models
@@ -30,9 +30,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
     y = [int(line) for line in open(args.rel)]
     model = models.Doc2Vec.load(args.fname)
-    X = model.docvecs
-    (w,theta) = ordinal_logistic_fit(X,y,max_iter=1000)
-    with open("regress.pickle","wb") as f:
-        pickle.dump((w,theta))
+    X = model.docvecs.doctag_syn0
+    # (w,theta) = ordinal_logistic_fit(X,y,max_iter=1000)
+    with open("regress.pickle") as f:
+        (w,theta) = pickle.load(f)
+    prediction = ordinal_logistic_predict(w,theta,X)
+    l = [line for line in open("rel4.txt")]
+    # print len(s),len(l)
+    confmat = np.zeros((6,6))
+    for i in range(len(prediction)):
+        predict = prediction[i]
+        label = int(l[i])
+        confmat[label][predict] += 1
+    for c in confmat:
+        for a in c:
+            print int(a),
+        print ''
 
 
