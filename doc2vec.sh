@@ -2,7 +2,7 @@
 
 #PBS -N doc2vec
 #PBS -l walltime=24h
-#PBS -l nodes=1:ppn=4
+#PBS -l nodes=1:ppn=1
 #PBS -l mem=8gb
 #PBS -l scratch=16gb
 
@@ -14,13 +14,13 @@ log_echo "Starting..."
 source /storage/brno2/home/$LOGNAME/.profile_matulma4
 log_echo "Done."
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
-FNAME="content.raw_text"
+FNAME="qtexts2.txt"
 PTH="models/lemmatized/default"
 MODEL="model1"
 cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying files..."
-cp $INPUT_DIR/$PTH/$fname $SCRATCHDIR
+cp $INPUT_DIR/$FNAME $SCRATCHDIR
 cp $INPUT_DIR/doc2vec.py $SCRATCHDIR
 log_echo "Done"
 log_echo "Running script..."
