@@ -16,7 +16,7 @@ log_echo "Done."
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 FNAME="qtexts2.txt"
 PTH="models/lemmatized/default"
-MODEL="model1"
+MODEL="q_model"
 cd $SCRATCHDIR
 N_JOBS=1
 log_echo "Copying files..."
