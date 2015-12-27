@@ -24,6 +24,7 @@ log_echo "Copying files..."
 cp $INPUT_DIR/$MODEL.doc2vec $SCRATCHDIR
 cp $INPUT_DIR/supervised_indexing.py $SCRATCHDIR
 cp $INPUT_DIR/qa_tuple.py $SCRATCHDIR
+cp $INPUT_DIR/qid_unique.txt $SCRATCHDIR
 for f in $INPUT_DIR/ftr_dir/scratch/matulma4/job_10028766.arien.ics.muni.cz/*.txt ; do
 cp $f $SCRATCHDIR/questions;
 done

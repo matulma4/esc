@@ -21,7 +21,8 @@ class Question():
         self.a = ans
         self.qtext = qtext
         self.qvec = qvec
-def load_question(fname,vecs):
+
+def load_question(fname,vecs,qid_dict):
     answers = []
     for line in open(fname):
         halves = line.split('#')
@@ -35,7 +36,7 @@ def load_question(fname,vecs):
     qid = int(signals[1].split(':')[1])
     answers.sort()
     answers = answers[-1:0:-1]
-    return Question(qid,answers,qtext,vecs[qid])
+    return Question(qid,answers,qtext,vecs[qid_dict[qid]])
 
 def create_tuples(question):
     tuples = []
@@ -49,10 +50,12 @@ def create_tuples(question):
     return tuples
 def load_questions(modelname,f_name):
     model = Doc2Vec.load(modelname)
-    # qids = [int(q) for q in open(f_name)]
+    qids = list(enumerate([int(q) for q in open(f_name)]))
+    rev_qids = [(item,index) for index,item in qids]
+    qid_dict = dict(rev_qids)
     Q = []
     for fname in os.listdir("questions"):
-        Q.append(load_question("questions/"+fname,model.docvecs.doctag_syn0))
+        Q.append(load_question("questions/"+fname,model.docvecs.doctag_syn0),qid_dict)
     return Q
 
 def load_tuples(questions):
