@@ -55,7 +55,7 @@ def load_questions(modelname,f_name):
     qid_dict = dict(rev_qids)
     Q = []
     for fname in os.listdir("questions"):
-        Q.append(load_question("questions/"+fname,model.docvecs.doctag_syn0),qid_dict)
+        Q.append(load_question("questions/"+fname,model.docvecs.doctag_syn0,qid_dict))
     return Q
 
 def load_tuples(questions):
