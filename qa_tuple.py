@@ -22,16 +22,17 @@ class Question():
         self.qtext = qtext
         self.qvec = qvec
 
-def load_question(fname,vecs,qid_dict):
+def load_question(fname,vecs,qid_dict,doc_dict,a_model):
     answers = []
     for line in open(fname):
         halves = line.split('#')
         signals = halves[0].split()
         rel = int(signals[0])
-        sigs = [float(a.split(':')[1]) for a in signals[2:]]
+        # sigs = [float(a.split(':')[1]) for a in signals[2:]]
         metadata = halves[1].strip().split(' ')
         url = metadata[1]
-        answers.append(Answer(url,sigs,rel))
+        hash = metadata[2]
+        answers.append(Answer(url,a_model.doctag_syn0[doc_dict[hash]],rel))
     qtext = metadata[0]
     qid = int(signals[1].split(':')[1])
     answers.sort()
@@ -48,14 +49,16 @@ def create_tuples(question):
             if answer.rel > ans.rel:
                 tuples.append(QATuple(question.q,answer.vec,ans.vec))
     return tuples
-def load_questions(modelname,f_name):
+def load_questions(modelname,f_name,mapname,a_modelname):
     model = Doc2Vec.load(modelname)
+    a_model = Doc2Vec.load(a_modelname)
     qids = list(enumerate([int(q) for q in open(f_name)]))
     rev_qids = [(item,index) for index,item in qids]
     qid_dict = dict(rev_qids)
     Q = []
+    doc_dict = load_doc_hashes(mapname)
     for fname in os.listdir("questions"):
-        Q.append(load_question("questions/"+fname,model.docvecs.doctag_syn0,qid_dict))
+        Q.append(load_question("questions/"+fname,model.docvecs.doctag_syn0,qid_dict,doc_dict,a_model))
     return Q
 
 def load_tuples(questions):
@@ -65,4 +68,9 @@ def load_tuples(questions):
     return t
 
 
-
+def load_doc_hashes(mapper_file):
+    hash_list = {}
+    with open(mapper_file,'r') as mapper_f:
+        for line, row in enumerate(mapper_f):
+            hash_list[row.strip()] = line
+    return hash_list

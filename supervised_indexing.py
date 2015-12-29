@@ -33,11 +33,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train doc2vec.")
     parser.add_argument("fname",help="filename",type=str)
     parser.add_argument("model",help="modelname",type=str)
+    parser.add_argument("a_model",help="answer modelname",type=str)
     parser.add_argument("n_iter",help="number of iterations",type=int)
     parser.add_argument("alpha",help="learning rate",type=float)
     args = parser.parse_args()
-    q = load_questions(args.model,args.fname)
+    q = load_questions(args.model,args.fname,"doc_mapper.txt",args.a_model)
+    with open("question_objects.pickle") as f:
+        pickle.dump(q,f)
     t = load_tuples(q)
-    W = train_model(t,args.n_iter,args.alpha)
+    # W = train_model(t,args.n_iter,args.alpha)
     with open("SSI.pickle") as f:
-        pickle.dump(W,f)
+        pickle.dump(t,f)
