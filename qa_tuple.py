@@ -24,15 +24,18 @@ class Question():
 
 def load_question(fname,vecs,qid_dict,doc_dict,a_model):
     answers = []
-    for line in open(fname):
+    i = 0
+    hashes = [h for h in open("hashes/"+fname)]
+    for line in open("questions/"+fname):
         halves = line.split('#')
         signals = halves[0].split()
         rel = int(signals[0])
         # sigs = [float(a.split(':')[1]) for a in signals[2:]]
         metadata = halves[1].strip().split(' ')
         url = metadata[1]
-        hash = metadata[2]
-        answers.append(Answer(url,a_model.doctag_syn0[doc_dict[hash]],rel))
+        hash = hashes[i]
+        answers.append(Answer(url,a_model.docvecs.doctag_syn0[doc_dict[hash]],rel))
+        i = i+1
     qtext = metadata[0]
     qid = int(signals[1].split(':')[1])
     answers.sort()
@@ -58,7 +61,7 @@ def load_questions(modelname,f_name,mapname,a_modelname):
     Q = []
     doc_dict = load_doc_hashes(mapname)
     for fname in os.listdir("questions"):
-        Q.append(load_question("questions/"+fname,model.docvecs.doctag_syn0,qid_dict,doc_dict,a_model))
+        Q.append(load_question(fname,model.docvecs.doctag_syn0,qid_dict,doc_dict,a_model))
     return Q
 
 def load_tuples(questions):
