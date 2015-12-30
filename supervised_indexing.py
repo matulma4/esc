@@ -39,7 +39,7 @@ if __name__ == "__main__":
     parser.add_argument("alpha",help="learning rate",type=float)
     args = parser.parse_args()
     # q = load_questions(args.model,args.fname,"doc_mapper.txt",args.a_model)
-    with open("questions_objects") as h:
+    with open("question_objects.pickle") as h:
         q = pickle.load(h)
     with open("qa_tuples.pickle") as f:
         t = pickle.load(f)

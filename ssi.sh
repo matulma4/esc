@@ -25,6 +25,7 @@ log_echo "Copying files..."
 #cp $INPUT_DIR/$MODEL.doc2vec* $SCRATCHDIR
 #cp $INPUT_DIR/model2.doc2vec* $SCRATCHDIR
 cp $INPUT_DIR/supervised_indexing.py $SCRATCHDIR
+cp $INPUT_DIR/question_objects.pickle $SCRATCHDIR
 cp $INPUT_DIR/qa_tuple*  $SCRATCHDIR
 #cp $INPUT_DIR/qid_unique.txt $SCRATCHDIR
 #cp $INPUT_DIR/hashes2.txt $SCRATCHDIR
