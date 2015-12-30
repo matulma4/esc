@@ -1,7 +1,7 @@
 import numpy as np,argparse,pickle
 from qa_tuple import *
 
-def train_model(tuples,n_iter,learning_rate):
+def train_model(tuples,n_iter,learning_rate,qvecs):
     iter = 0
     W = np.identity(100)
     error_old = np.inf
@@ -9,11 +9,12 @@ def train_model(tuples,n_iter,learning_rate):
         index = np.random.randint(0,len(tuples))
         # print index
         tuple = tuples[index]
-        C = 1-np.transpose(tuple.q)*W*tuple.plus+np.transpose(tuple.q)*W*tuple.minus
+        qvec = qvecs[tuple.q].qvec
+        C = 1-np.transpose(qvec)*W*tuple.plus+np.transpose(qvec)*W*tuple.minus
         if C > 0:
             # print tuple.q*np.transpose(tuple.plus)
             # print tuple.q*np.transpose(tuple.plus)
-            d = learning_rate*(tuple.q*np.transpose(tuple.plus)-tuple.q*np.transpose(tuple.minus))
+            d = learning_rate*(qvec*np.transpose(tuple.plus)-qvec*np.transpose(tuple.minus))
             W = W + d
         else:
             continue
@@ -26,8 +27,8 @@ def train_model(tuples,n_iter,learning_rate):
     # print iter
     return W
 
-def compute_error(tuples,W):
-    return sum([max(0,1-np.transpose(t.q)*W*t.plus+np.transpose(t.q)*W*t.minus) for t in tuples])
+def compute_error(tuples,W,q_dict):
+    return sum([max(0,1-np.transpose(q_dict[t.q].qvec)*W*t.plus+np.transpose(q_dict[t.q].qvec)*W*t.minus) for t in tuples])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train doc2vec.")
@@ -38,9 +39,11 @@ if __name__ == "__main__":
     parser.add_argument("alpha",help="learning rate",type=float)
     args = parser.parse_args()
     # q = load_questions(args.model,args.fname,"doc_mapper.txt",args.a_model)
+    with open("questions_objects") as h:
+        q = pickle.load(h)
     with open("qa_tuples.pickle") as f:
         t = pickle.load(f)
     # t = load_tuples(q)
-    W = train_model(t,args.n_iter,args.alpha)
+    W = train_model(t,args.n_iter,args.alpha,create_q_dict(q))
     with open("SSI_"+str(args.n_iter)+"_"+str(args.alpha)+".pickle","wb") as g:
         pickle.dump(W,g)

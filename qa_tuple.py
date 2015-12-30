@@ -39,7 +39,7 @@ def load_question(fname,vecs,qid_dict,doc_dict,a_model):
         hash = hashes[i]
         if ':' in hash:
             hash = def_hash
-        answers.append(Answer(url,a_model.docvecs.doctag_syn0[doc_dict[hash]],rel))
+        answers.append(Answer(url,a_model.docvecs.doctag_syn0[0],rel))
         i = i+1
     qtext = metadata[0]
     qid = int(signals[1].split(':')[1])
@@ -82,3 +82,9 @@ def load_doc_hashes(mapper_file):
         for line, row in enumerate(mapper_f):
             hash_list[row.strip()] = line
     return hash_list
+
+def create_q_dict(q):
+    Q = {}
+    for quest in q:
+        Q[quest.q] = q.qvec
+    return Q
