@@ -9,7 +9,7 @@ def train_model(tuples,n_iter,learning_rate,qvecs):
         index = np.random.randint(0,len(tuples))
         # print index
         tuple = tuples[index]
-        qvec = qvecs[tuple.q].qvec
+        qvec = qvecs[tuple.q]
         C = 1-np.dot(np.dot(np.transpose(qvec),W),tuple.plus)+np.dot(np.dot(np.transpose(qvec),W),tuple.minus)#np.transpose(qvec)*W*tuple.minus
         if C[0] > 0:
             # print tuple.q*np.transpose(tuple.plus)
