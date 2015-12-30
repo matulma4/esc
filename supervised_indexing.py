@@ -37,10 +37,10 @@ if __name__ == "__main__":
     parser.add_argument("n_iter",help="number of iterations",type=int)
     parser.add_argument("alpha",help="learning rate",type=float)
     args = parser.parse_args()
-    q = load_questions(args.model,args.fname,"doc_mapper.txt",args.a_model)
-    with open("question_objects.pickle") as f:
-        pickle.dump(q,f)
-    t = load_tuples(q)
-    # W = train_model(t,args.n_iter,args.alpha)
-    with open("SSI.pickle") as f:
-        pickle.dump(t,f)
+    # q = load_questions(args.model,args.fname,"doc_mapper.txt",args.a_model)
+    with open("qa_tuples.pickle") as f:
+        t = pickle.load(f)
+    # t = load_tuples(q)
+    W = train_model(t,args.n_iter,args.alpha)
+    with open("SSI_"+str(args.n_iter)+"_"+str(args.alpha)+".pickle","wb") as g:
+        pickle.dump(W,g)

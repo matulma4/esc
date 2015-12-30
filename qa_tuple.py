@@ -25,7 +25,10 @@ class Question():
 def load_question(fname,vecs,qid_dict,doc_dict,a_model):
     answers = []
     i = 0
-    hashes = [h for h in open("hashes/"+fname)]
+    hashes = [h.strip()  for h in open("hashes/"+fname)]
+    def_hash = hashes[0]
+    if ':' in def_hash:
+        def_hash = hashes[1]
     for line in open("questions/"+fname):
         halves = line.split('#')
         signals = halves[0].split()
@@ -34,6 +37,8 @@ def load_question(fname,vecs,qid_dict,doc_dict,a_model):
         metadata = halves[1].strip().split(' ')
         url = metadata[1]
         hash = hashes[i]
+        if ':' in hash:
+            hash = def_hash
         answers.append(Answer(url,a_model.docvecs.doctag_syn0[doc_dict[hash]],rel))
         i = i+1
     qtext = metadata[0]
