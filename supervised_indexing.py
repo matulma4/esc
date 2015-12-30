@@ -1,4 +1,4 @@
-import numpy as np,argparse,pickle
+import argparse,pickle
 from qa_tuple import *
 
 def train_model(tuples,n_iter,learning_rate,qvecs):
@@ -10,8 +10,8 @@ def train_model(tuples,n_iter,learning_rate,qvecs):
         # print index
         tuple = tuples[index]
         qvec = qvecs[tuple.q].qvec
-        C = 1-np.transpose(qvec)*W*tuple.plus+np.transpose(qvec)*W*tuple.minus
-        if C > 0:
+        C = 1-np.dot(np.dot(np.transpose(qvec),W),tuple.plus)+np.dot(np.dot(np.transpose(qvec),W),tuple.minus)#np.transpose(qvec)*W*tuple.minus
+        if C[0] > 0:
             # print tuple.q*np.transpose(tuple.plus)
             # print tuple.q*np.transpose(tuple.plus)
             d = learning_rate*(qvec*np.transpose(tuple.plus)-qvec*np.transpose(tuple.minus))
@@ -38,12 +38,12 @@ if __name__ == "__main__":
     parser.add_argument("n_iter",help="number of iterations",type=int)
     parser.add_argument("alpha",help="learning rate",type=float)
     args = parser.parse_args()
-    # q = load_questions(args.model,args.fname,"doc_mapper.txt",args.a_model)
-    with open("question_objects.pickle") as h:
-        q = pickle.load(h)
-    with open("qa_tuples.pickle") as f:
-        t = pickle.load(f)
-    # t = load_tuples(q)
+    q = load_questions(args.model,args.fname,"doc_mapper.txt",args.a_model)
+    # with open("question_objects.pickle") as h:
+    #     q = pickle.load(h)
+    # with open("qa_tuples.pickle") as f:
+    #     t = pickle.load(f)
+    t = load_tuples(q)
     W = train_model(t,args.n_iter,args.alpha,create_q_dict(q))
     with open("SSI_"+str(args.n_iter)+"_"+str(args.alpha)+".pickle","wb") as g:
         pickle.dump(W,g)

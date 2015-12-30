@@ -10,7 +10,7 @@ class QATuple():
 class Answer():
     def __init__(self,url,vec,rel):
         self.url = url
-        self.vec = np.matrix(vec).T
+        self.vec = np.transpose(np.matrix(vec))
         self.rel = rel
     def __lt__(self, other):
         return self.rel < other.rel
