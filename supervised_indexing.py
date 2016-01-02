@@ -10,15 +10,15 @@ def train_model(tuples,n_iter,learning_rate,qvecs):
         # print index
         tuple = tuples[index]
         qvec = qvecs[tuple.q]
-        C = 1-np.dot(np.dot(np.transpose(qvec),W),tuple.plus)+np.dot(np.dot(np.transpose(qvec),W),tuple.minus)#np.transpose(qvec)*W*tuple.minus
+        C = 1-np.dot(np.dot(qvec,W),tuple.plus)+np.dot(np.dot(qvec,W),tuple.minus)#np.transpose(qvec)*W*tuple.minus
         if C[0] > 0:
             # print tuple.q*np.transpose(tuple.plus)
             # print tuple.q*np.transpose(tuple.plus)
-            d = learning_rate*(qvec*np.transpose(tuple.plus)-qvec*np.transpose(tuple.minus))
+            d = learning_rate*(np.transpose(qvec)*np.transpose(tuple.plus)-np.transpose(qvec)*np.transpose(tuple.minus))
             W = W + d
         else:
             continue
-        error = compute_error(tuples,W)
+        error = compute_error(tuples,W,qvecs)
         if error >= error_old or iter == n_iter:
             break
         iter = iter + 1
@@ -28,7 +28,7 @@ def train_model(tuples,n_iter,learning_rate,qvecs):
     return W
 
 def compute_error(tuples,W,q_dict):
-    return sum([max(0,1-np.transpose(q_dict[t.q].qvec)*W*t.plus+np.transpose(q_dict[t.q].qvec)*W*t.minus) for t in tuples])
+    return sum([max(0,1-q_dict[t.q].qvec*W*t.plus+q_dict[t.q].qvec*W*t.minus) for t in tuples])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train doc2vec.")
