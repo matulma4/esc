@@ -86,5 +86,5 @@ def load_doc_hashes(mapper_file):
 def create_q_dict(q):
     Q = {}
     for quest in q:
-        Q[quest.q] = quest.qvec
+        Q[quest.q] = np.array([quest.qvec])
     return Q
