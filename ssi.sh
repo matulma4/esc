@@ -16,29 +16,29 @@ log_echo "Done."
 INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 FNAME="qtexts2.txt"
 PTH="models/lemmatized/default"
-MODEL="q_model2"
+MODEL="q_model3"
 cd $SCRATCHDIR
-#mkdir $SCRATCHDIR/questions
-#mkdir $SCRATCHDIR/hashes
+mkdir $SCRATCHDIR/questions
+mkdir $SCRATCHDIR/hashes
 N_JOBS=1
 log_echo "Copying files..."
-#cp $INPUT_DIR/$MODEL.doc2vec* $SCRATCHDIR
-#cp $INPUT_DIR/model2.doc2vec* $SCRATCHDIR
+cp $INPUT_DIR/$MODEL.doc2vec* $SCRATCHDIR
+cp $INPUT_DIR/model2.doc2vec* $SCRATCHDIR
 cp $INPUT_DIR/supervised_indexing.py $SCRATCHDIR
-cp $INPUT_DIR/question_objects.pickle $SCRATCHDIR
-cp $INPUT_DIR/qa_tuple*  $SCRATCHDIR
-#cp $INPUT_DIR/qid_unique.txt $SCRATCHDIR
-#cp $INPUT_DIR/hashes2.txt $SCRATCHDIR
-#cp $INPUT_DIR/doc_mapper.txt $SCRATCHDIR
-#for f in $INPUT_DIR/ftr_dir/scratch/matulma4/job_10028766.arien.ics.muni.cz/*.txt ; do
-#cp $f $SCRATCHDIR/questions;
-#done
-#for g in $INPUT_DIR/ftr_dir/hashes/scratch/matulma4/job_10127101.arien.ics.muni.cz/*.txt ; do
-#cp $g $SCRATCHDIR/hashes;
-#done
+#cp $INPUT_DIR/question_objects.pickle $SCRATCHDIR
+cp $INPUT_DIR/qa_tuple.py  $SCRATCHDIR
+cp $INPUT_DIR/qid_unique.txt $SCRATCHDIR
+cp $INPUT_DIR/hashes2.txt $SCRATCHDIR
+cp $INPUT_DIR/doc_mapper.txt $SCRATCHDIR
+for f in $INPUT_DIR/ftr_dir/scratch/matulma4/job_10028766.arien.ics.muni.cz/*.txt ; do
+cp $f $SCRATCHDIR/questions;
+done
+for g in $INPUT_DIR/ftr_dir/hashes/scratch/matulma4/job_10127101.arien.ics.muni.cz/*.txt ; do
+cp $g $SCRATCHDIR/hashes;
+done
 log_echo "Done"
 log_echo "Running script..."
-python supervised_indexing.py qid_unique.txt q_model2.doc2vec model2.doc2vec $N_ITER $ALPHA
+python supervised_indexing.py qid_unique.txt q_model3.doc2vec model2.doc2vec $N_ITER $ALPHA
 log_echo "Done"
 log_echo "Copying result..."
 cp $SCRATCHDIR/*.pickle $INPUT_DIR

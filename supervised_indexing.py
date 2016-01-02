@@ -39,11 +39,11 @@ if __name__ == "__main__":
     parser.add_argument("alpha",help="learning rate",type=float)
     args = parser.parse_args()
     q = load_questions(args.model,args.fname,"doc_mapper.txt",args.a_model)
-    # with open("question_objects.pickle") as h:
-    #     q = pickle.load(h)
-    # with open("qa_tuples.pickle") as f:
-    #     t = pickle.load(f)
+    with open("question_objects2.pickle") as h:
+        q = pickle.dump(q,h)
     t = load_tuples(q)
-    W = train_model(t,args.n_iter,args.alpha,create_q_dict(q))
-    with open("SSI_"+str(args.n_iter)+"_"+str(args.alpha)+".pickle","wb") as g:
-        pickle.dump(W,g)
+    with open("qa_tuples2.pickle") as f:
+        t = pickle.dump(t,f)
+    # W = train_model(t,args.n_iter,args.alpha,create_q_dict(q))
+    # with open("SSI_"+str(args.n_iter)+"_"+str(args.alpha)+".pickle","wb") as g:
+    #     pickle.dump(W,g)
