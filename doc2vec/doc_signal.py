@@ -1,9 +1,14 @@
-from doc_to_vec import parse_feature_line,load_doc_hashes,translate_hash,Doc_Model,average_vec
-import pickle,os,glob
+import pickle
+import os
+import glob
+
 from gensim import models
 from scipy import io
 import numpy as np
 from joblib import Parallel,delayed
+
+from doc2vec.doc_to_vec import parse_feature_line,load_doc_hashes,translate_hash, average_vec
+
 
 def transform_to_signal(fname,queries,dictionary,M,b,model,dim,R):
     result = []

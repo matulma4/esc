@@ -1,5 +1,8 @@
-import argparse,pickle
-from qa_tuple import *
+import argparse
+import pickle
+
+from logreg.qa_tuple import *
+
 
 def train_model(tuples,n_iter,learning_rate,qvecs):
     iter = 0

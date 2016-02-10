@@ -1,5 +1,4 @@
-import pickle
-from doc_to_vec import MySentences
+from doc2vec.doc_to_vec import MySentences
 
 class MyWords(MySentences):
     def __init__(self,fname):

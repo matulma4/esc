@@ -1,11 +1,14 @@
 import sys
 from os import path
-from w2vg import load_data
-from gensim import models,utils
-from gensim.models.doc2vec import TaggedDocument
 import logging
 from collections import namedtuple
-import numpy as np
+
+from gensim import models,utils
+from gensim.models.doc2vec import TaggedDocument
+
+from word2vec.w2vg import load_data
+
+
 class LabeledLineSentence(object):
     def __init__(self, filename):
         self.filename = filename

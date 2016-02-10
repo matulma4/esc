@@ -1,7 +1,8 @@
 import pickle
-from doc_to_vec import Questions
+
 from gensim import models
 import numpy as np
+
 
 def count_inversion(lst):
     return merge_count_inversion(lst)[1]
@@ -40,7 +41,7 @@ if __name__ == "__main__":
     for t in theta:
         classes[t] = j
         j += 1
-    model = models.Doc2Vec.load("model.doc2vec")
+    model = models.Doc2Vec.load("model2.doc2vec")
     for docvec in model.docvecs:
         k = np.dot(docvec,w)
         i = [t for t in theta if k > t]

@@ -127,25 +127,30 @@ if __name__ == "__main__":
     # segments = Segments(segs)
     # with open("content.seg","w") as f:
     #     pickle.dump(segments,f)
-    with open("content.seg") as f:
-        segments = pickle.load(f)
+    # with open("content.seg") as f:
+    #     segments = pickle.load(f)
     # segs = segments.segments
-    # for i in [2,13]:
-    #     seg = segs[i]
-    #     print seg[0][0]
-    #     plt.figure(i)
-    #     for xy,label in seg:
-    #         plt.annotate(label,(xy[0], xy[1]))
-    #     # plt.show()
+    indices = [232,2530,732]
+    for i in indices:
+        with open("segs\\seg"+str(i)+".txt") as f:
+            plt.figure(i)
+            for line in f:
+                l = line.split()
+                label = l[2].decode('utf-8')
+                xy = [float(l[0]), float(l[1])]
+                print xy
+                plt.annotate(label,(xy[0],xy[1]))
+            plt.axis([xy[0]-1,xy[0]+1,xy[1]-1,xy[1]+1])
+        plt.show()
     # print max(len(s) for s in segments.segments)
     # print min(len(s) for s in segments.segments)
     # print np.average([len(s) for s in segments.segments])
-    i = 0
-    for segment in segments:
-        with open("seg"+str(i)+".txt") as f:
-            for value in segment:
-                f.write(str(value[0][0])+" "+str(value[0][1])+" "+str(value[1])+"\n")
-        i += 1
+    # i = 0
+    # for segment in segments:
+    #     with open("seg"+str(i)+".txt") as f:
+    #         for value in segment:
+    #             f.write(str(value[0][0])+" "+str(value[0][1])+" "+str(value[1])+"\n")
+    #     i += 1
 
 
 

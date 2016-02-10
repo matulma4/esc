@@ -33,6 +33,7 @@ log_echo "Copying data."
 mv $INPUTDIR/$DOC_NAME $SCRATCHDIR
 log_echo "Splitting the input file"
 split -l 3920 -a 2 -d $SCRATCHDIR/$DOC_NAME $SCRATCHDIR/document_
+# split -l 442239 -a 2 -d new_text_features4.rtData data/document_
 mkdir $SCRATCHDIR/chunks
 cp $SCRATCHDIR/document_* $SCRATCHDIR/chunksm
 log_echo "Done."

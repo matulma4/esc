@@ -13,7 +13,7 @@ log_echo() {
 log_echo "Starting..."
 source /storage/brno2/home/$LOGNAME/.profile_matulma4
 log_echo "Done."
-INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"s
+INPUT_DIR="/storage/brno2/home/$LOGNAME/esc"
 mkdir $SCRATCHDIR/hashes
 N_JOBS=1
 log_echo "Copying files..."

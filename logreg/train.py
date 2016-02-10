@@ -6,10 +6,12 @@ Created on Wed Jul 15 16:17:03 2015
 @author: silvicek
 """
 
-from basicgrad import getInputs,mrrcount,mrr,testGrad,setRes
-import numpy as np
 import pickle
-from sklearn import linear_model
+
+import numpy as np
+
+from logreg.basicgrad import mrr,testGrad
+
 MATRIX_SIZE = 100
 def trecEval(li):
     truth=open('truth.txt','w')

@@ -17,3 +17,4 @@ if __name__ == "__main__":
         model.build_vocab(sentences)
         model.train(sentences)
         model.save(outname)
+    print ""

@@ -28,14 +28,9 @@ class q(object):
     def __init__(self,q,a1,relevancy):
         self.q=np.transpose(np.array(np.array(q,ndmin=2)))  # question emb. (column)
         a1=np.array(a1,ndmin=2)  # correct ans. emb. (answers in rows)
-        # a0=np.array(a0,ndmin=2)  # incorrect
         self.a=np.transpose(a1)  # np.hstack((np.transpose(a1),np.transpose(a0)))  # answer matrix (answer per column, correct come first)
         # self.y=np.ones(len(a1))  # np.hstack((np.ones(len(a1)),np.zeros(len(a0))))  # answer labels
         self.y = np.array([relevancy])
-        # self.qtext=qtext
-        # self.atext=atext1
-        # self.atext.extend((atext0))
-        # self.setCounts()
     def sett(self,M,b):
         """ compute answer labels based on model M,b  """
         self.t=s.expit(z(self.q,M,self.a,b)[0])  # answer labels as estimated by the model

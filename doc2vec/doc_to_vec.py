@@ -2,15 +2,19 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import division
+import random
+import glob
+import pickle
+import os.path
+
 from gensim import models
 import numpy as np
 from joblib import Parallel,delayed
-from basicgrad import q
-import random,glob
-from train import train
-import pickle
 from scipy import io
-import os.path
+
+from basicgrad import q
+from logreg import train
+
 
 class Doc_Model():
     def __init__(self,M,b):

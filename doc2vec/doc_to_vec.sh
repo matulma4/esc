@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N doc2vec
 #PBS -l walltime=24h
-#PBS -l nodes=1:ppn=11
+#PBS -l nodes=1:ppn=1
 #PBS -l mem=64gb
 #PBS -l scratch=16gb
 
