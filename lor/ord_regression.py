@@ -1,7 +1,12 @@
-from logistic import ordinal_logistic_fit,ordinal_logistic_predict
+import argparse
+import pickle
+
 import numpy as np
-import argparse,pickle
 from gensim import models
+
+from lor.logistic import ordinal_logistic_predict
+
+
 def compute_confmat(X,w):
     Y = []
     w = np.matrix(w)
